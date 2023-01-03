@@ -201,13 +201,13 @@
     "id": "dscsc5ds6csd6",
     "parentId": "sc8d9c7s",
     "title": "Deploy to Github pages or netlifly",
-    "status": false
+    "status": true
   },
   {
     "id": "vxc89u9",
     "parentId": "sc8d9c7s",
     "title": "Click on tree source code to copy to clipboard",
-    "status": false
+    "status": true
   },
   {
     "id": 31,

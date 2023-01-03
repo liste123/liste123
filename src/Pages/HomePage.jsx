@@ -25,6 +25,10 @@ const HomePage = () => {
     reader.readAsText(evt.target.files[0]);
   };
 
+  const clipboard = () => {
+    navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+  };
+
   return (
     <Box>
       <Stack direction="row">
@@ -32,15 +36,10 @@ const HomePage = () => {
           <TreeTable data={data} onChange={setData} />
         </Box>
 
-        <pre
-          style={{
-            fontSize: 10,
-            maxWidth: "35vw",
-            overflow: "auto"
-          }}
-        >
-          {JSON.stringify(data, null, 2)}
-        </pre>
+        <Box sx={{ fontSize: 10, maxWidth: "35vw", overflow: "auto" }}>
+          <button onClick={clipboard}>copy</button>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </Box>
       </Stack>
       <hr />
       <button onClick={handleExport}>Export to JSON</button>
