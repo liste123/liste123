@@ -1,33 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Stack } from "@mui/material";
+import { usePubSub } from "../utils/use-pubsub";
 import TreeTable from "../components/TreeTable";
 import backlog from "./backlog.json";
 
 const HomePage = () => {
+  const { subscribe } = usePubSub();
   const [data, setData] = useState(backlog);
 
-  const handleExport = (evt) => {
-    const el = document.createElement("a");
+  // export::json
+  useEffect(
+    () =>
+      subscribe("export::json", () => {
+        const el = document.createElement("a");
 
-    el.setAttribute(
-      "href",
-      `data:text/json;charset=utf-8,${encodeURIComponent(
-        JSON.stringify(data, null, 2)
-      )}`
-    );
-    el.setAttribute("download", "liste123-backlog.json");
-    el.click();
-  };
+        el.setAttribute(
+          "href",
+          `data:text/json;charset=utf-8,${encodeURIComponent(
+            JSON.stringify(data, null, 2)
+          )}`
+        );
+        el.setAttribute("download", "liste123-backlog.json");
+        el.click();
+      }),
+    [data]
+  );
 
-  const handleImport = (evt) => {
-    const reader = new FileReader();
-    reader.onload = (evt) => setData(JSON.parse(evt.target.result));
-    reader.readAsText(evt.target.files[0]);
-  };
+  // export::clipboard
+  useEffect(
+    () =>
+      subscribe("export::clipboard", () => {
+        navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+      }),
+    [data]
+  );
 
-  const clipboard = () => {
-    navigator.clipboard.writeText(JSON.stringify(data, null, 2));
-  };
+  // import::file
+  useEffect(
+    () =>
+      subscribe("import::file", (evt) => {
+        const reader = new FileReader();
+        reader.onload = (evt) => setData(JSON.parse(evt.target.result));
+        reader.readAsText(evt.target.files[0]);
+      }),
+    []
+  );
 
   return (
     <Box>
@@ -36,14 +53,13 @@ const HomePage = () => {
           <TreeTable data={data} onChange={setData} />
         </Box>
 
-        <Box sx={{ fontSize: 10, maxWidth: "35vw", overflow: "auto" }}>
-          <button onClick={clipboard}>copy</button>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
+        <Box
+          component="pre"
+          sx={{ fontSize: 10, maxWidth: "35vw", overflow: "auto" }}
+        >
+          {JSON.stringify(data, null, 2)}
         </Box>
       </Stack>
-      <hr />
-      <button onClick={handleExport}>Export to JSON</button>
-      <input type="file" name="import" onChange={handleImport} />
     </Box>
   );
 };

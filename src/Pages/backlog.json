@@ -1,17 +1,5 @@
 [
   {
-    "id": 1,
-    "parentId": null,
-    "title": "Learn React Nestable",
-    "status": false
-  },
-  {
-    "id": 2,
-    "parentId": 1,
-    "title": "Find good way to serialize data",
-    "status": true
-  },
-  {
     "id": 3,
     "parentId": null,
     "title": "Keyboard",
@@ -168,10 +156,34 @@
     "status": false
   },
   {
+    "id": 31,
+    "parentId": null,
+    "title": "Optimizations & Refactoring",
+    "status": false
+  },
+  {
+    "id": 32,
+    "parentId": 31,
+    "title": "Create a \"state\" folder and explode all the hooks",
+    "status": false
+  },
+  {
+    "id": 33,
+    "parentId": 31,
+    "title": "Wrap TreeTable components into its own sub-folder",
+    "status": false
+  },
+  {
+    "id": 34,
+    "parentId": 31,
+    "title": "Keep tree state into Refs, propagate changes with pubsub",
+    "status": false
+  },
+  {
     "id": "sc8d9c7s",
     "parentId": null,
     "title": "Global API",
-    "status": false
+    "status": true
   },
   {
     "id": 29,
@@ -195,7 +207,37 @@
     "id": "wd8wef98v79dfv79dfvdf",
     "parentId": "sc8d9c7s",
     "title": "Render import/export to the top toolbar",
-    "status": false
+    "status": true
+  },
+  {
+    "id": "dwdw",
+    "parentId": "wd8wef98v79dfv79dfvdf",
+    "title": "Create usePubSub hook",
+    "status": true
+  },
+  {
+    "id": "dsc67",
+    "parentId": "wd8wef98v79dfv79dfvdf",
+    "title": "Add controls to Toolbar and emit messages",
+    "status": true
+  },
+  {
+    "id": "ffe7979",
+    "parentId": "wd8wef98v79dfv79dfvdf",
+    "title": "Handle \"Export\" event",
+    "status": true
+  },
+  {
+    "id": "ffe7fe798979",
+    "parentId": "wd8wef98v79dfv79dfvdf",
+    "title": "Handle \"Import\" event",
+    "status": true
+  },
+  {
+    "id": "fer9879",
+    "parentId": "wd8wef98v79dfv79dfvdf",
+    "title": "Handle \"Copy\" event",
+    "status": true
   },
   {
     "id": "dscsc5ds6csd6",
@@ -210,27 +252,21 @@
     "status": true
   },
   {
-    "id": 31,
+    "id": "dv878f9",
+    "parentId": "sc8d9c7s",
+    "title": "Make topbar static",
+    "status": true
+  },
+  {
+    "id": 1,
     "parentId": null,
-    "title": "Optimizations & Refactoring",
-    "status": false
+    "title": "Learn React Nestable",
+    "status": true
   },
   {
-    "id": 32,
-    "parentId": 31,
-    "title": "Create a \"state\" folder and explode all the hooks",
-    "status": false
-  },
-  {
-    "id": 33,
-    "parentId": 31,
-    "title": "Wrap TreeTable components into its own sub-folder",
-    "status": false
-  },
-  {
-    "id": 34,
-    "parentId": 31,
-    "title": "Keep tree state into Refs, propagate changes with pubsub",
-    "status": false
+    "id": 2,
+    "parentId": 1,
+    "title": "Find good way to serialize data",
+    "status": true
   }
 ]
