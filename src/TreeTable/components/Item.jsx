@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 
-import { useNode } from "./state/use-node";
-import { useCollapse } from "./state/use-collapse";
-import { useFocus } from "./state/use-focus";
+import { useNode } from "../state/use-node";
+import { useCollapse } from "../state/use-collapse";
+import { useFocus } from "../state/use-focus";
 
 import Checkbox from "./Checkbox";
 

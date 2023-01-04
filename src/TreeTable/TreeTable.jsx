@@ -4,14 +4,14 @@ import "react-nestable/dist/styles/index.css";
 import { withTreeTable } from "./state/Context";
 import { useNodes } from "./state/use-nodes";
 import { useNestable } from "./state/use-nestable";
-import TreeTableItem from "./Item";
+import TreeTableItem from "./components/Item";
 
 /**
  *
  * @param {Array} data { id, parentId, custom, fields, ...}
  * @returns
  */
-const TreeTable = () => {
+export const TreeTable = () => {
   const { nestableRef } = useNestable();
   const { nodes, onChange, getNodeById } = useNodes();
 

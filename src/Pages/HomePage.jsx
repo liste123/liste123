@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Stack, Button } from "@mui/material";
 import { usePubSub } from "../utils/use-pubsub";
-import TreeTable from "../components/TreeTable";
+import TreeTable from "../TreeTable";
 import backlog from "../backlog.json";
 
 const dummy = {
