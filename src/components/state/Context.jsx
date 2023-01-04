@@ -1,16 +1,10 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useRef,
-  useCallback
-} from "react";
+import { createContext, useState, useRef } from "react";
 
 import { arrayToTree } from "performant-array-to-tree";
-import { useEffectDebounced } from "../utils/use-effect-debounced";
-import { useKeyboardEvent } from "../utils/use-keyboard-event";
-import { getNodeById, updateNodeById, flat } from "./deeplist";
-import { useCreatePubSub } from "../utils/use-pubsub";
+import { useEffectDebounced } from "../../utils/use-effect-debounced";
+import { flat } from "../deeplist";
+import { useCreatePubSub } from "../../utils/use-pubsub";
+import { useKeyboard } from "./use-keyboard";
 
 const DEBOUNCE_DELAY = 0;
 
@@ -115,93 +109,4 @@ export const withTreeTable = (Component) => (props) => {
       <Component />
     </TreeTableContext.Provider>
   );
-};
-
-export const useTreeTable = () => useContext(TreeTableContext);
-
-export const useNodes = () => {
-  const { nodes, setNodes, pubsub } = useTreeTable();
-
-  const onChange = (data) => {
-    setNodes(data.items);
-    pubsub.publish("nodes::changed", data.items);
-  };
-
-  return {
-    nodes,
-    onChange,
-    getNodeById: (nodeId) => getNodeById(nodes, nodeId)
-  };
-};
-
-export const useNode = (node) => {
-  const { nodes, setNodes, pubsub } = useTreeTable();
-  const { children, ...data } = node;
-
-  const update = useCallback(
-    (change) => {
-      setNodes((curr) => updateNodeById(curr, node.id, change));
-      pubsub.publish("node::changed", { node, change });
-    },
-    [nodes]
-  );
-
-  return {
-    id: node.id,
-    data,
-    children,
-    update
-  };
-};
-
-export const useFocus = (nodeId) => {
-  const { focus, setFocus } = useTreeTable();
-
-  return {
-    hasFocus: focus === nodeId,
-    requestFocus: () => setFocus(nodeId)
-  };
-};
-
-export const useCollapse = (nodeId) => {
-  const { collapse, setCollapse } = useTreeTable();
-
-  const toggleCollapse = useCallback(() => {
-    console.log("@toggle::before", nodeId, collapse);
-    const _collapse = collapse.includes(nodeId)
-      ? collapse.filter(($) => $ !== nodeId)
-      : [...collapse, nodeId];
-    console.log("@toggle::after", nodeId, _collapse);
-    setCollapse(_collapse);
-  }, [collapse]);
-
-  return {
-    isCollapsed: collapse.includes(nodeId),
-    toggleCollapse
-  };
-};
-
-const useKeyboard = ({ items, itemsMap, focus, setFocus }) => {
-  // Memoize data references for event handlers
-  // const data = useRef(null);
-  // useEffect(() => {
-  //   data.current = { items, itemsMap, focus };
-  // }, [items, itemsMap, focus]);
-
-  useKeyboardEvent("ArrowDown", () => {
-    console.log("move focus down");
-    // const { items, itemsMap, focus } = data.current;
-    // const item = itemsMap[focus];
-
-    // // Set first item if nothing is focused
-    // if (!item) {
-    //   setFocus(items[0].id);
-    //   return;
-    // }
-
-    // // if (item.children) {
-    // console.log(item);
-    // console.log(items);
-    // // }
-  });
 };

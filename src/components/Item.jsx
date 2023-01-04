@@ -1,6 +1,9 @@
 import { useCallback } from "react";
 
-import { useNode, useFocus, useCollapse } from "./Context";
+import { useNode } from "./state/use-node";
+import { useCollapse } from "./state/use-collapse";
+import { useFocus } from "./state/use-focus";
+
 import Checkbox from "./Checkbox";
 
 const TreeTableItem = ({ node }) => {

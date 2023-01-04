@@ -2,6 +2,24 @@
   "collapse": ["sc8d9c7s", 1, 18, 4],
   "items": [
     {
+      "id": 31,
+      "parentId": null,
+      "title": "Optimizations & Refactoring",
+      "status": false
+    },
+    {
+      "id": 32,
+      "parentId": 31,
+      "title": "Create a \"state\" folder and explode all the hooks",
+      "status": true
+    },
+    {
+      "id": 33,
+      "parentId": 31,
+      "title": "Wrap TreeTable components into its own sub-folder",
+      "status": false
+    },
+    {
       "id": 3,
       "parentId": null,
       "title": "Keyboard",
@@ -161,30 +179,6 @@
       "id": 28,
       "parentId": 26,
       "title": "Resize handle in column header",
-      "status": false
-    },
-    {
-      "id": 31,
-      "parentId": null,
-      "title": "Optimizations & Refactoring",
-      "status": false
-    },
-    {
-      "id": 32,
-      "parentId": 31,
-      "title": "Create a \"state\" folder and explode all the hooks",
-      "status": false
-    },
-    {
-      "id": 33,
-      "parentId": 31,
-      "title": "Wrap TreeTable components into its own sub-folder",
-      "status": false
-    },
-    {
-      "id": 34,
-      "parentId": 31,
-      "title": "Keep tree state into Refs, propagate changes with pubsub",
       "status": false
     },
     {
