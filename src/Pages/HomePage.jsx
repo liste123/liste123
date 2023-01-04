@@ -4,18 +4,19 @@ import { usePubSub } from "../utils/use-pubsub";
 import TreeTable from "../components/TreeTable";
 import backlog from "../backlog.json";
 
-const dummy = [
-  { id: 1, parentId: null, title: "foo", status: false },
-  { id: 2, parentId: 1, title: "faa", status: false },
-  { id: 3, parentId: null, title: "fii", status: false }
-];
+const dummy = {
+  items: [
+    { id: 1, parentId: null, title: "foo", status: false },
+    { id: 2, parentId: 1, title: "faa", status: false },
+    { id: 3, parentId: null, title: "fii", status: false }
+  ]
+};
 
 const HomePage = () => {
   const { subscribe } = usePubSub();
-  const [data, setData] = useState(true ? backlog : dummy);
+  const [data, setData] = useState(false ? backlog : dummy);
 
-  // Import source code from the data so to make it
-  // editable and applicable
+  // Import source code from the data so to make it editable
   const [src, setSrc] = useState({});
   useEffect(() => {
     setSrc(JSON.stringify(data, null, 2));
@@ -71,7 +72,7 @@ const HomePage = () => {
 
         <Stack sx={{ width: "35vw" }}>
           <Stack direction="row" justifyContent="space-between">
-            <h4>Edit source:</h4>
+            <h4>Edit Document:</h4>
             <Stack direction="row">
               <Button onClick={() => setData([])}>Reset</Button>
               <Button onClick={() => setData(JSON.parse(src))}>Apply</Button>

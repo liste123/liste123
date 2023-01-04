@@ -9,7 +9,7 @@ import {
 import { arrayToTree } from "performant-array-to-tree";
 import { useEffectDebounced } from "../utils/use-effect-debounced";
 import { useKeyboardEvent } from "../utils/use-keyboard-event";
-import { getNodeById, updateNodeById, clone, flat } from "./deeplist";
+import { getNodeById, updateNodeById, flat } from "./deeplist";
 import { useCreatePubSub } from "../utils/use-pubsub";
 
 const DEBOUNCE_DELAY = 0;
@@ -37,7 +37,7 @@ export const withTreeTable = (Component) => (props) => {
       isPropsUpdateRef.current = true;
 
       // Set internal state:
-      const _nodes = arrayToTree(data, { dataField: null });
+      const _nodes = arrayToTree(data.items, { dataField: null });
       setNodes(_nodes);
 
       // Set focus on initial item:
@@ -66,12 +66,14 @@ export const withTreeTable = (Component) => (props) => {
       }
 
       // Rewrite the data into the outside world format
-      const items = flat(nodes);
+      const data = {
+        items: flat(nodes)
+      };
 
       // Keep track of the latest outward data to prevent loopback
       // updates, and trigger the onChange callback
-      lastOnChangeData.current = items;
-      onChange(items);
+      lastOnChangeData.current = data;
+      onChange(data);
 
       console.log("@withTreeTable::nodes::changed");
     },
