@@ -21,6 +21,9 @@ const HomePage = () => {
     setSrc(JSON.stringify(data, null, 2));
   }, [data]);
 
+  // reset
+  useEffect(() => subscribe("reset", () => setData([])), [data]);
+
   // export::json
   useEffect(
     () =>
@@ -69,7 +72,10 @@ const HomePage = () => {
         <Stack sx={{ width: "35vw" }}>
           <Stack direction="row" justifyContent="space-between">
             <h4>Edit source:</h4>
-            <Button onClick={() => setData(JSON.parse(src))}>Apply</Button>
+            <Stack direction="row">
+              <Button onClick={() => setData([])}>Reset</Button>
+              <Button onClick={() => setData(JSON.parse(src))}>Apply</Button>
+            </Stack>
           </Stack>
           <textarea
             rows={30}
@@ -79,7 +85,6 @@ const HomePage = () => {
           />
         </Stack>
       </Stack>
-      <button onClick={() => setData([])}>reset</button>
     </Box>
   );
 };

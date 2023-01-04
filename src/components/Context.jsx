@@ -3,7 +3,6 @@ import {
   useContext,
   useState,
   useRef,
-  useEffect,
   useCallback
 } from "react";
 
@@ -12,6 +11,8 @@ import { useEffectDebounced } from "../utils/use-effect-debounced";
 import { useKeyboardEvent } from "../utils/use-keyboard-event";
 import { getNodeById, updateNodeById, clone, flat } from "./deeplist";
 import { useCreatePubSub } from "../utils/use-pubsub";
+
+const DEBOUNCE_DELAY = 0;
 
 export const TreeTableContext = createContext();
 
@@ -24,26 +25,13 @@ export const withTreeTable = (Component) => (props) => {
   const pubsub = useCreatePubSub();
 
   /**
-   * This should not be needed because in production React won't
-   * perform the double render of Strict.
-   *
-   * But it it still a good addition in case the outside world will
-   * change the state too often.
-   *
-   * It would protect from the load of "arrayToTree".
-   * First run is immediate, but data updates are seriously debounced
-   * as the internal state should already be aligned when the user
-   * performs changes directly.
-   *
-   * Basically, only changes from the outside world - like other users'
-   * activity in a shared document - are debounced for real.
+   * Imports changes from the outside world into the component.
    */
   useEffectDebounced(
     () => {
       // Skip loopback updates from outside state management
       if (data === lastOnChangeData.current) return;
 
-      console.log("@withTreeTable::nodes::reset");
       // Mark the data change as driven by a props update activity
       // (this is to avoid circular loops with the outside world)
       isPropsUpdateRef.current = true;
@@ -54,11 +42,17 @@ export const withTreeTable = (Component) => (props) => {
 
       // Set focus on initial item:
       // focus === null && setFocus(_nodes[0].id);
+
+      console.log("@withTreeTable::nodes::reset");
     },
     [data],
-    { delay: 250, firstDelay: 0 }
+    { delay: DEBOUNCE_DELAY, firstDelay: 0 }
   );
 
+  /**
+   * Exports the internal state to the outside world.
+   * (by triggering the "onChange()" prop)
+   */
   useEffectDebounced(
     () => {
       if (!onChange) return;
@@ -72,16 +66,17 @@ export const withTreeTable = (Component) => (props) => {
       }
 
       // Rewrite the data into the outside world format
-      console.log("@withTreeTable::nodes::changed");
       const items = flat(nodes);
 
       // Keep track of the latest outward data to prevent loopback
       // updates, and trigger the onChange callback
       lastOnChangeData.current = items;
       onChange(items);
+
+      console.log("@withTreeTable::nodes::changed");
     },
     [nodes],
-    { delay: 250 }
+    { delay: DEBOUNCE_DELAY }
   );
 
   useKeyboard({ nodes, focus, setFocus });

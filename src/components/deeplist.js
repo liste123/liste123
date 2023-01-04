@@ -36,16 +36,21 @@ export const getNodeById = (nodes, id) => {
   }
 };
 
+/**
+ * Applies changes to the properties of a Node.
+ * NOTE: modifies the given list inline
+ * @param {*} nodes
+ * @param {*} id
+ * @param {*} change
+ * @returns
+ */
 export const updateNodeById = (nodes, id, change = {}) => {
-  // const _copy = clone(nodes);
-
   const _node = getNodeById(nodes, id);
 
   for (const key in change) {
     _node[key] = change[key];
   }
 
-  // console.log(_copy);
   return [...nodes];
 };
 
