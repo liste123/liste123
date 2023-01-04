@@ -6,7 +6,7 @@ import backlog from "../backlog.json";
 
 const dummy = [
   { id: 1, parentId: null, title: "foo", status: false },
-  { id: 2, parentId: null, title: "faa", status: false },
+  { id: 2, parentId: 1, title: "faa", status: false },
   { id: 3, parentId: null, title: "fii", status: false }
 ];
 

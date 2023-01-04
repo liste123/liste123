@@ -1,10 +1,16 @@
-import { createContext, useContext, useState, useRef } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+  useCallback
+} from "react";
 
 import { arrayToTree } from "performant-array-to-tree";
-import { flatten } from "flattree";
 import { useEffectDebounced } from "../utils/use-effect-debounced";
 import { useKeyboardEvent } from "../utils/use-keyboard-event";
-import { getNodeById, updateNodeById } from "./deeplist";
+import { getNodeById, updateNodeById, clone, flat } from "./deeplist";
 import { useCreatePubSub } from "../utils/use-pubsub";
 
 export const TreeTableContext = createContext();
@@ -67,14 +73,7 @@ export const withTreeTable = (Component) => (props) => {
 
       // Rewrite the data into the outside world format
       console.log("@withTreeTable::nodes::changed");
-      const items = flatten(nodes, { openAllNodes: true }).map((node) => ({
-        // Relational props:
-        id: node.id,
-        parentId: node.parent.id,
-        // Data props:
-        title: node.title,
-        status: node.status
-      }));
+      const items = flat(nodes);
 
       // Keep track of the latest outward data to prevent loopback
       // updates, and trigger the onChange callback
@@ -120,13 +119,16 @@ export const useNodes = () => {
 };
 
 export const useNode = (node) => {
-  const { setNodes, pubsub } = useTreeTable();
+  const { nodes, setNodes, pubsub } = useTreeTable();
   const { children, ...data } = node;
 
-  const update = (change) => {
-    setNodes((curr) => updateNodeById(curr, node.id, change));
-    pubsub.publish("node::changed", { node, change });
-  };
+  const update = useCallback(
+    (change) => {
+      setNodes((curr) => updateNodeById(curr, node.id, change));
+      pubsub.publish("node::changed", { node, change });
+    },
+    [nodes]
+  );
 
   return {
     id: node.id,

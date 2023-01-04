@@ -1,12 +1,32 @@
-import { useRef } from "react";
-// import { createPubSub } from "../utils/use-pubsub";
+/**
+ * Shall we look into a deep clone library?
+ * @param {*} nodes
+ * @returns
+ */
+export const clone = (nodes) =>
+  nodes.map((node) => ({
+    ...node,
+    children: clone(node.children)
+  }));
 
 /**
- * EVENTS
+ * This can be improved A LOT
  *
- * nodes::set
- * nodes::changed
+ * @param {*} nodes
+ * @param {*} parentId
+ * @returns
  */
+export const flat = (nodes, parentId = null) => {
+  const list = [];
+
+  nodes.forEach((node) => {
+    const { children, ...data } = node;
+    list.push({ ...data, parentId });
+    flat(children, data.id).forEach(($) => list.push($));
+  });
+
+  return list;
+};
 
 export const getNodeById = (nodes, id) => {
   for (const node of nodes) {
@@ -17,37 +37,17 @@ export const getNodeById = (nodes, id) => {
 };
 
 export const updateNodeById = (nodes, id, change = {}) => {
-  // Ineffective way to produce a full copy of the nodes tree
-  const copy = JSON.parse(JSON.stringify(nodes));
+  // const _copy = clone(nodes);
 
-  // Modify the node in-place but from the copy of the data
-  const _node = getNodeById(copy, id);
+  const _node = getNodeById(nodes, id);
+
   for (const key in change) {
     _node[key] = change[key];
   }
 
-  return copy;
+  // console.log(_copy);
+  return [...nodes];
 };
-
-// export const useDeepList = (initialNodes) => {
-//   const nodes = useRef(initialNodes);
-//   const pubsub = createPubSub();
-
-//   // Update internal state when the nodes structure changes
-//   pubsub.subscribe("nodes::changed", (_nodes) => (nodes.currend = _nodes));
-
-//   return {
-//     ...pubsub,
-//     setNodes: (_nodes, silent = false) => {
-//       nodes.current = _nodes;
-//       if (silent === false) {
-//         pubsub.publish("nodes::set", _nodes);
-//       }
-//     },
-//     getNodes: () => nodes.current,
-//     getNodeById: (nodeId) => getNodeById(nodes.current, nodeId)
-//   };
-// };
 
 export default {
   getNodeById,
