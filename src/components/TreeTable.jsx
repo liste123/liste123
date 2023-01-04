@@ -1,7 +1,7 @@
 import Nestable from "react-nestable";
 import "react-nestable/dist/styles/index.css";
 
-import { withTreeTable, useItems } from "./Context";
+import { withTreeTable, useNodes } from "./Context";
 import TreeTableItem from "./Item";
 
 /**
@@ -10,12 +10,21 @@ import TreeTableItem from "./Item";
  * @returns
  */
 const TreeTable = () => {
-  // console.log("@TreeTable::render");
-  const { items, onChange } = useItems();
+  const { nodes, onChange, getNodeById } = useNodes();
 
-  const renderItem = ({ item: { id } }) => <TreeTableItem id={id} />;
+  /**
+   * Looks like there is some kind of bug in Nestable for which
+   * updates to the items from the outside are not well received.
+   *
+   * We need to guard from rendering IDs that do not exists anymore
+   * in the internal state.
+   */
+  const renderItem = ({ item: { id } }) => {
+    const node = getNodeById(id);
+    return node ? <TreeTableItem node={node} /> : "*";
+  };
 
-  return <Nestable items={items} renderItem={renderItem} onChange={onChange} />;
+  return <Nestable items={nodes} renderItem={renderItem} onChange={onChange} />;
 };
 
 export default withTreeTable(TreeTable);

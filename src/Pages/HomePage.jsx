@@ -1,12 +1,25 @@
 import { useState, useEffect } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Button } from "@mui/material";
 import { usePubSub } from "../utils/use-pubsub";
 import TreeTable from "../components/TreeTable";
-import backlog from "./backlog.json";
+import backlog from "../backlog.json";
+
+const dummy = [
+  { id: 1, parentId: null, title: "foo", status: false },
+  { id: 2, parentId: null, title: "faa", status: false },
+  { id: 3, parentId: null, title: "fii", status: false }
+];
 
 const HomePage = () => {
   const { subscribe } = usePubSub();
-  const [data, setData] = useState(backlog);
+  const [data, setData] = useState(true ? backlog : dummy);
+
+  // Import source code from the data so to make it
+  // editable and applicable
+  const [src, setSrc] = useState({});
+  useEffect(() => {
+    setSrc(JSON.stringify(data, null, 2));
+  }, [data]);
 
   // export::json
   useEffect(
@@ -53,13 +66,20 @@ const HomePage = () => {
           <TreeTable data={data} onChange={setData} />
         </Box>
 
-        <Box
-          component="pre"
-          sx={{ fontSize: 10, maxWidth: "35vw", overflow: "auto" }}
-        >
-          {JSON.stringify(data, null, 2)}
-        </Box>
+        <Stack sx={{ width: "35vw" }}>
+          <Stack direction="row" justifyContent="space-between">
+            <h4>Edit source:</h4>
+            <Button onClick={() => setData(JSON.parse(src))}>Apply</Button>
+          </Stack>
+          <textarea
+            rows={30}
+            style={{ fontSize: 10, height: "70vh" }}
+            value={src}
+            onChange={(e) => setSrc(e.target.value)}
+          />
+        </Stack>
       </Stack>
+      <button onClick={() => setData([])}>reset</button>
     </Box>
   );
 };

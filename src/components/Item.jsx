@@ -1,26 +1,24 @@
 import { useCallback } from "react";
 
-import { useFocus, useItem } from "./Context";
+import { useFocus, useNode } from "./Context";
 import Checkbox from "./Checkbox";
 
-const TreeTableItem = ({ id }) => {
-  const { hasFocus, requestFocus } = useFocus(id);
+const TreeTableItem = ({ node }) => {
+  const { hasFocus, requestFocus } = useFocus(node.id);
+
   const {
     update,
     data: { title, status }
-  } = useItem(id);
+  } = useNode(node);
 
   const onStatusChange = useCallback(
-    (evt, status) => {
-      console.log("@clicked on", id);
-      update({ status: status });
-    },
-    [id]
+    (evt, status) => update({ status: status }),
+    [node]
   );
 
   return (
     <div
-      onClick={() => requestFocus(id)}
+      onClick={() => requestFocus(node.id)}
       style={{
         background: hasFocus ? "yellow" : "transparent"
       }}

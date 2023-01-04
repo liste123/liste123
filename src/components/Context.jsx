@@ -1,26 +1,21 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useRef,
-  useEffect
-} from "react";
+import { createContext, useContext, useState, useRef } from "react";
 
 import { arrayToTree } from "performant-array-to-tree";
 import { flatten } from "flattree";
 import { useEffectDebounced } from "../utils/use-effect-debounced";
-import { useEffectTriggerable } from "../utils/use-effect-triggerable";
 import { useKeyboardEvent } from "../utils/use-keyboard-event";
+import { getNodeById, updateNodeById } from "./deeplist";
+import { useCreatePubSub } from "../utils/use-pubsub";
 
 export const TreeTableContext = createContext();
 
 export const withTreeTable = (Component) => (props) => {
-  console.log("@withTreeTable::render");
   const { data, onChange } = props;
-  const [items, setItems] = useState([]);
-  const [itemsMap, setItemsMap] = useState({});
+  const isPropsUpdateRef = useRef(false);
+  const lastOnChangeData = useRef(null);
+  const [nodes, setNodes] = useState([]);
   const [focus, setFocus] = useState(null);
+  const pubsub = useCreatePubSub();
 
   /**
    * This should not be needed because in production React won't
@@ -39,55 +34,67 @@ export const withTreeTable = (Component) => (props) => {
    */
   useEffectDebounced(
     () => {
-      // console.log("@withTreeTable::items::reset");
+      // Skip loopback updates from outside state management
+      if (data === lastOnChangeData.current) return;
 
-      const items = arrayToTree(data, { dataField: null });
-      setItems(items);
+      console.log("@withTreeTable::nodes::reset");
+      // Mark the data change as driven by a props update activity
+      // (this is to avoid circular loops with the outside world)
+      isPropsUpdateRef.current = true;
 
-      const itemsMap = data.reduce((a, c) => ({ ...a, [c.id]: c }), []);
-      setItemsMap(itemsMap);
+      // Set internal state:
+      const _nodes = arrayToTree(data, { dataField: null });
+      setNodes(_nodes);
 
       // Set focus on initial item:
-      // focus === null && setFocus(items[0].id);
+      // focus === null && setFocus(_nodes[0].id);
     },
     [data],
     { delay: 250, firstDelay: 0 }
   );
 
-  const triggerDataChangedEvent = useEffectTriggerable(() => {
-    // Skip if there is no callback
-    if (!onChange) return;
+  useEffectDebounced(
+    () => {
+      if (!onChange) return;
+      if (!nodes.length) return;
 
-    // Debounce AND make sure there is an updated state variables
-    const _timer = setTimeout(
-      () =>
-        onChange(
-          flatten(items, { openAllNodes: true }).map((node) => ({
-            ...itemsMap[node.id],
-            id: node.id,
-            parentId: node.parent.id
-          }))
-        ),
+      // Skip reacting to props updates
+      // (this is to avoid circular loops with the outside world)
+      if (isPropsUpdateRef.current) {
+        isPropsUpdateRef.current = false;
+        return;
+      }
 
-      250
-    );
+      // Rewrite the data into the outside world format
+      console.log("@withTreeTable::nodes::changed");
+      const items = flatten(nodes, { openAllNodes: true }).map((node) => ({
+        // Relational props:
+        id: node.id,
+        parentId: node.parent.id,
+        // Data props:
+        title: node.title,
+        status: node.status
+      }));
 
-    return () => clearTimeout(_timer);
-  });
+      // Keep track of the latest outward data to prevent loopback
+      // updates, and trigger the onChange callback
+      lastOnChangeData.current = items;
+      onChange(items);
+    },
+    [nodes],
+    { delay: 250 }
+  );
 
-  useKeyboard({ items, itemsMap, focus, setFocus });
+  useKeyboard({ nodes, focus, setFocus });
 
   return (
     <TreeTableContext.Provider
       value={{
+        pubsub,
+        nodes,
+        setNodes,
         focus,
-        setFocus,
-        items,
-        setItems,
-        itemsMap,
-        setItemsMap,
-        triggerDataChangedEvent,
-        originalProps: props
+        setFocus
       }}
     >
       <Component />
@@ -97,72 +104,68 @@ export const withTreeTable = (Component) => (props) => {
 
 export const useTreeTable = () => useContext(TreeTableContext);
 
-export const useItems = () => {
-  const tree = useTreeTable();
+export const useNodes = () => {
+  const { nodes, setNodes, pubsub } = useTreeTable();
 
   const onChange = (data) => {
-    console.log("@onTreeChange");
-    tree.setItems(data.items);
-    tree.triggerDataChangedEvent();
+    setNodes(data.items);
+    pubsub.publish("nodes::changed", data.items);
   };
 
   return {
-    items: tree.items,
-    onChange
+    nodes,
+    onChange,
+    getNodeById: (nodeId) => getNodeById(nodes, nodeId)
   };
 };
 
-export const useItem = (itemId) => {
-  const tree = useTreeTable();
-  const data = tree.itemsMap[itemId];
+export const useNode = (node) => {
+  const { setNodes, pubsub } = useTreeTable();
+  const { children, ...data } = node;
 
   const update = (change) => {
-    console.log("@onItemChange");
-    tree.setItemsMap((curr) => ({
-      ...curr,
-      [itemId]: {
-        ...curr[itemId],
-        ...change
-      }
-    }));
-    tree.triggerDataChangedEvent();
+    setNodes((curr) => updateNodeById(curr, node.id, change));
+    pubsub.publish("node::changed", { node, change });
   };
 
   return {
+    id: node.id,
     data,
+    children,
     update
   };
 };
 
-export const useFocus = (itemId) => {
-  const tree = useTreeTable();
+export const useFocus = (nodeId) => {
+  const { focus, setFocus } = useTreeTable();
 
   return {
-    hasFocus: tree.focus === itemId,
-    requestFocus: () => tree.setFocus(itemId)
+    hasFocus: focus === nodeId,
+    requestFocus: () => setFocus(nodeId)
   };
 };
 
 const useKeyboard = ({ items, itemsMap, focus, setFocus }) => {
   // Memoize data references for event handlers
-  const data = useRef(null);
-  useEffect(() => {
-    data.current = { items, itemsMap, focus };
-  }, [items, itemsMap, focus]);
+  // const data = useRef(null);
+  // useEffect(() => {
+  //   data.current = { items, itemsMap, focus };
+  // }, [items, itemsMap, focus]);
 
   useKeyboardEvent("ArrowDown", () => {
-    const { items, itemsMap, focus } = data.current;
-    const item = itemsMap[focus];
+    console.log("move focus down");
+    // const { items, itemsMap, focus } = data.current;
+    // const item = itemsMap[focus];
 
-    // Set first item if nothing is focused
-    if (!item) {
-      setFocus(items[0].id);
-      return;
-    }
-
-    // if (item.children) {
-    console.log(item);
-    console.log(items);
+    // // Set first item if nothing is focused
+    // if (!item) {
+    //   setFocus(items[0].id);
+    //   return;
     // }
+
+    // // if (item.children) {
+    // console.log(item);
+    // console.log(items);
+    // // }
   });
 };

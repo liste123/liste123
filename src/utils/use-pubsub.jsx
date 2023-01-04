@@ -1,19 +1,36 @@
 import { createContext, useContext, useRef } from "react";
 
-const createPubSub = (ref) => {
+const DEFAULT_SUBSCRIBE_OPTIONS = {
+  debounce: 0
+};
+
+export const useCreatePubSub = () => {
+  const ref = useRef({});
+  const debounceRef = useRef({});
+
   const unsubscribe = (eventName, fn) => {
     if (!ref.current[eventName]) return;
     ref.current[eventName] = ref.current[eventName].filter(($) => $ !== fn);
   };
 
-  const subscribe = (eventName, fn) => {
+  const subscribe = (eventName, fn, options = DEFAULT_SUBSCRIBE_OPTIONS) => {
+    const delay = options.debounce || DEFAULT_SUBSCRIBE_OPTIONS.debounce;
+
+    const debouncedFn = (...args) => {
+      clearTimeout(debounceRef.current[fn]);
+      debounceRef.current[fn] = setTimeout(() => fn(...args), delay);
+    };
+
     if (!ref.current[eventName]) {
-      ref.current[eventName] = [fn];
+      ref.current[eventName] = [debouncedFn];
     } else {
-      ref.current[eventName].push(fn);
+      ref.current[eventName].push(debouncedFn);
     }
 
-    return () => unsubscribe(eventName, fn);
+    return () => {
+      clearTimeout(debounceRef.current[fn]);
+      unsubscribe(eventName, fn);
+    };
   };
 
   const publish = (eventName, payload = null) => {
@@ -42,10 +59,9 @@ const PubSubContext = createContext();
  */
 export const withPubSub = (Component) => () => {
   console.log("@withPubSub::render");
-  const context = useRef({});
 
   return (
-    <PubSubContext.Provider value={createPubSub(context)}>
+    <PubSubContext.Provider value={useCreatePubSub()}>
       <Component />
     </PubSubContext.Provider>
   );
@@ -64,9 +80,8 @@ export const withPubSub = (Component) => () => {
  */
 export const PubSubProvider = (props) => {
   console.log("@PubSubProvider::render");
-  const context = useRef({});
 
-  return <PubSubContext.Provider {...props} value={createPubSub(context)} />;
+  return <PubSubContext.Provider {...props} value={useCreatePubSub()} />;
 };
 
 export const usePubSub = () => useContext(PubSubContext);
