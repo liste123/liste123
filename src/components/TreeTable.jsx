@@ -1,7 +1,7 @@
 import Nestable from "react-nestable";
 import "react-nestable/dist/styles/index.css";
 
-import { withTreeTable, useNodes } from "./Context";
+import { withTreeTable, useTreeTable, useNodes } from "./Context";
 import TreeTableItem from "./Item";
 
 /**
@@ -10,6 +10,7 @@ import TreeTableItem from "./Item";
  * @returns
  */
 const TreeTable = () => {
+  const { nestableRef } = useTreeTable();
   const { nodes, onChange, getNodeById } = useNodes();
 
   /**
@@ -24,7 +25,14 @@ const TreeTable = () => {
     return node ? <TreeTableItem node={node} /> : "*";
   };
 
-  return <Nestable items={nodes} renderItem={renderItem} onChange={onChange} />;
+  return (
+    <Nestable
+      ref={nestableRef}
+      items={nodes}
+      renderItem={renderItem}
+      onChange={onChange}
+    />
+  );
 };
 
 export default withTreeTable(TreeTable);

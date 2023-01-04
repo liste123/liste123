@@ -5,6 +5,7 @@ import TreeTable from "../components/TreeTable";
 import backlog from "../backlog.json";
 
 const dummy = {
+  collapse: [],
   items: [
     { id: 1, parentId: null, title: "foo", status: false },
     { id: 2, parentId: 1, title: "faa", status: false },
@@ -12,9 +13,14 @@ const dummy = {
   ]
 };
 
+const empty = {
+  collapse: [],
+  items: []
+};
+
 const HomePage = () => {
   const { subscribe } = usePubSub();
-  const [data, setData] = useState(false ? backlog : dummy);
+  const [data, setData] = useState(true ? backlog : dummy);
 
   // Import source code from the data so to make it editable
   const [src, setSrc] = useState({});
@@ -74,7 +80,7 @@ const HomePage = () => {
           <Stack direction="row" justifyContent="space-between">
             <h4>Edit Document:</h4>
             <Stack direction="row">
-              <Button onClick={() => setData([])}>Reset</Button>
+              <Button onClick={() => setData(empty)}>Reset</Button>
               <Button onClick={() => setData(JSON.parse(src))}>Apply</Button>
             </Stack>
           </Stack>

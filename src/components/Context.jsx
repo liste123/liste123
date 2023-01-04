@@ -20,8 +20,10 @@ export const withTreeTable = (Component) => (props) => {
   const { data, onChange } = props;
   const isPropsUpdateRef = useRef(false);
   const lastOnChangeData = useRef(null);
+  const nestableRef = useRef(null);
   const [nodes, setNodes] = useState([]);
   const [focus, setFocus] = useState(null);
+  const [collapse, setCollapse] = useState([]);
   const pubsub = useCreatePubSub();
 
   /**
@@ -39,6 +41,8 @@ export const withTreeTable = (Component) => (props) => {
       // Set internal state:
       const _nodes = arrayToTree(data.items, { dataField: null });
       setNodes(_nodes);
+
+      setCollapse(data.collapse);
 
       // Set focus on initial item:
       // focus === null && setFocus(_nodes[0].id);
@@ -67,6 +71,7 @@ export const withTreeTable = (Component) => (props) => {
 
       // Rewrite the data into the outside world format
       const data = {
+        collapse,
         items: flat(nodes)
       };
 
@@ -77,8 +82,19 @@ export const withTreeTable = (Component) => (props) => {
 
       console.log("@withTreeTable::nodes::changed");
     },
-    [nodes],
+    [nodes, collapse],
     { delay: DEBOUNCE_DELAY }
+  );
+
+  /**
+   * Propagate the collapsable state to the Nestable APIs
+   */
+  useEffectDebounced(
+    () => {
+      nestableRef.current.collapse(collapse);
+    },
+    [collapse],
+    { delay: 0 }
   );
 
   useKeyboard({ nodes, focus, setFocus });
@@ -87,10 +103,13 @@ export const withTreeTable = (Component) => (props) => {
     <TreeTableContext.Provider
       value={{
         pubsub,
+        nestableRef,
         nodes,
         setNodes,
         focus,
-        setFocus
+        setFocus,
+        collapse,
+        setCollapse
       }}
     >
       <Component />
@@ -141,6 +160,24 @@ export const useFocus = (nodeId) => {
   return {
     hasFocus: focus === nodeId,
     requestFocus: () => setFocus(nodeId)
+  };
+};
+
+export const useCollapse = (nodeId) => {
+  const { collapse, setCollapse } = useTreeTable();
+
+  const toggleCollapse = useCallback(() => {
+    console.log("@toggle::before", nodeId, collapse);
+    const _collapse = collapse.includes(nodeId)
+      ? collapse.filter(($) => $ !== nodeId)
+      : [...collapse, nodeId];
+    console.log("@toggle::after", nodeId, _collapse);
+    setCollapse(_collapse);
+  }, [collapse]);
+
+  return {
+    isCollapsed: collapse.includes(nodeId),
+    toggleCollapse
   };
 };
 
