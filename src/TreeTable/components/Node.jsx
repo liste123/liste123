@@ -20,9 +20,9 @@ const Node = ({ node }) => {
         background: hasFocus ? "yellow" : "transparent"
       }}
     >
-      <button onClick={toggleCollapse}>{isCollapsed ? "+" : "-"}</button>{" "}
       <Checkbox value={isCompleted} />
       <Title node={node} />
+      <button onClick={toggleCollapse}>{isCollapsed ? "+" : "-"}</button>{" "}
     </Stack>
   );
 };

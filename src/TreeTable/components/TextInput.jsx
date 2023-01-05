@@ -3,7 +3,7 @@ import { useKeyboardEvent } from "../../utils/use-keyboard-event";
 import { useEffectDebounced } from "../../utils/use-effect-debounced";
 import { useClickOutside } from "../../utils/use-click-outside";
 
-const TextInput = ({ value, onChange, onBlur }) => {
+const TextInput = ({ value, onChange, onBlur, ...props }) => {
   const inputRef = useRef();
   const [_value, setValue] = useState(value);
 
@@ -11,27 +11,24 @@ const TextInput = ({ value, onChange, onBlur }) => {
     inputRef.current.focus();
   }, []);
 
-  useEffectDebounced(
-    () => {
-      console.log("hit");
-      onChange(_value);
-    },
-    [_value],
-    { delay: 500, skipFirst: true }
-  );
+  // Debounced "onChage"
+  useEffectDebounced(() => onChange(_value), [_value], {
+    delay: 250,
+    skipFirst: true
+  });
 
-  // Multiple ways to trigger the onBlur event
+  // Multiple ways to trigger the "onBlur" event
   useKeyboardEvent("Escape", onBlur, { target: inputRef });
   useKeyboardEvent("Enter", onBlur, { target: inputRef });
   useClickOutside(inputRef, onBlur);
 
   return (
     <input
+      {...props}
       ref={inputRef}
       type="text"
       value={_value}
       onChange={(e) => setValue(e.target.value)}
-      style={{ flex: 1 }}
     />
   );
 };

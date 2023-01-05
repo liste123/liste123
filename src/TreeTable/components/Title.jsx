@@ -17,7 +17,12 @@ export const Title = ({ node }) => {
   };
 
   return isEditMode ? (
-    <Input value={title} onChange={handleChange} onBlur={requestViewMode} />
+    <Input
+      value={title}
+      onChange={handleChange}
+      onBlur={requestViewMode}
+      style={{ flex: 1 }}
+    />
   ) : (
     <Box onClick={requestEditMode} sx={{ flex: 1 }}>
       {title}
