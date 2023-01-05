@@ -28,6 +28,36 @@ export const flat = (nodes, parentId = null) => {
   return list;
 };
 
+/**
+ * Change this with PushID
+ * @returns
+ */
+export const createId = () =>
+  [
+    Date.now(),
+    Math.floor(Math.random() * (9 - 0 + 1) + 0),
+    Math.floor(Math.random() * (9 - 0 + 1) + 0),
+    Math.floor(Math.random() * (9 - 0 + 1) + 0),
+    Math.floor(Math.random() * (9 - 0 + 1) + 0),
+    Math.floor(Math.random() * (9 - 0 + 1) + 0),
+    Math.floor(Math.random() * (9 - 0 + 1) + 0),
+    Math.floor(Math.random() * (9 - 0 + 1) + 0)
+  ].join("");
+
+export const createNode = ({
+  id,
+  title,
+  status,
+  children,
+  ...payload
+} = {}) => ({
+  id: id || createId(),
+  title: title || "New item",
+  status: status || false,
+  children: children ? children.map(createNode) : [],
+  ...payload
+});
+
 export const getNodeById = (nodes, id) => {
   for (const node of nodes) {
     if (id === node.id) return node;

@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Box, Stack, Button } from "@mui/material";
 import { usePubSub } from "../utils/use-pubsub";
 import TreeTable from "../TreeTable";
 import backlog from "../backlog.json";
+import { useKeyboardEvent } from "../utils/use-keyboard-event";
 
 const dummy = {
   collapse: [],
@@ -18,9 +19,43 @@ const empty = {
   items: []
 };
 
+const Input = ({ shortcut, onSubmit, scrollOptions = {}, ...props }) => {
+  const inputRef = useRef();
+
+  // Prepend items from input
+  useKeyboardEvent(
+    "enter",
+    (evt) => {
+      onSubmit(evt.target.value);
+      evt.target.value = "";
+      evt.target.focus();
+      evt.target.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest",
+        ...scrollOptions
+      });
+    },
+    { target: inputRef }
+  );
+
+  useKeyboardEvent(shortcut, () => {
+    inputRef.current.focus();
+    inputRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+      ...scrollOptions
+    });
+  });
+
+  return <input {...props} ref={inputRef} type="text" />;
+};
+
 const HomePage = () => {
   const { subscribe } = usePubSub();
   const [data, setData] = useState(true ? backlog : dummy);
+  const treeTableRef = useRef();
 
   // Import source code from the data so to make it editable
   const [src, setSrc] = useState({});
@@ -71,9 +106,31 @@ const HomePage = () => {
 
   return (
     <Box>
-      <Stack direction="row">
+      <Stack direction="row" spacing={4}>
         <Box sx={{ flex: 1 }}>
-          <TreeTable data={data} onChange={setData} />
+          <Stack spacing={2}>
+            <Input
+              placeholder={"(Ctrl + P) Prepend a new item"}
+              shortcut={"Ctrl + p"}
+              onSubmit={(title) =>
+                treeTableRef.current.prepend({
+                  title
+                })
+              }
+            />
+
+            <TreeTable ref={treeTableRef} data={data} onChange={setData} />
+
+            <Input
+              placeholder={"(Ctrl + A) Append a new item"}
+              shortcut={"Ctrl + a"}
+              onSubmit={(title) =>
+                treeTableRef.current.append({
+                  title
+                })
+              }
+            />
+          </Stack>
         </Box>
 
         <Stack sx={{ width: "35vw" }}>

@@ -1,6 +1,90 @@
 {
-  "collapse": ["sc8d9c7s", 1, 4, 10, 3, 31, 26],
+  "collapse": ["sc8d9c7s", 1, 4, 10, 31, 26],
   "items": [
+    {
+      "id": "csd68",
+      "parentId": null,
+      "title": "Add new Item",
+      "status": false
+    },
+    {
+      "id": "sd789d",
+      "parentId": "csd68",
+      "title": "Forward ref to main component",
+      "status": true
+    },
+    {
+      "id": "sd589d",
+      "parentId": "csd68",
+      "title": "Expose API to prepend new element",
+      "status": true
+    },
+    {
+      "id": "sd774s9d",
+      "parentId": "csd68",
+      "title": "Add UI in the Home Page, add it on Enter",
+      "status": true
+    },
+    {
+      "id": 3,
+      "parentId": null,
+      "title": "Keyboard",
+      "status": false
+    },
+    {
+      "id": 9,
+      "parentId": 3,
+      "title": "Catch keyboard events (hook)",
+      "status": true
+    },
+    {
+      "id": "sdc789",
+      "parentId": 3,
+      "title": "Disable termporary",
+      "status": true
+    },
+    {
+      "id": 10,
+      "parentId": 3,
+      "title": "Set focus to next item",
+      "status": false
+    },
+    {
+      "id": "cc78",
+      "parentId": 10,
+      "title": "Find item by id in the tree",
+      "status": false
+    },
+    {
+      "id": 11,
+      "parentId": 10,
+      "title": "Find next item in the tree",
+      "status": false
+    },
+    {
+      "id": 12,
+      "parentId": 10,
+      "title": "Find parent in the tree",
+      "status": false
+    },
+    {
+      "id": 13,
+      "parentId": 10,
+      "title": "Find parent's first son'",
+      "status": false
+    },
+    {
+      "id": 14,
+      "parentId": 3,
+      "title": "Set focus to previous item",
+      "status": false
+    },
+    {
+      "id": 15,
+      "parentId": 3,
+      "title": "On(Space) toggle collapse",
+      "status": false
+    },
     {
       "id": 16,
       "parentId": null,
@@ -80,12 +164,6 @@
       "status": true
     },
     {
-      "id": "csd68",
-      "parentId": null,
-      "title": "Add new Item",
-      "status": false
-    },
-    {
       "id": "fdv9dv6",
       "parentId": null,
       "title": "Show checkbox only for end-leaf items",
@@ -120,60 +198,6 @@
       "parentId": 31,
       "title": "Wrap TreeTable components into its own sub-folder",
       "status": true
-    },
-    {
-      "id": 3,
-      "parentId": null,
-      "title": "Keyboard",
-      "status": false
-    },
-    {
-      "id": 9,
-      "parentId": 3,
-      "title": "Catch keyboard events (hook)",
-      "status": true
-    },
-    {
-      "id": 10,
-      "parentId": 3,
-      "title": "Set focus to next item",
-      "status": false
-    },
-    {
-      "id": "cc78",
-      "parentId": 10,
-      "title": "Find item by id in the tree",
-      "status": false
-    },
-    {
-      "id": 11,
-      "parentId": 10,
-      "title": "Find next item in the tree",
-      "status": false
-    },
-    {
-      "id": 12,
-      "parentId": 10,
-      "title": "Find parent in the tree",
-      "status": false
-    },
-    {
-      "id": 13,
-      "parentId": 10,
-      "title": "Find parent's first son'",
-      "status": false
-    },
-    {
-      "id": 14,
-      "parentId": 3,
-      "title": "Set focus to previous item",
-      "status": false
-    },
-    {
-      "id": 15,
-      "parentId": 3,
-      "title": "On(Space) toggle collapse",
-      "status": false
     },
     {
       "id": 4,

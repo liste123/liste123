@@ -2,7 +2,9 @@ import { useEffect, useRef } from "react";
 
 const DEFAULT_OPTIONS = {
   preventDefault: true,
-  debounceDelay: 0
+  stopPropagation: true,
+  debounceDelay: 0,
+  target: document // Could be a DOM object or a React.useRef
 };
 
 const getKeyName = (code) => {
@@ -18,9 +20,13 @@ const getKeyName = (code) => {
  * @param {Object} options See DEFAULT_OPTIONS
  */
 export const useKeyboardEvent = (combo = "", fn, options = DEFAULT_OPTIONS) => {
+  const setupRef = useRef(null);
   const debounceRef = useRef(null);
 
-  const { preventDefault, debounceDelay } = { ...DEFAULT_OPTIONS, ...options };
+  const { target, preventDefault, stopPropagation, debounceDelay } = {
+    ...DEFAULT_OPTIONS,
+    ...options
+  };
   const comboTokens = combo.split("+").map(($) => $.trim().toUpperCase());
 
   useEffect(() => {
@@ -38,6 +44,7 @@ export const useKeyboardEvent = (combo = "", fn, options = DEFAULT_OPTIONS) => {
       // All comboTokens must be present in the eventTokens
       if (comboTokens.every(($) => eventTokens.includes($))) {
         preventDefault && evt.preventDefault();
+        stopPropagation && evt.stopPropagation();
 
         clearTimeout(debounceRef.current);
         debounceRef.current = setTimeout(
@@ -54,12 +61,34 @@ export const useKeyboardEvent = (combo = "", fn, options = DEFAULT_OPTIONS) => {
     };
 
     // Bind to DOM (body)
-    document.addEventListener("keydown", onKeyPress);
+    setupRef.current = setTimeout(() => {
+      if (target && target.current) {
+        target.current.addEventListener("keydown", onKeyPress);
+        return;
+      }
+
+      if (target) {
+        target.addEventListener("keydown", onKeyPress);
+        return;
+      }
+
+      throw new Error("Could not add Keboard listener to undefined target");
+    });
 
     // Unbind and clear timeout
     return () => {
-      document.removeEventListener("keydown", onKeyPress);
+      clearTimeout(setupRef.current);
       clearTimeout(debounceRef.current);
+
+      if (target && target.current) {
+        target.current.removeEventListener("keydown", onKeyPress);
+      } else if (target) {
+        target.removeEventListener("keydown", onKeyPress);
+      } else {
+        throw new Error(
+          "Could not remove Keboard listener to undefined target"
+        );
+      }
     };
   }, []);
 };
