@@ -9,6 +9,8 @@ const Checkbox = ({ value, onChange }) => {
   }, [value]);
 
   const onStatusChange = (evt) => {
+    if (!onChange) return;
+
     const value = Boolean(evt.target.checked);
     setStatus(value);
     onChange(evt, value);

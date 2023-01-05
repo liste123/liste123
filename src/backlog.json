@@ -1,6 +1,90 @@
 {
-  "collapse": ["sc8d9c7s", 1, 4, 10, 31, 26],
+  "collapse": ["sc8d9c7s", 1, 4, 10, 31, 26, 3, 16],
   "items": [
+    {
+      "id": "16729174065416878633",
+      "title": "Sync docs with global storage",
+      "status": false,
+      "parentId": null
+    },
+    {
+      "id": "16729173659069896708",
+      "title": "Import a document by ID (pull from shared global storage)",
+      "status": false,
+      "parentId": "16729174065416878633"
+    },
+    {
+      "id": "16729173502648479239",
+      "title": "Decide which global data storage to use for free service (NHost or Firebase?)",
+      "status": false,
+      "parentId": "16729174065416878633"
+    },
+    {
+      "id": "16729173135403320092",
+      "title": "Syn a document by subscribing to UPDATES from a public data repository (NHost or Firebase?)",
+      "status": false,
+      "parentId": "16729174065416878633"
+    },
+    {
+      "id": "16729172921997676589",
+      "title": "Sync a document by sending an UPDATE into a public data repository (NHost or Firebase?)",
+      "status": false,
+      "parentId": "16729174065416878633"
+    },
+    {
+      "id": "16729172516297628460",
+      "title": "Manage Documents",
+      "status": false,
+      "parentId": null
+    },
+    {
+      "id": "16729173874090591089",
+      "title": "Export the entire local storage in a single JSON doc",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729173928167303375",
+      "title": "Import the entire local storage",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172413869619152",
+      "title": "Edit a document's title",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172360174929615",
+      "title": "Store list of documents in LocalStorage",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172288533421716",
+      "title": "Store documents in LocalStorage",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172234781704765",
+      "title": "Add new document with a PushID",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172165896487286",
+      "title": "Give PushIDs to items in a document",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "dvx9c89bv78x68",
+      "parentId": null,
+      "title": "Mark a node as complete only when all children are completed",
+      "status": true
+    },
     {
       "id": "csd68",
       "parentId": null,
@@ -174,12 +258,6 @@
       "parentId": null,
       "title": "Show collapsible only for node with children",
       "status": true
-    },
-    {
-      "id": "dvx9c89bv78x68",
-      "parentId": null,
-      "title": "Mark a node as complete only when all children are completed",
-      "status": false
     },
     {
       "id": 31,

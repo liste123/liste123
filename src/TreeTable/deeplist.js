@@ -1,7 +1,5 @@
 /**
  * Shall we look into a deep clone library?
- * @param {*} nodes
- * @returns
  */
 export const clone = (nodes) =>
   nodes.map((node) => ({
@@ -11,10 +9,6 @@ export const clone = (nodes) =>
 
 /**
  * This can be improved A LOT
- *
- * @param {*} nodes
- * @param {*} parentId
- * @returns
  */
 export const flat = (nodes, parentId = null) => {
   const list = [];
@@ -30,7 +24,6 @@ export const flat = (nodes, parentId = null) => {
 
 /**
  * Change this with PushID
- * @returns
  */
 export const createId = () =>
   [
@@ -84,7 +77,7 @@ export const updateNodeById = (nodes, id, change = {}) => {
   return [...nodes];
 };
 
-export default {
-  getNodeById,
-  updateNodeById
+export const isNodeCompleted = (node) => {
+  if (!node.children.length) return node.status;
+  return node.children.every(isNodeCompleted);
 };
