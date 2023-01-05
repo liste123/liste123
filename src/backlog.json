@@ -1,177 +1,33 @@
 {
-  "collapse": ["sc8d9c7s", 1, 4, 10, 31, 26, 3, 16],
+  "collapse": [
+    1,
+    4,
+    10,
+    26,
+    3,
+    "16729174065416878633",
+    "csd68",
+    "wd8wef98v79dfv79dfvdf",
+    31,
+    "16729295528737280054",
+    16
+  ],
   "items": [
     {
-      "id": "16729174065416878633",
-      "title": "Sync docs with global storage",
-      "status": false,
-      "parentId": null
-    },
-    {
-      "id": "16729173659069896708",
-      "title": "Import a document by ID (pull from shared global storage)",
-      "status": false,
-      "parentId": "16729174065416878633"
-    },
-    {
-      "id": "16729173502648479239",
-      "title": "Decide which global data storage to use for free service (NHost or Firebase?)",
-      "status": false,
-      "parentId": "16729174065416878633"
-    },
-    {
-      "id": "16729173135403320092",
-      "title": "Syn a document by subscribing to UPDATES from a public data repository (NHost or Firebase?)",
-      "status": false,
-      "parentId": "16729174065416878633"
-    },
-    {
-      "id": "16729172921997676589",
-      "title": "Sync a document by sending an UPDATE into a public data repository (NHost or Firebase?)",
-      "status": false,
-      "parentId": "16729174065416878633"
-    },
-    {
-      "id": "16729172516297628460",
-      "title": "Manage Documents",
-      "status": false,
-      "parentId": null
-    },
-    {
-      "id": "16729173874090591089",
-      "title": "Export the entire local storage in a single JSON doc",
-      "status": false,
-      "parentId": "16729172516297628460"
-    },
-    {
-      "id": "16729173928167303375",
-      "title": "Import the entire local storage",
-      "status": false,
-      "parentId": "16729172516297628460"
-    },
-    {
-      "id": "16729172413869619152",
-      "title": "Edit a document's title",
-      "status": false,
-      "parentId": "16729172516297628460"
-    },
-    {
-      "id": "16729172360174929615",
-      "title": "Store list of documents in LocalStorage",
-      "status": false,
-      "parentId": "16729172516297628460"
-    },
-    {
-      "id": "16729172288533421716",
-      "title": "Store documents in LocalStorage",
-      "status": false,
-      "parentId": "16729172516297628460"
-    },
-    {
-      "id": "16729172234781704765",
-      "title": "Add new document with a PushID",
-      "status": false,
-      "parentId": "16729172516297628460"
-    },
-    {
-      "id": "16729172165896487286",
-      "title": "Give PushIDs to items in a document",
-      "status": false,
-      "parentId": "16729172516297628460"
-    },
-    {
-      "id": "dvx9c89bv78x68",
+      "id": "sc8d9c7s",
       "parentId": null,
-      "title": "Mark a node as complete only when all children are completed",
+      "title": "Global API",
       "status": true
     },
     {
-      "id": "csd68",
-      "parentId": null,
-      "title": "Add new Item",
-      "status": false
-    },
-    {
-      "id": "sd789d",
-      "parentId": "csd68",
-      "title": "Forward ref to main component",
-      "status": true
-    },
-    {
-      "id": "sd589d",
-      "parentId": "csd68",
-      "title": "Expose API to prepend new element",
-      "status": true
-    },
-    {
-      "id": "sd774s9d",
-      "parentId": "csd68",
-      "title": "Add UI in the Home Page, add it on Enter",
-      "status": true
-    },
-    {
-      "id": 3,
-      "parentId": null,
-      "title": "Keyboard",
-      "status": false
-    },
-    {
-      "id": 9,
-      "parentId": 3,
-      "title": "Catch keyboard events (hook)",
-      "status": true
-    },
-    {
-      "id": "sdc789",
-      "parentId": 3,
-      "title": "Disable termporary",
-      "status": true
-    },
-    {
-      "id": 10,
-      "parentId": 3,
-      "title": "Set focus to next item",
-      "status": false
-    },
-    {
-      "id": "cc78",
-      "parentId": 10,
-      "title": "Find item by id in the tree",
-      "status": false
-    },
-    {
-      "id": 11,
-      "parentId": 10,
-      "title": "Find next item in the tree",
-      "status": false
-    },
-    {
-      "id": 12,
-      "parentId": 10,
-      "title": "Find parent in the tree",
-      "status": false
-    },
-    {
-      "id": 13,
-      "parentId": 10,
-      "title": "Find parent's first son'",
-      "status": false
-    },
-    {
-      "id": 14,
-      "parentId": 3,
-      "title": "Set focus to previous item",
-      "status": false
-    },
-    {
-      "id": 15,
-      "parentId": 3,
-      "title": "On(Space) toggle collapse",
-      "status": false
+      "id": "16729295784344749605",
+      "title": "Delete item",
+      "status": false,
+      "parentId": "sc8d9c7s"
     },
     {
       "id": 16,
-      "parentId": null,
+      "parentId": "sc8d9c7s",
       "title": "Inline editing",
       "status": false
     },
@@ -248,38 +104,26 @@
       "status": true
     },
     {
-      "id": "fdv9dv6",
-      "parentId": null,
-      "title": "Show checkbox only for end-leaf items",
-      "status": true
-    },
-    {
-      "id": "cvx564568bdf0",
-      "parentId": null,
-      "title": "Show collapsible only for node with children",
-      "status": true
-    },
-    {
-      "id": 31,
-      "parentId": null,
-      "title": "Optimizations & Refactoring",
+      "id": 26,
+      "parentId": "sc8d9c7s",
+      "title": "Columns",
       "status": false
     },
     {
-      "id": 32,
-      "parentId": 31,
-      "title": "Create a \"state\" folder and explode all the hooks",
-      "status": true
+      "id": 27,
+      "parentId": 26,
+      "title": "Add a column as config",
+      "status": false
     },
     {
-      "id": 33,
-      "parentId": 31,
-      "title": "Wrap TreeTable components into its own sub-folder",
-      "status": true
+      "id": 28,
+      "parentId": 26,
+      "title": "Resize handle in column header",
+      "status": false
     },
     {
       "id": 4,
-      "parentId": null,
+      "parentId": "sc8d9c7s",
       "title": "Collapse/expand using mouse",
       "status": true
     },
@@ -308,27 +152,27 @@
       "status": true
     },
     {
-      "id": 26,
-      "parentId": null,
-      "title": "Columns",
+      "id": "csd68",
+      "parentId": "sc8d9c7s",
+      "title": "Add new Item",
       "status": false
     },
     {
-      "id": 27,
-      "parentId": 26,
-      "title": "Add a column as config",
-      "status": false
+      "id": "sd789d",
+      "parentId": "csd68",
+      "title": "Forward ref to main component",
+      "status": true
     },
     {
-      "id": 28,
-      "parentId": 26,
-      "title": "Resize handle in column header",
-      "status": false
+      "id": "sd589d",
+      "parentId": "csd68",
+      "title": "Expose API to prepend new element",
+      "status": true
     },
     {
-      "id": "sc8d9c7s",
-      "parentId": null,
-      "title": "Global API",
+      "id": "sd774s9d",
+      "parentId": "csd68",
+      "title": "Add UI in the Home Page, add it on Enter",
       "status": true
     },
     {
@@ -401,6 +245,192 @@
       "id": "dv878f9",
       "parentId": "sc8d9c7s",
       "title": "Make topbar static",
+      "status": true
+    },
+    {
+      "id": "16729295528737280054",
+      "title": "UI Improvements",
+      "status": false,
+      "parentId": null
+    },
+    {
+      "id": "cvx564568bdf0",
+      "parentId": "16729295528737280054",
+      "title": "Show collapsible only for node with children",
+      "status": true
+    },
+    {
+      "id": "fdv9dv6",
+      "parentId": "16729295528737280054",
+      "title": "Show checkbox only for end-leaf items",
+      "status": true
+    },
+    {
+      "id": "dvx9c89bv78x68",
+      "parentId": "16729295528737280054",
+      "title": "Mark a node as complete only when all children are completed",
+      "status": true
+    },
+    {
+      "id": "16729174065416878633",
+      "title": "Sync docs with global storage",
+      "status": false,
+      "parentId": null
+    },
+    {
+      "id": "16729173659069896708",
+      "title": "Import a document by ID (pull from shared global storage)",
+      "status": false,
+      "parentId": "16729174065416878633"
+    },
+    {
+      "id": "16729173502648479239",
+      "title": "Decide which global data storage to use for free service (NHost or Firebase?)",
+      "status": false,
+      "parentId": "16729174065416878633"
+    },
+    {
+      "id": "16729173135403320092",
+      "title": "Syn a document by subscribing to UPDATES from a public data repository (NHost or Firebase?)",
+      "status": false,
+      "parentId": "16729174065416878633"
+    },
+    {
+      "id": "16729172921997676589",
+      "title": "Sync a document by sending an UPDATE into a public data repository (NHost or Firebase?)",
+      "status": false,
+      "parentId": "16729174065416878633"
+    },
+    {
+      "id": "16729172516297628460",
+      "title": "Manage Documents",
+      "status": false,
+      "parentId": null
+    },
+    {
+      "id": "16729297351074243599",
+      "title": "Store WIP document to localStorage",
+      "status": true,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172165896487286",
+      "title": "Give PushIDs to items in a document",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729173874090591089",
+      "title": "Export the entire local storage in a single JSON doc",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729173928167303375",
+      "title": "Import the entire local storage",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172413869619152",
+      "title": "Edit a document's title",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172360174929615",
+      "title": "Store list of documents in LocalStorage",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172288533421716",
+      "title": "Store documents in LocalStorage",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": "16729172234781704765",
+      "title": "Add new document with a PushID",
+      "status": false,
+      "parentId": "16729172516297628460"
+    },
+    {
+      "id": 3,
+      "parentId": null,
+      "title": "Keyboard",
+      "status": false
+    },
+    {
+      "id": 9,
+      "parentId": 3,
+      "title": "Catch keyboard events (hook)",
+      "status": true
+    },
+    {
+      "id": "sdc789",
+      "parentId": 3,
+      "title": "Disable termporary",
+      "status": true
+    },
+    {
+      "id": 10,
+      "parentId": 3,
+      "title": "Set focus to next item",
+      "status": false
+    },
+    {
+      "id": "cc78",
+      "parentId": 10,
+      "title": "Find item by id in the tree",
+      "status": false
+    },
+    {
+      "id": 11,
+      "parentId": 10,
+      "title": "Find next item in the tree",
+      "status": false
+    },
+    {
+      "id": 12,
+      "parentId": 10,
+      "title": "Find parent in the tree",
+      "status": false
+    },
+    {
+      "id": 13,
+      "parentId": 10,
+      "title": "Find parent's first son'",
+      "status": false
+    },
+    {
+      "id": 14,
+      "parentId": 3,
+      "title": "Set focus to previous item",
+      "status": false
+    },
+    {
+      "id": 15,
+      "parentId": 3,
+      "title": "On(Space) toggle collapse",
+      "status": false
+    },
+    {
+      "id": 31,
+      "parentId": null,
+      "title": "Optimizations & Refactoring",
+      "status": false
+    },
+    {
+      "id": 32,
+      "parentId": 31,
+      "title": "Create a \"state\" folder and explode all the hooks",
+      "status": true
+    },
+    {
+      "id": 33,
+      "parentId": 31,
+      "title": "Wrap TreeTable components into its own sub-folder",
       "status": true
     },
     {

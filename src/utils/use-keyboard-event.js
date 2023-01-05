@@ -80,14 +80,12 @@ export const useKeyboardEvent = (combo = "", fn, options = DEFAULT_OPTIONS) => {
       clearTimeout(setupRef.current);
       clearTimeout(debounceRef.current);
 
-      if (target && target.current) {
+      if (target && target.current && target.current.removeEventListener) {
         target.current.removeEventListener("keydown", onKeyPress);
-      } else if (target) {
+      } else if (target && target.removeEventListener) {
         target.removeEventListener("keydown", onKeyPress);
       } else {
-        throw new Error(
-          "Could not remove Keboard listener to undefined target"
-        );
+        console.info("Could not remove Keboard listener to undefined target");
       }
     };
   }, []);

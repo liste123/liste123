@@ -5,19 +5,21 @@ import TreeTable from "../TreeTable";
 import backlog from "../backlog.json";
 import { useKeyboardEvent } from "../utils/use-keyboard-event";
 
-const dummy = {
-  collapse: [],
-  items: [
-    { id: 1, parentId: null, title: "foo", status: false },
-    { id: 2, parentId: 1, title: "faa", status: false },
-    { id: 3, parentId: null, title: "fii", status: false }
-  ]
-};
-
 const empty = {
   collapse: [],
   items: []
 };
+
+const DEFAULT_DOCUMENT = true
+  ? backlog
+  : {
+      collapse: [],
+      items: [
+        { id: 1, parentId: null, title: "foo", status: false },
+        { id: 2, parentId: 1, title: "faa", status: false },
+        { id: 3, parentId: null, title: "fii", status: false }
+      ]
+    };
 
 const Input = ({ shortcut, onSubmit, scrollOptions = {}, ...props }) => {
   const inputRef = useRef();
@@ -54,7 +56,7 @@ const Input = ({ shortcut, onSubmit, scrollOptions = {}, ...props }) => {
 
 const HomePage = () => {
   const { subscribe } = usePubSub();
-  const [data, setData] = useState(true ? backlog : dummy);
+  const [data, setData] = useState(null);
   const treeTableRef = useRef();
 
   // Import source code from the data so to make it editable
@@ -62,9 +64,6 @@ const HomePage = () => {
   useEffect(() => {
     setSrc(JSON.stringify(data, null, 2));
   }, [data]);
-
-  // reset
-  useEffect(() => subscribe("reset", () => setData([])), [data]);
 
   // export::json
   useEffect(
@@ -104,6 +103,27 @@ const HomePage = () => {
     []
   );
 
+  // Load document from LocalStorage snapshot
+  useEffect(() => {
+    try {
+      const data = JSON.parse(localStorage.getItem("liste123-wip"));
+      if (data) {
+        setData(data);
+      } else {
+        setData(DEFAULT_DOCUMENT);
+      }
+    } catch (err) {
+      console.log(`NOPE: ${err.message}`);
+      setData(DEFAULT_DOCUMENT);
+    }
+  }, []);
+
+  // Sync to localStorage
+  useEffect(() => {
+    if (!data) return;
+    localStorage.setItem("liste123-wip", JSON.stringify(data));
+  }, [data]);
+
   return (
     <Box>
       <Stack direction="row" spacing={4}>
@@ -119,7 +139,11 @@ const HomePage = () => {
               }
             />
 
-            <TreeTable ref={treeTableRef} data={data} onChange={setData} />
+            {data ? (
+              <TreeTable ref={treeTableRef} data={data} onChange={setData} />
+            ) : (
+              <Box>loading project...</Box>
+            )}
 
             <Input
               placeholder={"(Ctrl + A) Append a new item"}
