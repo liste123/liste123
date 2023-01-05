@@ -1,14 +1,12 @@
 import { useCallback } from "react";
 
 import { useNode } from "../state/use-node";
-import { useCollapse } from "../state/use-collapse";
 import { useFocus } from "../state/use-focus";
 
 import Checkbox from "./Checkbox";
 
-const TreeTableItem = ({ node }) => {
+const Leaf = ({ node }) => {
   const { hasFocus, requestFocus } = useFocus(node.id);
-  const { isCollapsed, toggleCollapse } = useCollapse(node.id);
 
   const {
     update,
@@ -27,11 +25,9 @@ const TreeTableItem = ({ node }) => {
         background: hasFocus ? "yellow" : "transparent"
       }}
     >
-      <button onClick={toggleCollapse}>{isCollapsed ? "+" : "-"}</button>
-      <Checkbox value={status} onChange={onStatusChange} />
-      {title}
+      <Checkbox value={status} onChange={onStatusChange} /> {title}
     </div>
   );
 };
 
-export default TreeTableItem;
+export default Leaf;

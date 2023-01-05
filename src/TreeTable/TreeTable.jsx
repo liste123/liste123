@@ -4,7 +4,8 @@ import "react-nestable/dist/styles/index.css";
 import { withTreeTable } from "./state/Context";
 import { useNodes } from "./state/use-nodes";
 import { useNestable } from "./state/use-nestable";
-import TreeTableItem from "./components/Item";
+import Node from "./components/Node";
+import Leaf from "./components/Leaf";
 
 /**
  *
@@ -24,7 +25,9 @@ export const TreeTable = () => {
    */
   const renderItem = ({ item: { id } }) => {
     const node = getNodeById(id);
-    return node ? <TreeTableItem node={node} /> : "*";
+    if (!node) return null;
+
+    return node.children.length ? <Node node={node} /> : <Leaf node={node} />;
   };
 
   return (

@@ -1,6 +1,108 @@
 {
-  "collapse": ["sc8d9c7s", 1, 18, 4],
+  "collapse": ["sc8d9c7s", 1, 4, 10, 3, 31, 26],
   "items": [
+    {
+      "id": 16,
+      "parentId": null,
+      "title": "Inline editing",
+      "status": false
+    },
+    {
+      "id": "csd09023678",
+      "parentId": 16,
+      "title": "Add an EDIT MODE state with relative hook",
+      "status": false
+    },
+    {
+      "id": 18,
+      "parentId": 16,
+      "title": "Save title change",
+      "status": false
+    },
+    {
+      "id": 19,
+      "parentId": 18,
+      "title": "Add editable state to the tree",
+      "status": false
+    },
+    {
+      "id": 20,
+      "parentId": 18,
+      "title": "Make title render component",
+      "status": false
+    },
+    {
+      "id": 21,
+      "parentId": 18,
+      "title": "Make title edit component",
+      "status": false
+    },
+    {
+      "id": 22,
+      "parentId": 18,
+      "title": "Show component based on editable state & current focus",
+      "status": false
+    },
+    {
+      "id": 23,
+      "parentId": 18,
+      "title": "OnClick -> set state editable",
+      "status": false
+    },
+    {
+      "id": 24,
+      "parentId": 18,
+      "title": "On(Esc, Enter) -> maeke state non editable",
+      "status": false
+    },
+    {
+      "id": 25,
+      "parentId": 18,
+      "title": "Persist changes while typing with debounce",
+      "status": false
+    },
+    {
+      "id": "ds8098r757c",
+      "parentId": 18,
+      "title": "Writing in the text field will triggere debounced updates",
+      "status": false
+    },
+    {
+      "id": "scds56757",
+      "parentId": 18,
+      "title": "Click outside an active text field to disble edit mode - but should NOT remove focus from the item",
+      "status": false
+    },
+    {
+      "id": 17,
+      "parentId": 16,
+      "title": "Save status change",
+      "status": true
+    },
+    {
+      "id": "csd68",
+      "parentId": null,
+      "title": "Add new Item",
+      "status": false
+    },
+    {
+      "id": "fdv9dv6",
+      "parentId": null,
+      "title": "Show checkbox only for end-leaf items",
+      "status": true
+    },
+    {
+      "id": "cvx564568bdf0",
+      "parentId": null,
+      "title": "Show collapsible only for node with children",
+      "status": true
+    },
+    {
+      "id": "dvx9c89bv78x68",
+      "parentId": null,
+      "title": "Mark a node as complete only when all children are completed",
+      "status": false
+    },
     {
       "id": 31,
       "parentId": null,
@@ -17,7 +119,7 @@
       "id": 33,
       "parentId": 31,
       "title": "Wrap TreeTable components into its own sub-folder",
-      "status": false
+      "status": true
     },
     {
       "id": 3,
@@ -102,66 +204,6 @@
       "parentId": 4,
       "title": "Add event listener to trigger the collapse",
       "status": true
-    },
-    {
-      "id": 16,
-      "parentId": null,
-      "title": "Inline editing",
-      "status": false
-    },
-    {
-      "id": 17,
-      "parentId": 16,
-      "title": "Save status change",
-      "status": true
-    },
-    {
-      "id": 18,
-      "parentId": 16,
-      "title": "Save title change",
-      "status": false
-    },
-    {
-      "id": 19,
-      "parentId": 18,
-      "title": "Add editable state to the tree",
-      "status": false
-    },
-    {
-      "id": 20,
-      "parentId": 18,
-      "title": "Make title render component",
-      "status": false
-    },
-    {
-      "id": 21,
-      "parentId": 18,
-      "title": "Make title edit component",
-      "status": false
-    },
-    {
-      "id": 22,
-      "parentId": 18,
-      "title": "Show component based on editable state & current focus",
-      "status": false
-    },
-    {
-      "id": 23,
-      "parentId": 18,
-      "title": "OnClick -> set state editable",
-      "status": false
-    },
-    {
-      "id": 24,
-      "parentId": 18,
-      "title": "On(Esc, Enter) -> maeke state non editable",
-      "status": false
-    },
-    {
-      "id": 25,
-      "parentId": 18,
-      "title": "Persist changes while typing with debounce",
-      "status": false
     },
     {
       "id": 26,
