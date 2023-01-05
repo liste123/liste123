@@ -13,13 +13,14 @@ export const TreeTableContext = createContext();
 export const withTreeTable = (Component) =>
   forwardRef((props, ref) => {
     const { data, onChange } = props;
+    const pubsub = useCreatePubSub();
     const isPropsUpdateRef = useRef(false);
     const lastOnChangeData = useRef(null);
     const nestableRef = useRef(null);
     const [nodes, setNodes] = useState([]);
     const [focus, setFocus] = useState(null);
     const [collapse, setCollapse] = useState([]);
-    const pubsub = useCreatePubSub();
+    const [isEditMode, setIsEditMode] = useState(false);
 
     /**
      * Imports changes from the outside world into the component.
@@ -112,7 +113,9 @@ export const withTreeTable = (Component) =>
           focus,
           setFocus,
           collapse,
-          setCollapse
+          setCollapse,
+          isEditMode,
+          setIsEditMode
         }}
       >
         <Component />
