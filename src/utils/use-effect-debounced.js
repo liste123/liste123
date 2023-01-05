@@ -33,16 +33,15 @@ export const useEffectDebounced = (fn, deps, options = OPTIONS) => {
       : delay;
 
   useEffect(() => {
-    // Skip first execution
-
     const _timer = setTimeout(
       () => {
+        // Skip first execution
         if (isFirstLoad.current && skipFirst) {
-          console.log("Skip first exec");
           isFirstLoad.current = false;
           return;
         }
 
+        // Apply callback
         fn();
         isFirstLoad.current = false;
       },

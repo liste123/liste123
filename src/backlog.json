@@ -10,7 +10,7 @@
     "wd8wef98v79dfv79dfvdf",
     31,
     "16729295528737280054",
-    16
+    18
   ],
   "items": [
     {
@@ -35,7 +35,7 @@
       "id": "csd09023678",
       "parentId": 16,
       "title": "Add an EDIT MODE state with relative hook",
-      "status": false
+      "status": true
     },
     {
       "id": 18,
@@ -47,55 +47,55 @@
       "id": 19,
       "parentId": 18,
       "title": "Add editable state to the tree",
-      "status": false
+      "status": true
     },
     {
       "id": 20,
       "parentId": 18,
       "title": "Make title render component",
-      "status": false
+      "status": true
     },
     {
       "id": 21,
       "parentId": 18,
       "title": "Make title edit component",
-      "status": false
+      "status": true
     },
     {
       "id": 22,
       "parentId": 18,
       "title": "Show component based on editable state & current focus",
-      "status": false
+      "status": true
     },
     {
       "id": 23,
       "parentId": 18,
       "title": "OnClick -> set state editable",
-      "status": false
+      "status": true
     },
     {
       "id": 24,
       "parentId": 18,
       "title": "On(Esc, Enter) -> maeke state non editable",
-      "status": false
+      "status": true
     },
     {
       "id": 25,
       "parentId": 18,
       "title": "Persist changes while typing with debounce",
-      "status": false
+      "status": true
     },
     {
       "id": "ds8098r757c",
       "parentId": 18,
-      "title": "Writing in the text field will triggere debounced updates",
-      "status": false
+      "title": "Writing in the text field will trigger debounced updates",
+      "status": true
     },
     {
       "id": "scds56757",
       "parentId": 18,
       "title": "Click outside an active text field to disble edit mode - but should NOT remove focus from the item",
-      "status": false
+      "status": true
     },
     {
       "id": 17,

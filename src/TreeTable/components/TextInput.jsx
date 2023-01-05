@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { useKeyboardEvent } from "../../utils/use-keyboard-event";
 import { useEffectDebounced } from "../../utils/use-effect-debounced";
+import { useClickOutside } from "../../utils/use-click-outside";
 
 const TextInput = ({ value, onChange, onBlur }) => {
   const inputRef = useRef();
@@ -19,8 +20,10 @@ const TextInput = ({ value, onChange, onBlur }) => {
     { delay: 500, skipFirst: true }
   );
 
+  // Multiple ways to trigger the onBlur event
   useKeyboardEvent("Escape", onBlur, { target: inputRef });
   useKeyboardEvent("Enter", onBlur, { target: inputRef });
+  useClickOutside(inputRef, onBlur);
 
   return (
     <input
