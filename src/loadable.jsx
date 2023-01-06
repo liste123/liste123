@@ -28,7 +28,7 @@ import { lazy, Suspense } from "react";
 
 const applySuspense = (Component) => () =>
   (
-    <Suspense fallback={"loading..."}>
+    <Suspense fallback={null}>
       <Component />
     </Suspense>
   );

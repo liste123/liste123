@@ -1,7 +1,16 @@
 import { Outlet } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { AppBar, Toolbar, Box, Typography, Stack } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Typography,
+  Stack,
+  Alert,
+  AlertTitle,
+  Button
+} from "@mui/material";
 import { withBetaAccount } from "../state/with-beta-account";
 import { useBetaAccount } from "../state/use-beta-account";
 
@@ -12,7 +21,23 @@ const darkTheme = createTheme({
 });
 
 const BetaLayout = () => {
-  const { accountID } = useBetaAccount();
+  const { isLoading, accountID, error, resetAccount } = useBetaAccount();
+
+  const renderError = () =>
+    error && (
+      <Box sx={{ m: 2 }}>
+        <Alert
+          severity="error"
+          action={<Button onClick={resetAccount}>reset account</Button>}
+        >
+          <AlertTitle>Oooops!</AlertTitle>
+          {error.message}
+        </Alert>
+      </Box>
+    );
+
+  const renderBody = () => (isLoading ? null : <Outlet />);
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -23,14 +48,18 @@ const BetaLayout = () => {
               Liste123{" "}
               <small style={{ fontWeight: "normal", fontSize: 10 }}>beta</small>
             </Typography>
-            <Stack sx={{ fontSize: 14, alignItems: "flex-end" }}>
-              <b>AccountID</b>
-              <small>{accountID}</small>
-            </Stack>
+            {accountID && (
+              <Stack sx={{ fontSize: 14, alignItems: "flex-end" }}>
+                <b>AccountID</b>
+                <small>{accountID}</small>
+              </Stack>
+            )}
           </Toolbar>
         </AppBar>
         <Toolbar />
-        <Outlet />
+
+        {renderError()}
+        {renderBody()}
       </Box>
     </ThemeProvider>
   );

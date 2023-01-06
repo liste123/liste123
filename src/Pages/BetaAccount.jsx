@@ -1,26 +1,19 @@
 import { useBetaAccount } from "../state/use-beta-account";
-import { Box, Alert, AlertTitle, Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const BetaAccount = () => {
-  const { isLoading, accountData, error, resetAccount } = useBetaAccount();
+  const { isLoading, accountData } = useBetaAccount();
+  if (isLoading || !accountData) return null;
 
-  if (isLoading) return "...";
-
-  if (error) {
-    return (
-      <Box sx={{ m: 2 }}>
-        <Alert
-          severity="error"
-          action={<Button onClick={resetAccount}>reset account</Button>}
-        >
-          <AlertTitle>Oooops!</AlertTitle>
-          {error.message}
-        </Alert>
-      </Box>
-    );
-  }
-
-  return <pre>{JSON.stringify(accountData)}</pre>;
+  return (
+    <Box sx={{ m: 2 }}>
+      <pre>{JSON.stringify(accountData, null, 2)}</pre>
+      <Button component={Link} to="new">
+        New project
+      </Button>
+    </Box>
+  );
 };
 
 export default BetaAccount;
