@@ -45,7 +45,7 @@ const ADD_OWN_PROJECT = gql`
 const BetaProjectCreate = () => {
   const navigate = useNavigate();
   const { generatePushID } = usePushID();
-  const { accountID } = useBetaAccount();
+  const { accountID, reloadAccount } = useBetaAccount();
   const [createProject] = useMutation(CREATE_PROJECT);
   const [addOwnProject] = useMutation(ADD_OWN_PROJECT);
 
@@ -76,7 +76,10 @@ const BetaProjectCreate = () => {
         }
       });
 
-      navigate("/beta/account");
+      // Reload account's data:
+      await reloadAccount();
+
+      navigate(`/beta/project/${projectID}`);
     } catch (err) {
       alert(err.message);
     }
