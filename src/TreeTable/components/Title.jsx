@@ -21,7 +21,17 @@ export const Title = ({ node }) => {
       value={title}
       onChange={handleChange}
       onBlur={requestViewMode}
-      style={{ flex: 1 }}
+      style={{
+        flex: 1,
+        background: "transparent",
+        color: "white",
+        border: "none",
+        outline: "none",
+        fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+        fontSize: "1rem",
+        paddingTop: 2,
+        paddingBottom: 2
+      }}
     />
   ) : (
     <Box onClick={requestEditMode} sx={{ flex: 1 }}>

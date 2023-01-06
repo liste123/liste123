@@ -56,7 +56,7 @@ const BetaAccount = () => {
             >
               <ListItemAvatar>
                 <Avatar>
-                  <ImageIcon />
+                  <WorkIcon />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText

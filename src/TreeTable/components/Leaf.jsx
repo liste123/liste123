@@ -15,7 +15,7 @@ const Leaf = ({ node }) => {
       spacing={1}
       onClick={requestFocus}
       style={{
-        background: hasFocus ? "yellow" : "transparent"
+        border: hasFocus ? "1px solid #666" : "1px solid rgb(18, 18, 18)"
       }}
     >
       <Checkbox value={isCompleted} onChange={toggleStatus} />
