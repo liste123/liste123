@@ -63,7 +63,16 @@ const BetaProjectCreate = () => {
           title,
           data: {
             collapse: [],
-            items: []
+            items: [
+              {
+                id: generatePushID(),
+                title: "My first item"
+              },
+              {
+                id: generatePushID(),
+                title: "My second item"
+              }
+            ]
           }
         }
       });
@@ -94,7 +103,7 @@ const BetaProjectCreate = () => {
           <Button variant="contained" type="submit">
             Create
           </Button>
-          <Button component={Link} to="/beta/account">
+          <Button component={Link} to="/beta/">
             Cancel
           </Button>
         </Stack>

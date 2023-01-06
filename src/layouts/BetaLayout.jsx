@@ -16,7 +16,7 @@ import { useBetaAccount } from "../state/use-beta-account";
 
 const darkTheme = createTheme({
   palette: {
-    // mode: "dark"
+    mode: "dark"
   }
 });
 

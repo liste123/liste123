@@ -82,7 +82,14 @@ const BetaProject = () => {
   const renderBody = () => (
     <>
       <Stack spacing={2}>
-        <Typography variant="h4">{title}</Typography>
+        <Stack direction={"row"}>
+          <Typography variant="h4" flexGrow={1}>
+            {title}
+          </Typography>
+          <Button component={Link} to="/beta/">
+            Go to projects
+          </Button>
+        </Stack>
 
         <Input
           placeholder={"(Ctrl + P) Prepend a new item"}

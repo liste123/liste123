@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Box, Stack, Button } from "@mui/material";
+import { Navigate } from "react-router-dom";
 import { usePubSub } from "../utils/use-pubsub";
 import TreeTable from "../TreeTable";
 import backlog from "../backlog.json";
@@ -123,6 +124,8 @@ const HomePage = () => {
     if (!data) return;
     localStorage.setItem("liste123-wip", JSON.stringify(data));
   }, [data]);
+
+  return <Navigate to="/beta" />;
 
   return (
     <Box>

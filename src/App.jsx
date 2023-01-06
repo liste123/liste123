@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
     path: "/beta",
     element: <BetaLayout />,
     children: [
-      { path: "account", element: <BetaAccount /> },
+      { index: true, element: <BetaAccount /> },
       { path: "signup", element: <BetaSignup /> },
       { path: "create", element: <BetaProjectCreate /> },
       { path: "project/:uuid", element: <BetaProjectDesktop /> }
