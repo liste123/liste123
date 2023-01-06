@@ -63,7 +63,7 @@ const BetaProjectCreate = () => {
           title,
           data: {
             collapse: [],
-            item: []
+            items: []
           }
         }
       });
