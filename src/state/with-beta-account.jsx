@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
-
 import { gql, useMutation, useLazyQuery } from "@apollo/client";
+
 import { useEffectDebounced } from "../utils/use-effect-debounced";
 import { usePushID } from "../utils/use-pushid";
 
@@ -25,17 +25,18 @@ const CREATE_ACCOUNT = gql`
 
 export const BetaAccountContext = createContext();
 
-export const withBetaAccount = (Component) => (props, ref) => {
+export const withBetaAccount = (Component) => () => {
   const [accountID, setAccountID] = useState(null);
   const [accountData, setAccountData] = useState(null);
+  const [error, setError] = useState(null);
   const { generatePushID } = usePushID();
 
   const [loadAccount, accountStatus] = useLazyQuery(LOAD_ACCOUNT);
   const [createAccount, createStatus] = useMutation(CREATE_ACCOUNT);
-  // console.log(createStatus);
 
-  // Grab AccountID from local storage
-  // Or create a new Beta Account
+  /**
+   * Load AccountID or Create New Account
+   */
   useEffectDebounced(
     () => {
       const accountID = localStorage.getItem("liste123.beta.account.id");
@@ -56,15 +57,30 @@ export const withBetaAccount = (Component) => (props, ref) => {
     { delay: 0 }
   );
 
+  /**
+   * Load Account Data
+   */
   useEffectDebounced(
     () => {
       loadAccount({ variables: { uuid: accountID } }).then((res) => {
-        setAccountData(res.data.account);
+        if (res.data.account) {
+          setAccountData(res.data.account);
+        } else {
+          setError({
+            name: "MissingAccount",
+            message: `Account "${accountID}" does not exists on this server`
+          });
+        }
       });
     },
     [accountID],
     { delay: 0, skipFirst: true }
   );
+
+  const resetAccount = () => {
+    localStorage.removeItem("liste123.beta.account.id");
+    location.reload();
+  };
 
   return (
     <BetaAccountContext.Provider
@@ -73,9 +89,10 @@ export const withBetaAccount = (Component) => (props, ref) => {
           (!accountStatus.called && !createStatus.called) ||
           accountStatus.loading ||
           createStatus.loading,
-        error: createStatus.error || accountStatus.error,
+        error: createStatus.error || accountStatus.error || error,
         accountID,
-        accountData
+        accountData,
+        resetAccount
       }}
     >
       <Component />
