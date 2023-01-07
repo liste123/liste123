@@ -2,14 +2,17 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   Stack,
-  Box,
+  TextField,
   Alert,
   AlertTitle,
   Button,
   List,
   ListItem,
   ListItemText,
-  IconButton
+  IconButton,
+  Typography,
+  Modal,
+  Paper
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 // import QrCode2Icon from "@mui/icons-material/QrCode2";
@@ -24,69 +27,49 @@ import TreeTable from "../TreeTable";
 
 const BetaProject = () => {
   const { clip } = useClipboard();
-  const [projectMenu, setProjectMenu] = useState(null);
   const treeTableRef = useRef();
   const { uname } = useBetaAccount();
   const { loading, error, uuid, title, data, update, projectID, projectURL } =
     useBetaProject();
 
+  // Used for the inline code editor
+  const [showEditor, setShowEditor] = useState(false);
+  const [_data, setData] = useState(data);
   const [src, setSrc] = useState(JSON.stringify(data, null, 2));
   useEffect(() => {
+    setData(data);
     setSrc(JSON.stringify(data, null, 2));
   }, [data]);
 
+  const onChange = (data) => {
+    setSrc(JSON.stringify(data, null, 2));
+    update(title, data);
+  };
+
   if (loading) {
-    return <BetaPage>loading project...</BetaPage>;
+    return null;
   }
 
-  const onChange = (data) => update(title, data);
-
-  const renderError = () => (
-    <Box sx={{ m: 2 }}>
-      <Alert
-        severity="error"
-        action={
-          <Button component={Link} to={`/beta/${uname}`}>
-            close
-          </Button>
-        }
-      >
-        <AlertTitle>Oooops!</AlertTitle>
-        {error.message}
-      </Alert>
-    </Box>
-  );
-
-  const renderBody = () => (
-    <Stack spacing={2}>
-      <AddTask
-        placeholder={"(Ctrl + P) Prepend a new item"}
-        shortcut={"Ctrl + p"}
-        onSubmit={(title) =>
-          treeTableRef.current.prepend({
-            title
-          })
-        }
-      />
-
-      <TreeTable ref={treeTableRef} data={data} onChange={onChange} />
-
-      <AddTask
-        placeholder={"(Ctrl + A) Append a new item"}
-        shortcut={"Ctrl + a"}
-        onSubmit={(title) =>
-          treeTableRef.current.append({
-            title
-          })
-        }
-      />
-    </Stack>
-  );
+  if (error)
+    return (
+      <BetaPage>
+        <Alert
+          severity="error"
+          action={
+            <Button component={Link} to={`/beta/${uname}`}>
+              close
+            </Button>
+          }
+        >
+          <AlertTitle>Oooops!</AlertTitle>
+          {error.message}
+        </Alert>
+      </BetaPage>
+    );
 
   return (
     <BetaPage
       title={title}
-      subtitle={`ID: ${uuid}`}
       linkBackTo={`/beta/${uname}`}
       menu={
         <List>
@@ -134,10 +117,71 @@ const BetaProject = () => {
               secondary={<QRCode value={projectURL} size={180} />}
             />
           </ListItem> */}
+          <ListItem>
+            <Button fullWidth onClick={() => setShowEditor(true)}>
+              Edit code
+            </Button>
+          </ListItem>
         </List>
       }
     >
-      {error ? renderError() : renderBody()}
+      <Stack spacing={2} flex={1}>
+        <AddTask
+          placeholder={"(Ctrl + P) Prepend a new item"}
+          shortcut={"Ctrl + p"}
+          onSubmit={(title) =>
+            treeTableRef.current.prepend({
+              title
+            })
+          }
+        />
+
+        <TreeTable ref={treeTableRef} data={_data} onChange={onChange} />
+
+        <AddTask
+          placeholder={"(Ctrl + A) Append a new item"}
+          shortcut={"Ctrl + a"}
+          onSubmit={(title) =>
+            treeTableRef.current.append({
+              title
+            })
+          }
+        />
+      </Stack>
+      <Modal open={showEditor} onClose={() => setShowEditor(false)}>
+        <Paper
+          sx={{ p: 3 }}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "70vw",
+            height: 600,
+            bgcolor: "black",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4
+          }}
+        >
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems={"center"}
+            sx={{ mb: 2 }}
+          >
+            <Typography variang="h6">Edit Document:</Typography>
+            <Button onClick={() => setData(JSON.parse(src))}>Apply</Button>
+          </Stack>
+          <TextField
+            multiline
+            fullWidth
+            maxRows={20}
+            value={src}
+            onChange={(e) => setSrc(e.target.value)}
+          />
+        </Paper>
+      </Modal>
     </BetaPage>
   );
 };

@@ -65,14 +65,14 @@ export const useBetaProject = () => {
 
   // Update internal data on full reload:
   useEffect(() => {
-    if (!data) return;
+    if (!data || !data.project) return;
     lastUpdate.current = data.project.etag;
     setData(data.project.data);
   }, [data]);
 
   // Update internal data from the subscription on changes:
   useEffect(() => {
-    if (!updateData) return;
+    if (!updateData || !updateData.project) return;
     console.log("@got updated", updateData);
     if (updateData.project?.etag !== lastUpdate.current) {
       setData(updateData.project.data);

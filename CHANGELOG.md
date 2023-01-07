@@ -12,3 +12,4 @@
 - Share account via QR Code
 - Copy share url to clipboard
 - Share project via QR Code and Clipboard
+- Allow to edit the document JSON file
