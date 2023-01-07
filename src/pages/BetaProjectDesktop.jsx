@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Stack, Box, Alert, AlertTitle, Button } from "@mui/material";
 
 import { useBetaAccount } from "../state/use-beta-account";
@@ -10,19 +10,13 @@ import TreeTable from "../TreeTable";
 
 const BetaProject = () => {
   const treeTableRef = useRef();
-  const { error: accountError} = useBetaAccount()
+  const { uname } = useBetaAccount();
   const { loading, error, uuid, title, data, update } = useBetaProject();
 
   const [src, setSrc] = useState(JSON.stringify(data, null, 2));
   useEffect(() => {
     setSrc(JSON.stringify(data, null, 2));
   }, [data]);
-
-  // This should be removed once we have a real
-  // layout that shield from bad AccountID setup
-  if (accountError) {
-    return null;
-  }
 
   if (loading) {
     return <BetaPage>loading project...</BetaPage>;
@@ -35,7 +29,7 @@ const BetaProject = () => {
       <Alert
         severity="error"
         action={
-          <Button component={Link} to={"/beta/account"}>
+          <Button component={Link} to={`/beta/${uname}`}>
             close
           </Button>
         }
@@ -73,7 +67,11 @@ const BetaProject = () => {
   );
 
   return (
-    <BetaPage title={title} subtitle={`ID: ${uuid}`} linkCloseTo="/beta">
+    <BetaPage
+      title={title}
+      subtitle={`ID: ${uuid}`}
+      linkCloseTo={`/beta/${uname}`}
+    >
       {error ? renderError() : renderBody()}
     </BetaPage>
   );

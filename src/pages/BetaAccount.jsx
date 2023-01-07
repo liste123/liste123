@@ -17,19 +17,18 @@ import { Link } from "react-router-dom";
 import BetaPage from "../components/BetaPage";
 
 const BetaAccount = () => {
-  const { isLoading, accountData } = useBetaAccount();
-  if (isLoading || !accountData) return null;
+  const { uname, accountData } = useBetaAccount();
 
   const { own_projects: ownProjects, shared_projects: sharedProjects } =
     accountData;
 
   return (
     <BetaPage
-      title="Account"
+      title="Hello, Unknown User"
       actions={
         <Button
           component={Link}
-          to="/beta/create"
+          to={`/beta/${uname}/create`}
           variant="contained"
           startIcon={<AddIcon />}
         >
@@ -43,7 +42,7 @@ const BetaAccount = () => {
           {Object.values(ownProjects).map((project) => (
             <ListItem
               key={project.projectID}
-              to={`/beta/project/${project.projectID}`}
+              to={project.projectID}
               component={Link}
             >
               <ListItemAvatar>
@@ -62,7 +61,7 @@ const BetaAccount = () => {
           {Object.values(sharedProjects).map((project) => (
             <ListItem
               key={project.projectID}
-              to={`/beta/project/${project.projectID}`}
+              to={project.projectID}
               component={Link}
             >
               <ListItemAvatar>

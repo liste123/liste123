@@ -1,15 +1,16 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { NhostClient, NhostProvider } from "@nhost/react";
 import { NhostApolloProvider } from "@nhost/react-apollo";
+import { Navigate } from "react-router-dom";
 import { withPubSub } from "./utils/use-pubsub";
 import { loadable } from "./loadable";
 
 // Lazy Loaded Routes
 const PublicLayout = loadable(() => import("./layouts/PublicLayout"));
-const HomePage = loadable(() => import("./pages/HomePage"));
 const DevPage = loadable(() => import("./pages/DevPage"));
 
-const BetaLayout = loadable(() => import("./layouts/BetaLayout"));
+const BetaAccountLayout = loadable(() => import("./layouts/BetaAccountLayout"));
+const BetaPublicLayout = loadable(() => import("./layouts/BetaPublicLayout"));
 const BetaAccount = loadable(() => import("./pages/BetaAccount"));
 const BetaSignup = loadable(() => import("./pages/BetaSignup"));
 const BetaProjectCreate = loadable(() => import("./pages/BetaProjectCreate"));
@@ -24,7 +25,7 @@ const nhost = new NhostClient({
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />
+    element: <Navigate to="/beta" />
   },
   {
     path: "/dev",
@@ -38,12 +39,21 @@ export const router = createBrowserRouter([
   },
   {
     path: "/beta",
-    element: <BetaLayout />,
+    element: <BetaPublicLayout />,
     children: [
-      { index: true, element: <BetaAccount /> },
+      // Public Routes
+      { index: true, element: <Navigate to="/beta/@me" /> },
       { path: "signup", element: <BetaSignup /> },
-      { path: "create", element: <BetaProjectCreate /> },
-      { path: "project/:uuid", element: <BetaProjectDesktop /> }
+      // Protected Routes
+      {
+        path: "/beta/:uname/",
+        element: <BetaAccountLayout />,
+        children: [
+          { index: true, element: <BetaAccount /> },
+          { path: "create", element: <BetaProjectCreate /> },
+          { path: ":uuid", element: <BetaProjectDesktop /> }
+        ]
+      }
     ]
   }
 ]);
