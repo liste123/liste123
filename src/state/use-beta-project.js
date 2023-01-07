@@ -1,10 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { gql, useSubscription, useMutation } from "@apollo/client";
+import { gql, useSubscription, useMutation, useQuery } from "@apollo/client";
 import { usePushID } from "../utils/use-pushid";
 
 const PROJECT_SUB = gql`
   subscription GetProject($uuid: String!) {
+    project: beta_projects_by_pk(uuid: $uuid) {
+      uuid
+      title
+      data
+      etag
+      updated_at
+      created_at
+      account_uuid
+    }
+  }
+`;
+
+const LOAD_PROJECT = gql`
+  query GetProject($uuid: String!) {
     project: beta_projects_by_pk(uuid: $uuid) {
       uuid
       title
@@ -41,17 +55,28 @@ export const useBetaProject = () => {
 
   // GraphQL
   const [updateProject] = useMutation(UPDATE_PROJECT);
-  const { loading, error, data } = useSubscription(PROJECT_SUB, {
+  const { loading, error, data } = useQuery(LOAD_PROJECT, {
+    variables: { uuid }
+  });
+  const { data: updateData } = useSubscription(PROJECT_SUB, {
     variables: { uuid }
   });
 
   // Update internal data only if changed from the outside
   useEffect(() => {
     if (!data) return;
-    if (data.project?.etag !== lastUpdate.current) {
-      setData(data.project.data);
-    }
+    lastUpdate.current = data.project.etag;
+    setData(data.project.data);
   }, [data]);
+
+  // Update internal data only if changed from the outside
+  useEffect(() => {
+    if (!updateData) return;
+    console.log("@got updated", updateData);
+    if (updateData.project?.etag !== lastUpdate.current) {
+      setData(updateData.project.data);
+    }
+  }, [updateData]);
 
   // Send an update and stores the local etag to avoid state duplication
   const update = (title, data) => {

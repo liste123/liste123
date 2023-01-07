@@ -9,43 +9,10 @@ import {
   Typography
 } from "@mui/material";
 
-import { useKeyboardEvent } from "../utils/use-keyboard-event";
 import { useBetaProject } from "../state/use-beta-project";
 import BetaPage from "../components/BetaPage";
+import AddTask from "../components/AddTask";
 import TreeTable from "../TreeTable";
-
-const Input = ({ shortcut, onSubmit, scrollOptions = {}, ...props }) => {
-  const inputRef = useRef();
-
-  // Prepend items from input
-  useKeyboardEvent(
-    "enter",
-    (evt) => {
-      onSubmit(evt.target.value);
-      evt.target.value = "";
-      evt.target.focus();
-      evt.target.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-        ...scrollOptions
-      });
-    },
-    { target: inputRef }
-  );
-
-  useKeyboardEvent(shortcut, () => {
-    inputRef.current.focus();
-    inputRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-      ...scrollOptions
-    });
-  });
-
-  return <input {...props} ref={inputRef} type="text" />;
-};
 
 const BetaProject = () => {
   const treeTableRef = useRef();
@@ -89,7 +56,7 @@ const BetaProject = () => {
         </Button>
       </Stack>
 
-      <Input
+      <AddTask
         placeholder={"(Ctrl + P) Prepend a new item"}
         shortcut={"Ctrl + p"}
         onSubmit={(title) =>
@@ -101,7 +68,7 @@ const BetaProject = () => {
 
       <TreeTable ref={treeTableRef} data={data} onChange={onChange} />
 
-      <Input
+      <AddTask
         placeholder={"(Ctrl + A) Append a new item"}
         shortcut={"Ctrl + a"}
         onSubmit={(title) =>
