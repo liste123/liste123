@@ -43,9 +43,12 @@ export const useBetaAccount = () => {
     window.location = window.location.href.split("?")[0];
   };
 
+  console.log("****", `${window.location.origin}?accountID=${state.accountID}`);
+
   return {
     ...state,
     uname,
+    accountURL: `${window.location.origin}?accountID=${state.accountID}`,
     createAccount,
     redeemAccount,
     resetAccount
