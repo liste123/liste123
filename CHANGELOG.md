@@ -6,3 +6,4 @@
 - Fixed viewport for mobile
 - Implement `TextField` for adding new tasks
 - Explicitly add a submit button for adding new tasks
+- Improve `BetaPage` component with title, subtitle, and actions

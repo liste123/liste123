@@ -3,13 +3,13 @@ import {
   List,
   ListItem,
   Button,
-  Typography,
   Paper,
   ListItemText,
   ListItemAvatar,
   ListSubheader,
   Avatar
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 import WorkIcon from "@mui/icons-material/Work";
 import { Link } from "react-router-dom";
@@ -24,11 +24,22 @@ const BetaAccount = () => {
     accountData;
 
   return (
-    <BetaPage>
-      <Typography variant="h4">Own Projects</Typography>
+    <BetaPage
+      title="Account"
+      actions={
+        <Button
+          component={Link}
+          to="/beta/create"
+          variant="contained"
+          startIcon={<AddIcon />}
+        >
+          New&nbsp;project
+        </Button>
+      }
+    >
       <Paper>
         <List>
-          <ListSubheader>Projects</ListSubheader>
+          <ListSubheader>My Projects</ListSubheader>
           {Object.values(ownProjects).map((project) => (
             <ListItem
               key={project.projectID}
@@ -68,9 +79,6 @@ const BetaAccount = () => {
           ))}
         </List>
       </Paper>
-      <Button component={Link} to="/beta/create">
-        New project
-      </Button>
     </BetaPage>
   );
 };

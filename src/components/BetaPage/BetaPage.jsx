@@ -1,8 +1,11 @@
 import { Box } from "@mui/material";
 
-const BetaPage = ({ children }) => {
+import { PageToolbar } from "./PageToolbar";
+
+const BetaPage = ({ children, ...props }) => {
   return (
     <Box m={2} marginLeft={3}>
+      <PageToolbar {...props} />
       {children}
     </Box>
   );

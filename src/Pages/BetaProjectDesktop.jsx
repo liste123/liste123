@@ -1,13 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import {
-  Stack,
-  Box,
-  Alert,
-  AlertTitle,
-  Button,
-  Typography
-} from "@mui/material";
+import { Stack, Box, Alert, AlertTitle, Button } from "@mui/material";
 
 import { useBetaProject } from "../state/use-beta-project";
 import BetaPage from "../components/BetaPage";
@@ -16,7 +9,7 @@ import TreeTable from "../TreeTable";
 
 const BetaProject = () => {
   const treeTableRef = useRef();
-  const { loading, error, title, data, update } = useBetaProject();
+  const { loading, error, uuid, title, data, update } = useBetaProject();
 
   const [src, setSrc] = useState(JSON.stringify(data, null, 2));
   useEffect(() => {
@@ -47,15 +40,6 @@ const BetaProject = () => {
 
   const renderBody = () => (
     <Stack spacing={2}>
-      <Stack direction={"row"}>
-        <Typography variant="h4" flexGrow={1}>
-          {title}
-        </Typography>
-        <Button component={Link} to="/beta/">
-          Go to projects
-        </Button>
-      </Stack>
-
       <AddTask
         placeholder={"(Ctrl + P) Prepend a new item"}
         shortcut={"Ctrl + p"}
@@ -80,7 +64,11 @@ const BetaProject = () => {
     </Stack>
   );
 
-  return <BetaPage>{error ? renderError() : renderBody()}</BetaPage>;
+  return (
+    <BetaPage title={title} subtitle={`ID: ${uuid}`} linkCloseTo="/beta">
+      {error ? renderError() : renderBody()}
+    </BetaPage>
+  );
 };
 
 export default BetaProject;

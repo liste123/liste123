@@ -101,6 +101,7 @@ export const useBetaProject = () => {
           message: "Project not found"
         }
       : null,
+    uuid,
     title: data?.project?.title,
     data: _data,
     update
