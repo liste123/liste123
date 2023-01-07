@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Box, Stack, Button } from "@mui/material";
 import { usePubSub } from "../utils/use-pubsub";
+import AddTask from "../components/AddTask";
 import TreeTable from "../TreeTable";
 import backlog from "../backlog.json";
-import { useKeyboardEvent } from "../utils/use-keyboard-event";
 
 const empty = {
   collapse: [],
@@ -20,39 +20,6 @@ const DEFAULT_DOCUMENT = true
         { id: 3, parentId: null, title: "fii", status: false }
       ]
     };
-
-const Input = ({ shortcut, onSubmit, scrollOptions = {}, ...props }) => {
-  const inputRef = useRef();
-
-  // Prepend items from input
-  useKeyboardEvent(
-    "enter",
-    (evt) => {
-      onSubmit(evt.target.value);
-      evt.target.value = "";
-      evt.target.focus();
-      evt.target.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-        ...scrollOptions
-      });
-    },
-    { target: inputRef }
-  );
-
-  useKeyboardEvent(shortcut, () => {
-    inputRef.current.focus();
-    inputRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-      ...scrollOptions
-    });
-  });
-
-  return <input {...props} ref={inputRef} type="text" />;
-};
 
 const DevPage = () => {
   const { subscribe } = usePubSub();
@@ -129,7 +96,7 @@ const DevPage = () => {
       <Stack direction="row" spacing={4}>
         <Box sx={{ flex: 1 }}>
           <Stack spacing={2}>
-            <Input
+            <AddTask
               placeholder={"(Ctrl + P) Prepend a new item"}
               shortcut={"Ctrl + p"}
               onSubmit={(title) =>
@@ -145,7 +112,7 @@ const DevPage = () => {
               <Box>loading project...</Box>
             )}
 
-            <Input
+            <AddTask
               placeholder={"(Ctrl + A) Append a new item"}
               shortcut={"Ctrl + a"}
               onSubmit={(title) =>
