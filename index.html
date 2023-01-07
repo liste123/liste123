@@ -13,6 +13,11 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
     />
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      window.__IMPORT_ACCOUNT__ = params.get('accountID');
+    </script>
   </head>
   <body>
     <div id="root"></div>

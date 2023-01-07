@@ -7,3 +7,4 @@
 - Implement `TextField` for adding new tasks
 - Explicitly add a submit button for adding new tasks
 - Improve `BetaPage` component with title, subtitle, and actions
+- Import AccountID from URL parameter (step toward sharing the account with another device)

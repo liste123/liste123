@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { usePushID } from "../utils/use-pushid";
 import { BetaAccountContext } from "./with-beta-account";
@@ -34,9 +34,11 @@ export const useBetaAccount = () => {
       setAccountID(accountId);
     });
 
+  // Full page reload will remove any parameter
+  // as so remove a bad accountID url
   const resetAccount = () => {
     localStorage.removeItem("liste123.beta.account.id");
-    location.reload();
+    window.location = window.location.href.split("?")[0];
   };
 
   return {

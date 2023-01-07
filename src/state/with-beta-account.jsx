@@ -32,6 +32,12 @@ export const withBetaAccount = (Component) => () => {
    */
   useEffectDebounced(
     () => {
+      // Import AccountID from URL parameter:
+      if (window.__IMPORT_ACCOUNT__) {
+        setAccountID(window.__IMPORT_ACCOUNT__);
+        return;
+      }
+
       // Load AccountID from local storage:
       const accountID = localStorage.getItem("liste123.beta.account.id");
       if (accountID) {
