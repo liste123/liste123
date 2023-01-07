@@ -54,22 +54,21 @@ export const useBetaProject = () => {
   const lastUpdate = useRef(null);
 
   // GraphQL
+  const variables = {
+    variables: { uuid }
+  };
   const [updateProject] = useMutation(UPDATE_PROJECT);
-  const { loading, error, data } = useQuery(LOAD_PROJECT, {
-    variables: { uuid }
-  });
-  const { data: updateData } = useSubscription(PROJECT_SUB, {
-    variables: { uuid }
-  });
+  const { loading, error, data } = useQuery(LOAD_PROJECT, variables);
+  const { data: updateData } = useSubscription(PROJECT_SUB, variables);
 
-  // Update internal data only if changed from the outside
+  // Update internal data on full reload:
   useEffect(() => {
     if (!data) return;
     lastUpdate.current = data.project.etag;
     setData(data.project.data);
   }, [data]);
 
-  // Update internal data only if changed from the outside
+  // Update internal data from the subscription on changes:
   useEffect(() => {
     if (!updateData) return;
     console.log("@got updated", updateData);
