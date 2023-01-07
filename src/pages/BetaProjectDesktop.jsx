@@ -6,15 +6,14 @@ import {
   Alert,
   AlertTitle,
   Button,
-  Popover,
   List,
   ListItem,
   ListItemText,
   IconButton
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import QrCode2Icon from "@mui/icons-material/QrCode2";
-import { QRCode } from "react-qrcode-logo";
+// import QrCode2Icon from "@mui/icons-material/QrCode2";
+// import { QRCode } from "react-qrcode-logo";
 
 import { useBetaAccount } from "../state/use-beta-account";
 import { useBetaProject } from "../state/use-beta-project";
@@ -88,28 +87,8 @@ const BetaProject = () => {
     <BetaPage
       title={title}
       subtitle={`ID: ${uuid}`}
-      linkCloseTo={`/beta/${uname}`}
-      actionsLeft={
-        <IconButton
-          edge="end"
-          aria-label="delete"
-          onClick={(e) => setProjectMenu(e.currentTarget)}
-        >
-          <QrCode2Icon />
-        </IconButton>
-      }
-    >
-      {error ? renderError() : renderBody()}
-
-      <Popover
-        open={Boolean(projectMenu)}
-        anchorEl={projectMenu}
-        onClose={() => setProjectMenu(null)}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left"
-        }}
-      >
+      linkBackTo={`/beta/${uname}`}
+      menu={
         <List>
           <ListItem
             secondaryAction={
@@ -129,7 +108,7 @@ const BetaProject = () => {
               }
             />
           </ListItem>
-          <ListItem
+          {/* <ListItem
             secondaryAction={
               <IconButton
                 edge="end"
@@ -154,9 +133,11 @@ const BetaProject = () => {
               primary="Share via QRCode:"
               secondary={<QRCode value={projectURL} size={180} />}
             />
-          </ListItem>
+          </ListItem> */}
         </List>
-      </Popover>
+      }
+    >
+      {error ? renderError() : renderBody()}
     </BetaPage>
   );
 };
