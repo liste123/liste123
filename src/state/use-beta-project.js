@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { gql, useSubscription, useMutation, useQuery } from "@apollo/client";
 import { usePushID } from "../utils/use-pushid";
+import { useBetaAccount } from "./use-beta-account";
 
 const PROJECT_SUB = gql`
   subscription GetProject($uuid: String!) {
@@ -52,6 +53,7 @@ export const useBetaProject = () => {
   const { uuid } = useParams();
   const [_data, setData] = useState(null);
   const lastUpdate = useRef(null);
+  const { uname, accountID } = useBetaAccount();
 
   // GraphQL
   const variables = {
@@ -102,8 +104,10 @@ export const useBetaProject = () => {
         }
       : null,
     uuid,
+    projectID: uuid,
     title: data?.project?.title,
     data: _data,
-    update
+    update,
+    projectURL: `${window.location.origin}/beta/${uname}/${uuid}?accountID=${accountID}`
   };
 };

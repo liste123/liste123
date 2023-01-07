@@ -11,3 +11,4 @@
 - Improve layouting and Account guarding
 - Share account via QR Code
 - Copy share url to clipboard
+- Share project via QR Code and Clipboard

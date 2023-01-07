@@ -106,7 +106,7 @@ const BetaPublicLayout = () => {
                   <ListItem>
                     <ListItemText
                       primary="Share via QRCode:"
-                      secondary={<QRCode value={accountURL} />}
+                      secondary={<QRCode value={accountURL} size={180} />}
                     />
                   </ListItem>
                   <ListItem>
