@@ -16,9 +16,11 @@ const Node = ({ node }) => {
       direction={"row"}
       spacing={1}
       onClick={requestFocus}
-      style={{
-        border: hasFocus ? "1px solid #666" : "1px solid rgb(18, 18, 18)"
-      }}
+      className={[
+        "treetable-item",
+        "treetable-item-node",
+        ...[hasFocus ? "treetable-item-focus" : null]
+      ].join(" ")}
     >
       <Checkbox value={isCompleted} />
       <Title node={node} />

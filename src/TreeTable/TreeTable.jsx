@@ -1,5 +1,6 @@
 import Nestable from "react-nestable";
 import "react-nestable/dist/styles/index.css";
+import "./nestable.css";
 
 import { withTreeTable } from "./state/Context";
 import { useNodes } from "./state/use-nodes";
