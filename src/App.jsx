@@ -6,14 +6,14 @@ import { loadable } from "./loadable";
 
 // Lazy Loaded Routes
 const PublicLayout = loadable(() => import("./layouts/PublicLayout"));
-const HomePage = loadable(() => import("./Pages/HomePage"));
-const DevPage = loadable(() => import("./Pages/DevPage"));
+const HomePage = loadable(() => import("./pages/HomePage"));
+const DevPage = loadable(() => import("./pages/DevPage"));
 
 const BetaLayout = loadable(() => import("./layouts/BetaLayout"));
-const BetaAccount = loadable(() => import("./Pages/BetaAccount"));
-const BetaSignup = loadable(() => import("./Pages/BetaSignup"));
-const BetaProjectCreate = loadable(() => import("./Pages/BetaProjectCreate"));
-const BetaProjectDesktop = loadable(() => import("./Pages/BetaProjectDesktop"));
+const BetaAccount = loadable(() => import("./pages/BetaAccount"));
+const BetaSignup = loadable(() => import("./pages/BetaSignup"));
+const BetaProjectCreate = loadable(() => import("./pages/BetaProjectCreate"));
+const BetaProjectDesktop = loadable(() => import("./pages/BetaProjectDesktop"));
 
 // TODO: get parameters at build time
 const nhost = new NhostClient({
