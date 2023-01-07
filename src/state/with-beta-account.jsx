@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 
@@ -24,7 +24,7 @@ export const withBetaAccount = (Component) => () => {
   const [accountID, setAccountID] = useState(null);
   const [error, setError] = useState(null);
 
-  const [loadAccount, { refetch: reloadAccount, ...loadStatus }] =
+  const [loadAccount, { loading, refetch: reloadAccount, ...loadStatus }] =
     useLazyQuery(LOAD_ACCOUNT);
 
   /**
@@ -72,21 +72,10 @@ export const withBetaAccount = (Component) => () => {
     { delay: 0, skipFirst: true }
   );
 
-  // TODO: fix it up!
-  // This is horrible, we definitely need a different layout for the
-  // signup pipeline to simplify this and avoid the flickering!
-  const isLoading = () => {
-    if (accountID && loadStatus.data?.account) return false;
-    if (accountID && (loadStatus.error || error)) return false;
-    if (!accountID) return false;
-
-    return true;
-  };
-
   return (
     <BetaAccountContext.Provider
       value={{
-        isLoading: isLoading(),
+        loading,
         error: loadStatus.error || error,
         accountID,
         setAccountID,

@@ -14,7 +14,7 @@ export const BetaSignup = () => {
 
   // Redirect after gaining access to the account:
   if (accountID) {
-    return <Navigate to="/beta/" />;
+    return <Navigate to="/beta/@me" />;
   }
 
   return (

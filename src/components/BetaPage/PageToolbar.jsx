@@ -9,10 +9,12 @@ export const PageToolbar = ({
   subtitle,
   linkBackTo,
   linkCloseTo,
-  actions
+  actions,
+  actionsLeft
 }) => {
   const renderLeftBox = () => {
     if (linkBackTo) return <LinkBack to={linkBackTo} />;
+    if (actionsLeft) return <Stack>{actionsLeft}</Stack>;
   };
 
   const renderRightBox = () => {
@@ -20,7 +22,14 @@ export const PageToolbar = ({
     if (actions) return <Stack>{actions}</Stack>;
   };
 
-  if (!title && !subtitle && !linkBackTo && !linkCloseTo && !actions)
+  if (
+    !title &&
+    !subtitle &&
+    !linkBackTo &&
+    !linkCloseTo &&
+    !actions &&
+    !actionsLeft
+  )
     return null;
 
   return (

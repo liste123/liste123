@@ -1,4 +1,5 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
+import { useParams } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { usePushID } from "../utils/use-pushid";
 import { BetaAccountContext } from "./with-beta-account";
@@ -12,6 +13,7 @@ const CREATE_ACCOUNT = gql`
 `;
 
 export const useBetaAccount = () => {
+  const { uname } = useParams();
   const { generatePushID } = usePushID();
   const [createFn] = useMutation(CREATE_ACCOUNT);
   const { setAccountID, loadAccount, ...state } =
@@ -43,6 +45,8 @@ export const useBetaAccount = () => {
 
   return {
     ...state,
+    uname,
+    accountURL: `${window.location.origin}?accountID=${state.accountID}`,
     createAccount,
     redeemAccount,
     resetAccount
