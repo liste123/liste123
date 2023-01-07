@@ -10,10 +10,14 @@ import {
   Popover,
   List,
   ListItem,
-  ListItemText
+  ListItemText,
+  IconButton,
+  Button
 } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { QRCode } from "react-qrcode-logo";
 
+import { useClipboard } from "../utils/use-clipboard";
 import { withBetaAccount } from "../state/with-beta-account";
 import { useBetaAccount } from "../state/use-beta-account";
 
@@ -24,8 +28,9 @@ const darkTheme = createTheme({
 });
 
 const BetaPublicLayout = () => {
+  const { clip } = useClipboard();
   const [accountMenu, setAccountMenu] = useState(null);
-  const { uname, accountID, accountURL } = useBetaAccount();
+  const { uname, accountID, accountURL, resetAccount } = useBetaAccount();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -56,10 +61,35 @@ const BetaPublicLayout = () => {
                 }}
               >
                 <List>
-                  <ListItem>
-                    <ListItemText primary="AccountID" secondary={accountID} />
+                  <ListItem
+                    secondaryAction={
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => clip(accountID)}
+                      >
+                        <ContentCopyIcon />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemText
+                      primary="AccountID"
+                      secondary={
+                        <span onClick={() => clip(accountID)}>{accountID}</span>
+                      }
+                    />
                   </ListItem>
-                  <ListItem>
+                  <ListItem
+                    secondaryAction={
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => clip(accountURL)}
+                      >
+                        <ContentCopyIcon />
+                      </IconButton>
+                    }
+                  >
                     <ListItemText
                       primary="Share via url:"
                       secondary={
@@ -78,6 +108,11 @@ const BetaPublicLayout = () => {
                       primary="Share via QRCode:"
                       secondary={<QRCode value={accountURL} />}
                     />
+                  </ListItem>
+                  <ListItem>
+                    <Button fullWidth onClick={resetAccount}>
+                      Logout
+                    </Button>
                   </ListItem>
                 </List>
               </Popover>
