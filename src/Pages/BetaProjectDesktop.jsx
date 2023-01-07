@@ -53,7 +53,6 @@ const BetaProject = () => {
 
   const [src, setSrc] = useState(JSON.stringify(data, null, 2));
   useEffect(() => {
-    console.log("@setSrc");
     setSrc(JSON.stringify(data, null, 2));
   }, [data]);
 

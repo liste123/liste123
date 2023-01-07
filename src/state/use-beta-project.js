@@ -48,7 +48,7 @@ export const useBetaProject = () => {
   // Update internal data only if changed from the outside
   useEffect(() => {
     if (!data) return;
-    if (data.project?.etag !== lastUpdate.current?.etag) {
+    if (data.project?.etag !== lastUpdate.current) {
       setData(data.project.data);
     }
   }, [data]);
