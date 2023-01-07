@@ -7,6 +7,7 @@ import { loadable } from "./loadable";
 // Lazy Loaded Routes
 const PublicLayout = loadable(() => import("./layouts/PublicLayout"));
 const HomePage = loadable(() => import("./Pages/HomePage"));
+const DevPage = loadable(() => import("./Pages/DevPage"));
 
 const BetaLayout = loadable(() => import("./layouts/BetaLayout"));
 const BetaAccount = loadable(() => import("./Pages/BetaAccount"));
@@ -23,11 +24,15 @@ const nhost = new NhostClient({
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <HomePage />
+  },
+  {
+    path: "/dev",
     element: <PublicLayout />,
     children: [
       {
         index: true,
-        element: <HomePage />
+        element: <DevPage />
       }
     ]
   },

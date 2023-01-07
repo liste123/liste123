@@ -58,7 +58,7 @@ const BetaProject = () => {
   }, [data]);
 
   if (loading) {
-    return null;
+    return <BetaPage>loading project...</BetaPage>;
   }
 
   const onChange = (data) => update(title, data);
@@ -80,40 +80,38 @@ const BetaProject = () => {
   );
 
   const renderBody = () => (
-    <>
-      <Stack spacing={2}>
-        <Stack direction={"row"}>
-          <Typography variant="h4" flexGrow={1}>
-            {title}
-          </Typography>
-          <Button component={Link} to="/beta/">
-            Go to projects
-          </Button>
-        </Stack>
-
-        <Input
-          placeholder={"(Ctrl + P) Prepend a new item"}
-          shortcut={"Ctrl + p"}
-          onSubmit={(title) =>
-            treeTableRef.current.prepend({
-              title
-            })
-          }
-        />
-
-        <TreeTable ref={treeTableRef} data={data} onChange={onChange} />
-
-        <Input
-          placeholder={"(Ctrl + A) Append a new item"}
-          shortcut={"Ctrl + a"}
-          onSubmit={(title) =>
-            treeTableRef.current.append({
-              title
-            })
-          }
-        />
+    <Stack spacing={2}>
+      <Stack direction={"row"}>
+        <Typography variant="h4" flexGrow={1}>
+          {title}
+        </Typography>
+        <Button component={Link} to="/beta/">
+          Go to projects
+        </Button>
       </Stack>
-    </>
+
+      <Input
+        placeholder={"(Ctrl + P) Prepend a new item"}
+        shortcut={"Ctrl + p"}
+        onSubmit={(title) =>
+          treeTableRef.current.prepend({
+            title
+          })
+        }
+      />
+
+      <TreeTable ref={treeTableRef} data={data} onChange={onChange} />
+
+      <Input
+        placeholder={"(Ctrl + A) Append a new item"}
+        shortcut={"Ctrl + a"}
+        onSubmit={(title) =>
+          treeTableRef.current.append({
+            title
+          })
+        }
+      />
+    </Stack>
   );
 
   return <BetaPage>{error ? renderError() : renderBody()}</BetaPage>;
