@@ -3,6 +3,8 @@
 - Improve BetaPage title size in mobile
 - Make BetaPage title's sticky
 - Link to root from App's title
+- Improve list of shared projects
+- Add dummy project when creating a new account
 
 ## 2023, Jan 07th
 
