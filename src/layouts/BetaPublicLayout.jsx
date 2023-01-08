@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
@@ -38,14 +38,24 @@ const BetaPublicLayout = () => {
 
       <AppBar position="fixed">
         <Toolbar variant="dense">
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              flexGrow: 1,
+              color: (theme) =>
+                theme.palette.getContrastText(theme.palette.background.default),
+              textDecoration: "none"
+            }}
+            component={Link}
+            to="/"
+          >
             Liste123{" "}
             <small style={{ fontWeight: "normal", fontSize: 10 }}>beta</small>
           </Typography>
           {uname && (
             <>
               <Stack
-                sx={{ fontSize: 14, alignItems: "flex-end" }}
+                sx={{ fontSize: 14, alignItems: "flex-end", cursor: "pointer" }}
                 onClick={(e) => setAccountMenu(e.currentTarget)}
               >
                 <b>AccountID</b>
