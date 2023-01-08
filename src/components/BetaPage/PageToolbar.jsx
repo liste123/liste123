@@ -50,7 +50,7 @@ export const PageToolbar = ({
     !actionsLeft &&
     !menu
   )
-    return "**";
+    return "";
 
   return (
     <>

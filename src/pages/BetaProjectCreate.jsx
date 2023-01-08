@@ -82,7 +82,7 @@ const BetaProjectCreate = () => {
       await addOwnProject({
         variables: {
           accountID,
-          project: { [projectID]: res1.data.project }
+          project: projectID
         }
       });
 
