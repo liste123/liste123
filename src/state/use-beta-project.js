@@ -19,7 +19,7 @@ const PROJECT_SUB = gql`
 `;
 
 const LOAD_PROJECT = gql`
-  query GetProject($uuid: String!) {
+  query GetProjectFull($uuid: String!) {
     project: beta_projects_by_pk(uuid: $uuid) {
       uuid
       title

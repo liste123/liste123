@@ -1,4 +1,4 @@
-import { useBetaAccount } from "../state/use-beta-account";
+import { useBetaAccount } from "../../state/use-beta-account";
 import {
   List,
   ListItem,
@@ -15,8 +15,9 @@ import AddIcon from "@mui/icons-material/Add";
 import WorkIcon from "@mui/icons-material/Work";
 import { Link } from "react-router-dom";
 
-import { useScreenSize } from "../utils/use-screen-size";
-import BetaPage from "../components/BetaPage";
+import { useScreenSize } from "../../utils/use-screen-size";
+import BetaPage from "../../components/BetaPage";
+import { ProjectItem } from "./ProjectItem";
 
 const BetaAccount = () => {
   const { isBigScreen, isSmallScreen } = useScreenSize();
@@ -45,42 +46,12 @@ const BetaAccount = () => {
       <Paper>
         <List>
           <ListSubheader>My Projects</ListSubheader>
-          {Object.values(ownProjects).map((project) => (
-            <ListItem
-              key={project.projectID}
-              to={project.projectID}
-              component={Link}
-            >
-              <ListItemAvatar>
-                <Avatar>
-                  <WorkIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={project.title}
-                primaryTypographyProps={{ color: "white" }}
-                secondary={project.updated_at}
-              />
-            </ListItem>
+          {ownProjects.map((projectId) => (
+            <ProjectItem key={projectId} projectId={projectId} />
           ))}
           <ListSubheader>Shared Projects</ListSubheader>
-          {Object.values(sharedProjects).map((project) => (
-            <ListItem
-              key={project.projectID}
-              to={project.projectID}
-              component={Link}
-            >
-              <ListItemAvatar>
-                <Avatar>
-                  <WorkIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={project.title}
-                primaryTypographyProps={{ color: "white" }}
-                secondary={project.updated_at}
-              />
-            </ListItem>
+          {sharedProjects.map((projectId) => (
+            <ProjectItem key={projectId} projectId={projectId} showOwner />
           ))}
         </List>
       </Paper>

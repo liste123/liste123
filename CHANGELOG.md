@@ -2,6 +2,7 @@
 - Add helpers text like "when..." around the TreeComponent
 - Improve BetaPage title size in mobile
 - Make BetaPage title's sticky
+- Link to root from App's title
 
 ## 2023, Jan 07th
 
