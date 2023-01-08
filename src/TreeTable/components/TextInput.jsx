@@ -13,7 +13,7 @@ const TextInput = ({ value, onChange, onBlur, ...props }) => {
 
   // Debounced "onChage"
   useEffectDebounced(() => onChange(_value), [_value], {
-    delay: 250,
+    delay: 500,
     skipFirst: true
   });
 

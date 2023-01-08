@@ -23,7 +23,7 @@ const Node = ({ node }) => {
       ].join(" ")}
     >
       <Checkbox value={isCompleted} />
-      <Title node={node} />
+      <Title node={node} helpMode />
       <button onClick={toggleCollapse}>{isCollapsed ? "+" : "-"}</button>{" "}
     </Stack>
   );

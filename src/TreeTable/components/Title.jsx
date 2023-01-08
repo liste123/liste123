@@ -4,7 +4,7 @@ import { useEditMode } from "../state/use-edit-mode";
 import { Box } from "@mui/material";
 import Input from "./TextInput";
 
-export const Title = ({ node }) => {
+export const Title = ({ node, helpMode = false }) => {
   const { isEditMode, requestEditMode, requestViewMode } = useEditMode(node);
 
   const {
@@ -36,6 +36,7 @@ export const Title = ({ node }) => {
   ) : (
     <Box onClick={requestEditMode} sx={{ flex: 1 }}>
       {title}
+      {helpMode && <i>{" when..."}</i>}
     </Box>
   );
 };

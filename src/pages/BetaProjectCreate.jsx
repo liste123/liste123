@@ -1,10 +1,10 @@
 import { gql, useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { Button, TextField, Stack, Typography } from "@mui/material";
 import { usePushID } from "../utils/use-pushid";
 import { useBetaAccount } from "../state/use-beta-account";
+import { useScreenSize } from "../utils/use-screen-size";
 import { Link } from "react-router-dom";
-
+import { Button, TextField, Stack } from "@mui/material";
 import BetaPage from "../components/BetaPage";
 
 const CREATE_PROJECT = gql`
@@ -43,6 +43,7 @@ const ADD_OWN_PROJECT = gql`
 `;
 
 const BetaProjectCreate = () => {
+  const { isBigScreen } = useScreenSize();
   const navigate = useNavigate();
   const { generatePushID } = usePushID();
   const { uname, accountID, reloadAccount } = useBetaAccount();
@@ -95,17 +96,18 @@ const BetaProjectCreate = () => {
   };
 
   return (
-    <BetaPage>
+    <BetaPage title="Create New Project" linkBackTo={`/beta/${uname}`}>
       <Stack component="form" spacing={2} onSubmit={handleSubmit}>
-        <Typography variant="h4">Create New Project:</Typography>
         <TextField name="title" placeholder="Project's title" />
         <Stack direction={"row"} justifyContent={"flex-end"} spacing={2}>
           <Button variant="contained" type="submit">
             Create
           </Button>
-          <Button component={Link} to={`/beta/${uname}`}>
-            Cancel
-          </Button>
+          {isBigScreen && (
+            <Button component={Link} to={`/beta/${uname}`}>
+              Cancel
+            </Button>
+          )}
         </Stack>
       </Stack>
     </BetaPage>

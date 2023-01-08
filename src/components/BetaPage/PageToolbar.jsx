@@ -1,11 +1,15 @@
-import { Stack } from "@mui/material";
+import "./PageToolbar.css";
+import { Stack, Box, Toolbar } from "@mui/material";
 
+import { useScreenSize } from "../../utils/use-screen-size";
 import { PageTitle } from "./PageTitle";
 import { LinkBack } from "./LinkBack";
 import { LinkClose } from "./LinkClose";
 import { Menu } from "./Menu";
 
 export const PageToolbar = ({
+  sticky,
+  placeholder,
   title,
   subtitle,
   linkBackTo,
@@ -14,6 +18,7 @@ export const PageToolbar = ({
   actionsLeft,
   menu
 }) => {
+  const { isSmallScreen } = useScreenSize();
   const renderLeftBox = () => {
     if (!actionsLeft && !linkBackTo) return;
     return (
@@ -45,13 +50,40 @@ export const PageToolbar = ({
     !actionsLeft &&
     !menu
   )
-    return null;
+    return "**";
 
   return (
-    <Stack direction={"row"} spacing={2} alignItems={"center"} sx={{ mb: 4 }}>
-      {renderLeftBox()}
-      <PageTitle title={title} subtitle={subtitle} />
-      {renderRightBox()}
-    </Stack>
+    <>
+      <Box
+        position={sticky ? "fixed" : "inline"}
+        sx={{ width: "100%", zIndex: 2 }}
+        className="beta-page--toolbar"
+      >
+        <Toolbar
+          sx={{
+            backgroundColor: "background.default"
+          }}
+          style={{ minHeight: isSmallScreen ? 80 : 100 }}
+        >
+          <Stack
+            direction={"row"}
+            spacing={2}
+            alignItems={"center"}
+            flexGrow={1}
+          >
+            {renderLeftBox()}
+            <PageTitle title={title} subtitle={subtitle} />
+            {renderRightBox()}
+          </Stack>
+          {placeholder && ""}
+        </Toolbar>
+      </Box>
+      {sticky && (
+        <Toolbar
+          sx={{ pb: 3, pt: 3 }}
+          style={{ minHeight: isSmallScreen ? 80 : 100 }}
+        />
+      )}
+    </>
   );
 };

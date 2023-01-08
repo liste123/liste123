@@ -18,6 +18,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 // import QrCode2Icon from "@mui/icons-material/QrCode2";
 // import { QRCode } from "react-qrcode-logo";
 
+import { useScreenSize } from "../utils/use-screen-size";
 import { useBetaAccount } from "../state/use-beta-account";
 import { useBetaProject } from "../state/use-beta-project";
 import { useClipboard } from "../utils/use-clipboard";
@@ -26,6 +27,7 @@ import AddTask from "../components/AddTask";
 import TreeTable from "../TreeTable";
 
 const BetaProject = () => {
+  const { isBigScreen } = useScreenSize();
   const { clip } = useClipboard();
   const treeTableRef = useRef();
   const { uname } = useBetaAccount();
@@ -70,6 +72,7 @@ const BetaProject = () => {
   return (
     <BetaPage
       title={title}
+      subtitle={`Shall be completed when...`}
       linkBackTo={`/beta/${uname}`}
       menu={
         <List>

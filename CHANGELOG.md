@@ -1,3 +1,8 @@
+## 2023, Jan 08th
+- Add helpers text like "when..." around the TreeComponent
+- Improve BetaPage title size in mobile
+- Make BetaPage title's sticky
+
 ## 2023, Jan 07th
 
 - Improved loading times by fetching the project data using a query and starting the subscription only for updates

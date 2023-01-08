@@ -120,7 +120,7 @@ const BetaPublicLayout = () => {
           )}
         </Toolbar>
       </AppBar>
-      <Toolbar />
+      <Toolbar variant="dense" />
       <Outlet />
     </ThemeProvider>
   );

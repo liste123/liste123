@@ -4,10 +4,14 @@ import { PageToolbar } from "./PageToolbar";
 
 const BetaPage = ({ children, ...props }) => {
   return (
-    <Box m={2} marginLeft={3}>
-      <PageToolbar {...props} />
-      {children}
+    // <Box>
+    <Box>
+      <PageToolbar sticky {...props} />
+      <Box p={2} pl={3} pr={3}>
+        {children}
+      </Box>
     </Box>
+    // </Box>
   );
 };
 
