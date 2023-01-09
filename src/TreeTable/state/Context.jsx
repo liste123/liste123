@@ -2,7 +2,17 @@ import { createContext, useState, useRef, forwardRef } from "react";
 
 import { arrayToTree } from "performant-array-to-tree";
 import { useEffectDebounced } from "../../utils/use-effect-debounced";
-import { flat, createNode } from "../deeplist";
+import {
+  flat,
+  createNode,
+  appendAfter,
+  appendInto,
+  getNodeById,
+  getNextNodeById,
+  getPrevNodeById,
+  moveNodeInById,
+  moveNodeOutById
+} from "../deeplist";
 import { useCreatePubSub } from "../../utils/use-pubsub";
 import { useKeyboard } from "./use-keyboard";
 
@@ -41,7 +51,7 @@ export const withTreeTable = (Component) =>
         setCollapse(data.collapse);
 
         // Set focus on initial item:
-        // focus === null && setFocus(_nodes[0].id);
+        focus === null && setFocus(_nodes[0].id);
 
         console.log("@withTreeTable::nodes::reset");
       },
@@ -93,14 +103,25 @@ export const withTreeTable = (Component) =>
       { delay: 0 }
     );
 
-    useKeyboard({ nodes, focus, setFocus });
+    useKeyboard(ref);
 
     /**
      * Expose programmatic API
      */
     ref.current = {
+      getActiveNodeId: () => focus,
+      getActiveNode: () => getNodeById(nodes, focus),
+      requestEditMode: () => setIsEditMode(true),
+      requestFocusPrev: () => setFocus(getPrevNodeById(nodes, focus)),
+      requestFocusNext: () => setFocus(getNextNodeById(nodes, focus)),
       prepend: (payload) => setNodes((curr) => [createNode(payload), ...curr]),
-      append: (payload) => setNodes((curr) => [...curr, createNode(payload)])
+      append: (payload) => setNodes((curr) => [...curr, createNode(payload)]),
+      appendAfter: (nodeId, payload) =>
+        setNodes(appendAfter(nodes, nodeId, payload)),
+      appendInto: (nodeId, payload) =>
+        setNodes(appendInto(nodes, nodeId, payload)),
+      requestMoveIn: (nodeId) => setNodes(moveNodeInById(nodes, nodeId)),
+      requestMoveOut: (nodeId) => setNodes(moveNodeOutById(nodes, nodeId))
     };
 
     return (

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 
 const DEFAULT_OPTIONS = {
+  exact: false, // check that combo and event have same length
   preventDefault: true,
   stopPropagation: true,
   debounceDelay: 0,
@@ -23,7 +24,7 @@ export const useKeyboardEvent = (combo = "", fn, options = DEFAULT_OPTIONS) => {
   const setupRef = useRef(null);
   const debounceRef = useRef(null);
 
-  const { target, preventDefault, stopPropagation, debounceDelay } = {
+  const { exact, target, preventDefault, stopPropagation, debounceDelay } = {
     ...DEFAULT_OPTIONS,
     ...options
   };
@@ -40,6 +41,8 @@ export const useKeyboardEvent = (combo = "", fn, options = DEFAULT_OPTIONS) => {
       ].filter(($) => Boolean($));
 
       // console.log(eventTokens);
+      // Strict check on "exact" option
+      if (exact && comboTokens.length !== eventTokens.length) return;
 
       // All comboTokens must be present in the eventTokens
       if (comboTokens.every(($) => eventTokens.includes($))) {
@@ -50,10 +53,8 @@ export const useKeyboardEvent = (combo = "", fn, options = DEFAULT_OPTIONS) => {
         debounceRef.current = setTimeout(
           () =>
             fn(evt, {
-              tokens: {
-                combo: comboTokens,
-                event: eventTokens
-              }
+              combo: comboTokens,
+              event: eventTokens
             }),
           debounceDelay
         );

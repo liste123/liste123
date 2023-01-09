@@ -1,23 +1,57 @@
 import { useKeyboardEvent } from "../../utils/use-keyboard-event";
 
-export const useKeyboard = ({ items, itemsMap, focus, setFocus }) => {
-  // Memoize data references for event handlers
-  // const data = useRef(null);
-  // useEffect(() => {
-  //   data.current = { items, itemsMap, focus };
-  // }, [items, itemsMap, focus]);
-  // useKeyboardEvent("ArrowDown", () => {
-  //   console.log("move focus down");
-  //   // const { items, itemsMap, focus } = data.current;
-  //   // const item = itemsMap[focus];
-  //   // // Set first item if nothing is focused
-  //   // if (!item) {
-  //   //   setFocus(items[0].id);
-  //   //   return;
-  //   // }
-  //   // // if (item.children) {
-  //   // console.log(item);
-  //   // console.log(items);
-  //   // // }
-  // });
+export const useKeyboard = (apiRef) => {
+  useKeyboardEvent("meta + e", () => apiRef.current.requestEditMode(), {
+    exact: true
+  });
+
+  useKeyboardEvent(
+    "meta + Enter",
+    () => {
+      const activeNode = apiRef.current.getActiveNodeId();
+      apiRef.current.appendAfter(activeNode, {});
+    },
+    { exact: true }
+  );
+
+  useKeyboardEvent(
+    "shift + meta + Enter",
+    () => {
+      const activeNode = apiRef.current.getActiveNodeId();
+      apiRef.current.appendInto(activeNode, {});
+    },
+    { exact: true }
+  );
+
+  useKeyboardEvent(
+    "meta + ArrowDown",
+    () => apiRef.current.requestFocusNext(),
+    { exact: true }
+  );
+
+  useKeyboardEvent("meta + ArrowUp", () => apiRef.current.requestFocusPrev(), {
+    exact: true
+  });
+
+  useKeyboardEvent(
+    "meta + ArrowLeft",
+    () => {
+      const activeNode = apiRef.current.getActiveNodeId();
+      apiRef.current.requestMoveIn(activeNode);
+    },
+    {
+      exact: true
+    }
+  );
+
+  useKeyboardEvent(
+    "meta + ArrowRight",
+    () => {
+      const activeNode = apiRef.current.getActiveNodeId();
+      apiRef.current.requestMoveOut(activeNode);
+    },
+    {
+      exact: true
+    }
+  );
 };

@@ -81,3 +81,33 @@ export const isNodeCompleted = (node) => {
   if (!node.children.length) return node.status;
   return node.children.every(isNodeCompleted);
 };
+
+export const appendAfter = (nodes, nodeId, payload) => {
+  console.log("@deeplist.appendAfter - coming soon...", nodeId, payload);
+  return nodes;
+};
+
+export const appendInto = (nodes, nodeId, payload) => {
+  console.log("@deeplist.appendInto - coming soon...", nodeId, payload);
+  return nodes;
+};
+
+export const moveNodeInById = (nodes, nodeId) => {
+  console.log("@deeplist.moveNodeInById - coming soon...", nodeId);
+  return nodes;
+};
+
+export const moveNodeOutById = (nodes, nodeId) => {
+  console.log("@deeplist.moveNodeOutById - coming soon...", nodeId);
+  return nodes;
+};
+
+export const getNextNodeById = (nodes, id) => {
+  console.log("@deeplist.getNextNodeById - coming soon...");
+  return id;
+};
+
+export const getPrevNodeById = (nodes, id) => {
+  console.log("@deeplist.getPrevNodeById - coming soon...");
+  return id;
+};
