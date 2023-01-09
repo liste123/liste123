@@ -21,6 +21,7 @@ const OPTIONS = {
 };
 
 export const useEffectDebounced = (fn, deps, options = OPTIONS) => {
+  const _timer = useRef(null);
   const isFirstLoad = useRef(true);
 
   const delay = options.delay || OPTIONS.delay;
@@ -33,7 +34,7 @@ export const useEffectDebounced = (fn, deps, options = OPTIONS) => {
       : delay;
 
   useEffect(() => {
-    const _timer = setTimeout(
+    _timer.current = setTimeout(
       () => {
         // Skip first execution
         if (isFirstLoad.current && skipFirst) {
@@ -48,6 +49,10 @@ export const useEffectDebounced = (fn, deps, options = OPTIONS) => {
       isFirstLoad.current ? firstDelay : delay
     );
 
-    return () => clearTimeout(_timer);
+    return () => clearTimeout(_timer.current);
   }, deps);
+
+  return {
+    cancel: () => clearTimeout(_timer.current)
+  };
 };

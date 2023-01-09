@@ -5,6 +5,7 @@ import { useClickOutside } from "../../utils/use-click-outside";
 
 const TextInput = ({ value, onChange, onBlur, ...props }) => {
   const inputRef = useRef();
+  const initialValue = useRef(value);
   const [_value, setValue] = useState(value);
 
   useEffect(() => {
@@ -12,14 +13,34 @@ const TextInput = ({ value, onChange, onBlur, ...props }) => {
   }, []);
 
   // Debounced "onChage"
-  useEffectDebounced(() => onChange(_value), [_value], {
-    delay: 500,
-    skipFirst: true
-  });
+  const { cancel: cancelOnChange } = useEffectDebounced(
+    () => onChange(_value),
+    [_value],
+    {
+      delay: 500,
+      skipFirst: true
+    }
+  );
 
   // Multiple ways to trigger the "onBlur" event
-  useKeyboardEvent("Escape", onBlur, { target: inputRef });
-  useKeyboardEvent("Enter", onBlur, { target: inputRef });
+  useKeyboardEvent(
+    "Escape",
+    () => {
+      cancelOnChange();
+      onChange(initialValue.current);
+      onBlur();
+    },
+    { target: inputRef }
+  );
+  useKeyboardEvent(
+    "Enter",
+    (evt) => {
+      cancelOnChange();
+      onChange(evt.target.value);
+      onBlur();
+    },
+    { target: inputRef }
+  );
   useClickOutside(inputRef, onBlur);
 
   return (
