@@ -14,6 +14,7 @@ const BetaPublicLayout = loadable(() => import("./layouts/BetaPublicLayout"));
 const BetaAccount = loadable(() => import("./pages/BetaAccount"));
 const BetaSignup = loadable(() => import("./pages/BetaSignup"));
 const BetaProjectCreate = loadable(() => import("./pages/BetaProjectCreate"));
+const BetaProjectImport = loadable(() => import("./pages/BetaProjectImport"));
 const BetaProjectDesktop = loadable(() => import("./pages/BetaProjectDesktop"));
 
 // TODO: get parameters at build time
@@ -51,6 +52,7 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <BetaAccount /> },
           { path: "create", element: <BetaProjectCreate /> },
+          { path: "import", element: <BetaProjectImport /> },
           { path: ":uuid", element: <BetaProjectDesktop /> }
         ]
       }

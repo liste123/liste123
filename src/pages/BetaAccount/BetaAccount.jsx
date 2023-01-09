@@ -2,6 +2,8 @@ import { useBetaAccount } from "../../state/use-beta-account";
 import {
   List,
   ListItem,
+  ListItemButton,
+  ListItemIcon,
   Button,
   Paper,
   ListItemText,
@@ -11,6 +13,7 @@ import {
   Fab
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 import WorkIcon from "@mui/icons-material/Work";
 import { Link } from "react-router-dom";
@@ -38,19 +41,39 @@ const BetaAccount = () => {
             variant="contained"
             startIcon={<AddIcon />}
           >
-            New&nbsp;project
+            New&nbsp;Project
           </Button>
         )
+      }
+      menu={
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to={`/beta/${uname}/create`}>
+              <ListItemIcon>
+                <AddIcon />
+              </ListItemIcon>
+              <ListItemText primary="New Project" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to={`/beta/${uname}/import`}>
+              <ListItemIcon>
+                <UploadFileIcon />
+              </ListItemIcon>
+              <ListItemText primary="Import Project" />
+            </ListItemButton>
+          </ListItem>
+        </List>
       }
     >
       <Paper>
         <List>
           <ListSubheader>My Projects</ListSubheader>
-          {ownProjects.map((projectId) => (
+          {[...new Set(ownProjects)].map((projectId) => (
             <ProjectItem key={projectId} projectId={projectId} />
           ))}
           <ListSubheader>Shared Projects</ListSubheader>
-          {sharedProjects.map((projectId) => (
+          {[...new Set(sharedProjects)].map((projectId) => (
             <ProjectItem key={projectId} projectId={projectId} showOwner />
           ))}
         </List>

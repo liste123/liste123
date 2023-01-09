@@ -15,8 +15,8 @@ import {
   Paper
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-// import QrCode2Icon from "@mui/icons-material/QrCode2";
-// import { QRCode } from "react-qrcode-logo";
+import QrCode2Icon from "@mui/icons-material/QrCode2";
+import { QRCode } from "react-qrcode-logo";
 
 import { useScreenSize } from "../utils/use-screen-size";
 import { useBetaAccount } from "../state/use-beta-account";
@@ -31,8 +31,16 @@ const BetaProject = () => {
   const { clip } = useClipboard();
   const treeTableRef = useRef();
   const { uname } = useBetaAccount();
-  const { loading, error, uuid, title, data, update, projectID, projectURL } =
-    useBetaProject();
+  const {
+    loading,
+    error,
+    uuid,
+    title,
+    data,
+    update,
+    projectID,
+    shareProjectURL
+  } = useBetaProject();
 
   // Used for the inline code editor
   const [showEditor, setShowEditor] = useState(false);
@@ -81,7 +89,7 @@ const BetaProject = () => {
               <IconButton
                 edge="end"
                 aria-label="delete"
-                onClick={() => clip(accountID)}
+                onClick={() => clip(projectID)}
               >
                 <ContentCopyIcon />
               </IconButton>
@@ -94,12 +102,12 @@ const BetaProject = () => {
               }
             />
           </ListItem>
-          {/* <ListItem
+          <ListItem
             secondaryAction={
               <IconButton
                 edge="end"
                 aria-label="delete"
-                onClick={() => clip(projectURL)}
+                onClick={() => clip(shareProjectURL)}
               >
                 <ContentCopyIcon />
               </IconButton>
@@ -108,7 +116,11 @@ const BetaProject = () => {
             <ListItemText
               primary="Share via url:"
               secondary={
-                <a href={projectURL} target="_blank" style={{ color: "white" }}>
+                <a
+                  href={shareProjectURL}
+                  target="_blank"
+                  style={{ color: "white" }}
+                >
                   Open in New Tab
                 </a>
               }
@@ -117,9 +129,9 @@ const BetaProject = () => {
           <ListItem>
             <ListItemText
               primary="Share via QRCode:"
-              secondary={<QRCode value={projectURL} size={180} />}
+              secondary={<QRCode value={shareProjectURL} size={180} />}
             />
-          </ListItem> */}
+          </ListItem>
           <ListItem>
             <Button fullWidth onClick={() => setShowEditor(true)}>
               Edit code
