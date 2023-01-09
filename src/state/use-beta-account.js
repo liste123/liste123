@@ -141,14 +141,15 @@ export const useBetaAccount = () => {
     setAccountID(accountID);
   };
 
-  const redeemAccount = (accountId) =>
-    loadAccount({ variables: { uuid: accountId } }).then((res) => {
-      if (!res.data.account) {
+  const redeemAccount = (accountID) =>
+    loadAccount({ variables: { accountID } }).then((res) => {
+      console.log(res);
+      if (!res.data.account[0].payload.success) {
         alert("Account not found");
         return;
       }
 
-      setAccountID(accountId);
+      setAccountID(accountID);
     });
 
   const resetAccount = () => {

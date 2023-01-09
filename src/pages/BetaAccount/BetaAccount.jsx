@@ -66,19 +66,19 @@ const BetaAccount = () => {
       <Paper>
         <List>
           <ListSubheader>My Projects</ListSubheader>
-          {[...new Set(ownProjects)].map((projectId) => (
+          {ownProjects.map((project) => (
             <ProjectItem
-              key={projectId}
-              projectId={projectId}
+              key={project.uuid}
+              project={project}
               onDeleteRequest={removeOwnProject}
             />
           ))}
           <ListSubheader>Shared Projects</ListSubheader>
-          {[...new Set(sharedProjects)].map((projectId) => (
+          {sharedProjects.map((project) => (
             <ProjectItem
               showOwner
-              key={projectId}
-              projectId={projectId}
+              key={project.uuid}
+              project={project}
               onDeleteRequest={removeSharedProject}
             />
           ))}

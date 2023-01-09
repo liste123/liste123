@@ -2,6 +2,7 @@
 - Share account is completed
 - Remove shared projects
 - Remove own project
+- Improved load account page with full SQL backend
 
 ## 2023, Jan 08th
 - Add helpers text like "when..." around the TreeComponent

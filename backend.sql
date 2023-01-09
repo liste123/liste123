@@ -209,3 +209,93 @@ END; $$
 LANGUAGE plpgsql VOLATILE;
 
 -- select * from "public"."beta_project_remove_shared"('-NL7HSPnxqvjcXqdHYX0', 'b');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DROP FUNCTION "public"."beta_get_account";
+CREATE OR REPLACE FUNCTION "public"."beta_get_account"(
+  "accountID" VARCHAR(20)
+)
+RETURNS SETOF "public"."beta_interface_json" AS $$
+#variable_conflict use_variable
+BEGIN
+  RETURN QUERY 
+  WITH
+  "account" AS (
+    SELECT * FROM "public"."beta_accounts"
+    WHERE "uuid" = "accountID"
+  ),
+  "own_projects" AS (
+    SELECT
+      "p"."uuid",
+      "p"."title",
+      "p"."updated_at"
+    FROM (SELECT jsonb_array_elements_text("own_projects")::text AS "uuid"FROM "account") AS "a"
+    LEFT JOIN LATERAL (
+      SELECT * FROM "public"."beta_projects"
+      WHERE "uuid" = "a"."uuid"
+        AND "deleted" IS NULL
+    ) "p" ON true
+  ),
+  "shared_projects" AS (
+    SELECT
+      "a"."uuid",
+      "p"."account_uuid",
+      "p"."title",
+      "p"."updated_at"
+    FROM (SELECT jsonb_array_elements_text("shared_projects")::text AS "uuid"FROM "account") AS "a"
+    LEFT JOIN LATERAL (
+      SELECT * FROM "public"."beta_projects"
+      WHERE "uuid" = "a"."uuid"
+        AND "deleted" IS NULL
+    ) "p" ON true
+  ),
+  "shared_projects1" AS (
+    SELECT
+      "p".*,
+      COALESCE("a".data->>'uname', 'John Doe') AS "uname"
+    FROM "shared_projects" AS "p"
+    LEFT JOIN LATERAL (
+      SELECT * FROM "public"."beta_accounts"
+      WHERE "uuid" = "p"."account_uuid"
+    ) "a" ON TRUE
+  ),
+  "shared_projects_json" AS (
+    select jsonb_agg(shared_projects1) as "value" from shared_projects1
+  ),
+  "own_projects_json" AS (
+    select jsonb_agg(own_projects) as "value" from own_projects
+  ),
+  "full_account_lines" AS (
+  select
+    "a"."uuid",
+    "a"."updated_at",
+    "a"."updated_at",
+    COALESCE("a"."data"->>'uname', 'John Doe') AS "uname",
+    COALESCE((select * from "own_projects_json"), '[]') as "own_projects",
+    COALESCE((select * from "shared_projects_json"), '[]') as "shared_projects"
+    FROM "account" AS "a"
+  ),
+  "full_account_json" AS (
+    SELECT jsonb_agg("full_account_lines")->0 as "value" 
+    FROM "full_account_lines"
+  )
+  SELECT 
+    NOW(), 
+    json_build_object(
+      'success', ((SELECT * FROM "full_account_json") IS NOT NULL),
+      'data', (SELECT * FROM "full_account_json")
+    );
+END; $$
+LANGUAGE plpgsql IMMUTABLE STRICT;

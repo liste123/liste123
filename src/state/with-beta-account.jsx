@@ -4,15 +4,23 @@ import { useNavigate } from "react-router-dom";
 
 import { useEffectDebounced } from "../utils/use-effect-debounced";
 
+// const LOAD_ACCOUNT = gql`
+//   query LoadAccount($uuid: String!) {
+//     account: beta_accounts_by_pk(uuid: $uuid) {
+//       uuid
+//       created_at
+//       updated_at
+//       data
+//       own_projects
+//       shared_projects
+//     }
+//   }
+// `;
+
 const LOAD_ACCOUNT = gql`
-  query LoadAccount($uuid: String!) {
-    account: beta_accounts_by_pk(uuid: $uuid) {
-      uuid
-      created_at
-      updated_at
-      data
-      own_projects
-      shared_projects
+  query BetaGetAccount($accountID: String!) {
+    account: beta_get_account(args: { accountID: $accountID }) {
+      payload
     }
   }
 `;
@@ -57,8 +65,8 @@ export const withBetaAccount = (Component) => () => {
    */
   useEffectDebounced(
     () => {
-      loadAccount({ variables: { uuid: accountID } }).then((res) => {
-        if (res.data.account) {
+      loadAccount({ variables: { accountID } }).then((res) => {
+        if (res.data.account[0].payload.success) {
           localStorage.setItem("liste123.beta.account.id", accountID);
         } else {
           setError({
@@ -79,7 +87,7 @@ export const withBetaAccount = (Component) => () => {
         error: loadStatus.error || error,
         accountID,
         setAccountID,
-        accountData: loadStatus.data?.account,
+        accountData: loadStatus.data?.account[0].payload.data,
         loadAccount,
         reloadAccount,
         loadStatus
