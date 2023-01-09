@@ -1,3 +1,7 @@
+## 2023, Jan 09th
+- Share account is completed
+- Remove shared projects
+
 ## 2023, Jan 08th
 - Add helpers text like "when..." around the TreeComponent
 - Improve BetaPage title size in mobile
@@ -5,7 +9,6 @@
 - Link to root from App's title
 - Improve list of shared projects
 - Add dummy project when creating a new account
-- Share account is completed
 
 ## 2023, Jan 07th
 

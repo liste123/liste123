@@ -48,14 +48,27 @@ const APPEND_PROJECT = gql`
   }
 `;
 
+const REMOVE_SHARED_PROJECT = gql`
+  mutation RemoveSharedProject($accountID: String!, $projectID: String!) {
+    beta_project_remove_shared(
+      args: { accountID: $accountID, projectID: $projectID }
+    ) {
+      payload
+    }
+  }
+`;
+
 export const useBetaAccount = () => {
   const { uname } = useParams();
   const { generatePushID } = usePushID();
   const [createAccountFn] = useMutation(CREATE_ACCOUNT);
   const [createProjectFn] = useMutation(CREATE_PROJECT);
   const [appendProjectFn] = useMutation(APPEND_PROJECT);
+  const [removeSharedProjectFn] = useMutation(REMOVE_SHARED_PROJECT);
+
   const { setAccountID, loadAccount, ...state } =
     useContext(BetaAccountContext);
+  const { accountID, reloadAccount } = state;
 
   const createAccount = async () => {
     const accountID = generatePushID();
@@ -127,11 +140,21 @@ export const useBetaAccount = () => {
       setAccountID(accountId);
     });
 
-  // Full page reload will remove any parameter
-  // as so remove a bad accountID url
   const resetAccount = () => {
     localStorage.removeItem("liste123.beta.account.id");
     window.location = window.location.href.split("?")[0];
+  };
+
+  const removeSharedProject = async (projectID) => {
+    const res = await removeSharedProjectFn({
+      variables: { accountID, projectID }
+    });
+    await reloadAccount();
+    return res;
+  };
+
+  const removeOwnProject = (projectID) => {
+    console.log("@removeOWNProject", projectID);
   };
 
   return {
@@ -140,6 +163,8 @@ export const useBetaAccount = () => {
     accountURL: `${window.location.origin}?accountID=${state.accountID}`,
     createAccount,
     redeemAccount,
-    resetAccount
+    resetAccount,
+    removeSharedProject,
+    removeOwnProject
   };
 };

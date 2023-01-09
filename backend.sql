@@ -85,3 +85,63 @@ END; $$
 LANGUAGE plpgsql VOLATILE;
 
 --select * from "public"."beta_project_import"('-NL7HSPnxqvjcXqdHYX0', '-NL6at4ofuO8MYEkCEo9');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DROP FUNCTION "public"."beta_project_remove_shared";
+CREATE OR REPLACE FUNCTION "public"."beta_project_remove_shared"(
+  "accountID" VARCHAR(20),
+  "projectID" VARCHAR(20)
+)
+RETURNS SETOF "public"."beta_interface_json" AS $$
+#variable_conflict use_variable
+DECLARE
+  VAR_r RECORD;
+  VAR_p JSON = '{}';
+BEGIN
+
+  -- Check user exists
+  SELECT "uuid" INTO VAR_r FROM "public"."beta_accounts" WHERE "uuid" = "accountID";
+  IF VAR_r IS NULL THEN
+  	RETURN QUERY 
+    SELECT NOW(), json_build_object(
+  	  'success', false,
+  	  'error', json_build_object(
+  	    'code', 'AccountNotFound',
+  	    'message', 'Account not found'
+  	  )
+  	);
+  	RETURN;
+  END IF;
+  
+  
+  -- Update Account with shared project
+  RETURN QUERY
+  WITH "updated_rows" AS (
+    UPDATE "public"."beta_accounts"
+       SET "shared_projects" = "shared_projects"::jsonb - "projectID"
+     WHERE "uuid" = "accountID"
+    RETURNING *
+  )
+  SELECT
+  NOW(),
+    json_build_object(
+      'success', true,
+      'data', row_to_json(t)
+    )
+  FROM (SELECT * FROM "updated_rows") t;
+END; $$
+LANGUAGE plpgsql VOLATILE;
+
+-- select * from "public"."beta_project_remove_shared"('-NL7HSPnxqvjcXqdHYX0', 'b');

@@ -7,15 +7,12 @@ import {
   Button,
   Paper,
   ListItemText,
-  ListItemAvatar,
   ListSubheader,
-  Avatar,
   Fab
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
-import WorkIcon from "@mui/icons-material/Work";
 import { Link } from "react-router-dom";
 
 import { useScreenSize } from "../../utils/use-screen-size";
@@ -24,8 +21,8 @@ import { ProjectItem } from "./ProjectItem";
 
 const BetaAccount = () => {
   const { isBigScreen, isSmallScreen } = useScreenSize();
-
-  const { uname, accountData } = useBetaAccount();
+  const { uname, accountData, removeOwnProject, removeSharedProject } =
+    useBetaAccount();
 
   const { own_projects: ownProjects, shared_projects: sharedProjects } =
     accountData;
@@ -70,11 +67,20 @@ const BetaAccount = () => {
         <List>
           <ListSubheader>My Projects</ListSubheader>
           {[...new Set(ownProjects)].map((projectId) => (
-            <ProjectItem key={projectId} projectId={projectId} />
+            <ProjectItem
+              key={projectId}
+              projectId={projectId}
+              onDeleteRequest={removeOwnProject}
+            />
           ))}
           <ListSubheader>Shared Projects</ListSubheader>
           {[...new Set(sharedProjects)].map((projectId) => (
-            <ProjectItem key={projectId} projectId={projectId} showOwner />
+            <ProjectItem
+              showOwner
+              key={projectId}
+              projectId={projectId}
+              onDeleteRequest={removeSharedProject}
+            />
           ))}
         </List>
       </Paper>

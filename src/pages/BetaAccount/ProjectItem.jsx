@@ -1,3 +1,5 @@
+import { gql, useQuery } from "@apollo/client";
+import { formatDistance } from "date-fns";
 import { Link } from "react-router-dom";
 import {
   ListItem,
@@ -6,11 +8,11 @@ import {
   Avatar,
   Typography,
   Stack,
-  Alert
+  Alert,
+  IconButton
 } from "@mui/material";
 import WorkIcon from "@mui/icons-material/Work";
-import { gql, useQuery } from "@apollo/client";
-import { formatDistance } from "date-fns";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const GET_PROJECT = gql`
   query GetProjectIndex($projectId: String!) {
@@ -23,10 +25,32 @@ const GET_PROJECT = gql`
   }
 `;
 
-export const ProjectItem = ({ projectId, showOwner }) => {
+export const ProjectItem = ({ projectId, showOwner, onDeleteRequest }) => {
   const { loading, data, error } = useQuery(GET_PROJECT, {
     variables: { projectId }
   });
+
+  const formatDate = (_date) => {
+    if (!_date) return "n/a";
+    try {
+      return formatDistance(new Date(_date), new Date(), { addSuffix: true });
+    } catch (err) {
+      console.log(err.message, _date);
+    }
+  };
+
+  const handleDelete = (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    if (confirm("Sure?")) {
+      onDeleteRequest(projectId);
+    }
+  };
+  const handleDeleteForced = (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    onDeleteRequest(projectId);
+  };
 
   // Generic Error
   if (error)
@@ -42,23 +66,25 @@ export const ProjectItem = ({ projectId, showOwner }) => {
   if (!loading && !data.projects.length)
     return (
       <ListItem>
-        <Alert severity="warning" sx={{ flex: 1 }}>
+        <Alert severity="warning" sx={{ flex: 1 }} onClose={handleDeleteForced}>
           {"404 - Project not found"}
         </Alert>
       </ListItem>
     );
 
-  const formatDate = (_date) => {
-    if (!_date) return "n/a";
-    try {
-      return formatDistance(new Date(_date), new Date(), { addSuffix: true });
-    } catch (err) {
-      console.log(err.message, _date);
-    }
-  };
-
   return (
-    <ListItem to={projectId} component={Link}>
+    <ListItem
+      to={projectId}
+      component={Link}
+      secondaryAction={
+        !loading &&
+        onDeleteRequest && (
+          <IconButton edge="end" onClick={handleDelete}>
+            <DeleteIcon />
+          </IconButton>
+        )
+      }
+    >
       <ListItemAvatar>
         <Avatar>
           <WorkIcon />
@@ -86,12 +112,3 @@ export const ProjectItem = ({ projectId, showOwner }) => {
     </ListItem>
   );
 };
-
-[
-  "-NL6at4ofuO8MYEkCEo9",
-  "-NL6dRIE5OzZQ9voHi8q",
-  "-NL7C-Vw22gXkNI9FlXj",
-  "-NL7D9z9KH2WeY0FI6wr",
-  "-NLBXnyazB5gVMNifRyS",
-  "-NLBXzRzzepsUi2T2uA3"
-][("-NL7HYOReOMgAICj64gi", "-NL7agJeNfd4SQdlPxhh", "-NLAFv7ait5AZoW0M315")];
