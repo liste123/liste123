@@ -1,6 +1,7 @@
 ## 2023, Jan 09th
 - Share account is completed
 - Remove shared projects
+- Remove own project
 
 ## 2023, Jan 08th
 - Add helpers text like "when..." around the TreeComponent

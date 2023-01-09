@@ -58,6 +58,16 @@ const REMOVE_SHARED_PROJECT = gql`
   }
 `;
 
+const REMOVE_OWN_PROJECT = gql`
+  mutation RemoveOwnProject($accountID: String!, $projectID: String!) {
+    beta_project_remove_own(
+      args: { accountID: $accountID, projectID: $projectID }
+    ) {
+      payload
+    }
+  }
+`;
+
 export const useBetaAccount = () => {
   const { uname } = useParams();
   const { generatePushID } = usePushID();
@@ -65,6 +75,7 @@ export const useBetaAccount = () => {
   const [createProjectFn] = useMutation(CREATE_PROJECT);
   const [appendProjectFn] = useMutation(APPEND_PROJECT);
   const [removeSharedProjectFn] = useMutation(REMOVE_SHARED_PROJECT);
+  const [removeOwnProjectFn] = useMutation(REMOVE_OWN_PROJECT);
 
   const { setAccountID, loadAccount, ...state } =
     useContext(BetaAccountContext);
@@ -153,8 +164,12 @@ export const useBetaAccount = () => {
     return res;
   };
 
-  const removeOwnProject = (projectID) => {
-    console.log("@removeOWNProject", projectID);
+  const removeOwnProject = async (projectID) => {
+    const res = await removeOwnProjectFn({
+      variables: { accountID, projectID }
+    });
+    await reloadAccount();
+    return res;
   };
 
   return {
