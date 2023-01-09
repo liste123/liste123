@@ -4,6 +4,8 @@
 - Remove own project
 - Improved load account page with full SQL backend
 - Press "Esc" while edit to restore initial value
+- [Meta + Enter] Add next task to focused one
+- [Shift + Meta + Enter] Add nested task to focused one
 
 ## 2023, Jan 08th
 - Add helpers text like "when..." around the TreeComponent

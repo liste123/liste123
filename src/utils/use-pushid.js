@@ -11,7 +11,7 @@
  * FROM:
  * https://gist.github.com/mikelehen/3596a30bd69384624c11
  */
-const generatePushID = (function () {
+export const generatePushID = (function () {
   // Modeled after base64 web-safe chars, but ordered by ASCII.
   var PUSH_CHARS =
     "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz";

@@ -1,5 +1,5 @@
 import { useNode } from "./use-node";
-import { isNodeCompleted } from "../deeplist";
+import { isNodeCompleted } from "../../utils/deeplist";
 
 export const useStatus = (node) => {
   const { update } = useNode(node);

@@ -12,7 +12,7 @@ import {
   getPrevNodeById,
   moveNodeInById,
   moveNodeOutById
-} from "../deeplist";
+} from "../../utils/deeplist";
 import { useCreatePubSub } from "../../utils/use-pubsub";
 import { useKeyboard } from "./use-keyboard";
 
@@ -51,7 +51,7 @@ export const withTreeTable = (Component) =>
         setCollapse(data.collapse);
 
         // Set focus on initial item:
-        focus === null && setFocus(_nodes[0].id);
+        // focus === null && _nodes.length && setFocus(_nodes[0].id);
 
         console.log("@withTreeTable::nodes::reset");
       },
@@ -116,10 +116,18 @@ export const withTreeTable = (Component) =>
       requestFocusNext: () => setFocus(getNextNodeById(nodes, focus)),
       prepend: (payload) => setNodes((curr) => [createNode(payload), ...curr]),
       append: (payload) => setNodes((curr) => [...curr, createNode(payload)]),
-      appendAfter: (nodeId, payload) =>
-        setNodes(appendAfter(nodes, nodeId, payload)),
-      appendInto: (nodeId, payload) =>
-        setNodes(appendInto(nodes, nodeId, payload)),
+      appendAfter: (nodeId, payload) => {
+        const [_node, _nodes] = appendAfter(nodes, nodeId, payload);
+        setNodes(_nodes);
+        setFocus(_node.id);
+        setIsEditMode(true);
+      },
+      appendInto: (nodeId, payload) => {
+        const [_node, _nodes] = appendInto(nodes, nodeId, payload);
+        setNodes(_nodes);
+        setFocus(_node.id);
+        setIsEditMode(true);
+      },
       requestMoveIn: (nodeId) => setNodes(moveNodeInById(nodes, nodeId)),
       requestMoveOut: (nodeId) => setNodes(moveNodeOutById(nodes, nodeId))
     };

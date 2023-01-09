@@ -39,7 +39,7 @@ const TextInput = ({ value, onChange, onBlur, ...props }) => {
       onChange(evt.target.value);
       onBlur();
     },
-    { target: inputRef }
+    { target: inputRef, stopPropagation: false }
   );
   useClickOutside(inputRef, onBlur);
 

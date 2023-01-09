@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { TreeTableContext } from "./Context";
-import { getNodeById } from "../deeplist";
+import { getNodeById } from "../../utils/deeplist";
 
 export const useNodes = () => {
   const { nodes, setNodes, pubsub } = useContext(TreeTableContext);

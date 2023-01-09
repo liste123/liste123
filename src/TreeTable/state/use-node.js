@@ -1,6 +1,6 @@
 import { useContext, useCallback } from "react";
 import { TreeTableContext } from "./Context";
-import { updateNodeById } from "../deeplist";
+import { updateNodeById } from "../../utils/deeplist";
 
 export const useNode = (node) => {
   const { nodes, setNodes, pubsub } = useContext(TreeTableContext);
@@ -11,7 +11,7 @@ export const useNode = (node) => {
       setNodes((curr) => updateNodeById(curr, node.id, change));
       pubsub.publish("node::changed", { node, change });
     },
-    [nodes]
+    [nodes, node]
   );
 
   return {
