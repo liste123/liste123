@@ -5,6 +5,7 @@
 - Link to root from App's title
 - Improve list of shared projects
 - Add dummy project when creating a new account
+- Share account is completed
 
 ## 2023, Jan 07th
 
