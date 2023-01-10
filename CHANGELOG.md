@@ -1,11 +1,15 @@
+## 2023, Jan 10th
+- [ctrl + Space] Toggle node status from keyboard on a Leaf
+- [ctrl + Space] Toggle collapsed from keyboard on a Node
+
 ## 2023, Jan 09th
 - Share account is completed
 - Remove shared projects
 - Remove own project
 - Improved load account page with full SQL backend
 - Press "Esc" while edit to restore initial value
-- [Meta + Enter] Add next task to focused one
-- [Shift + Meta + Enter] Add nested task to focused one
+- [ctrl + Enter] Add next task to focused one
+- [Shift + ctrl + Enter] Add nested task to focused one
 
 ## 2023, Jan 08th
 - Add helpers text like "when..." around the TreeComponent

@@ -11,7 +11,8 @@ import {
   getNextNodeById,
   getPrevNodeById,
   moveNodeInById,
-  moveNodeOutById
+  moveNodeOutById,
+  updateNodeById
 } from "../../utils/deeplist";
 import { useCreatePubSub } from "../../utils/use-pubsub";
 import { useKeyboard } from "./use-keyboard";
@@ -31,6 +32,11 @@ export const withTreeTable = (Component) =>
     const [focus, setFocus] = useState(null);
     const [collapse, setCollapse] = useState([]);
     const [isEditMode, setIsEditMode] = useState(false);
+
+    const updateNode = (nodeId, change) => {
+      setNodes((curr) => updateNodeById(curr, nodeId, change));
+      pubsub.publish("node::changed", { nodeId, change });
+    };
 
     /**
      * Imports changes from the outside world into the component.
@@ -129,7 +135,17 @@ export const withTreeTable = (Component) =>
         setIsEditMode(true);
       },
       requestMoveIn: (nodeId) => setNodes(moveNodeInById(nodes, nodeId)),
-      requestMoveOut: (nodeId) => setNodes(moveNodeOutById(nodes, nodeId))
+      requestMoveOut: (nodeId) => setNodes(moveNodeOutById(nodes, nodeId)),
+      requestToggleCollapse: (nodeId) =>
+        setCollapse((curr) =>
+          curr.includes(nodeId)
+            ? curr.filter(($) => $ !== nodeId)
+            : [...curr, nodeId]
+        ),
+      requestToggleStatus: (nodeId) => {
+        const node = getNodeById(nodes, nodeId);
+        updateNode(node.id, { status: !node.status });
+      }
     };
 
     return (

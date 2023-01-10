@@ -124,7 +124,6 @@ export const moveNodeOutById = (nodes, nodeId) => {
 
 export const getNextNodeById = (nodes, nodeId, skipChildren = false) => {
   console.log("deeplist.getNextNodeById - coming soon");
-  return;
 
   if (!nodes.length) return null;
   if (!nodeId) return nodes[0].id;
@@ -167,7 +166,6 @@ const getLastLeafId = (node) => {
 
 export const getPrevNodeById = (nodes, nodeId) => {
   console.log("deeplist.getPrevNodeById - coming soon");
-  return;
 
   if (!nodes.length) return null;
   if (!nodeId) return getLastLeafId(nodes[nodes.length - 1]);
