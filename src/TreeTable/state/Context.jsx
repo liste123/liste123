@@ -12,7 +12,8 @@ import {
   getPrevNodeById,
   moveNodeInById,
   moveNodeOutById,
-  updateNodeById
+  updateNodeById,
+  removeNodeById
 } from "../../utils/deeplist";
 import { useCreatePubSub } from "../../utils/use-pubsub";
 import { useKeyboard } from "./use-keyboard";
@@ -145,6 +146,14 @@ export const withTreeTable = (Component) =>
       requestToggleStatus: (nodeId) => {
         const node = getNodeById(nodes, nodeId);
         updateNode(node.id, { status: !node.status });
+      },
+      requestDelete: (nodeId) => {
+        // Pick next item to focus on:
+        let _nextFocus = getNextNodeById(nodes, nodeId);
+        if (!_nextFocus) _nextFocus = getPrevNodeById(nodes, nodeId);
+
+        setNodes(removeNodeById(nodes, nodeId));
+        setFocus(_nextFocus);
       }
     };
 

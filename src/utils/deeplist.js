@@ -200,3 +200,16 @@ export const getPrevNodeById = (nodes, nodeId) => {
 
   return getLastLeafId(nodes[idx - 1]);
 };
+
+export const removeNodeById = (nodes, nodeId) => {
+  const _nodes = clone(nodes);
+  const _node = getNodeById(_nodes, nodeId);
+  const _parent = getParentById(_nodes, nodeId);
+
+  if (_parent) {
+    _parent.children.splice(_nodes.indexOf(_node), 1);
+  } else {
+    _nodes.splice(_nodes.indexOf(_node), 1);
+  }
+  return _nodes;
+};

@@ -1,6 +1,7 @@
 ## 2023, Jan 10th
 - [ctrl + Space] Toggle node status from keyboard on a Leaf
 - [ctrl + Space] Toggle collapsed from keyboard on a Node
+- [ctrl + Backspace] Delete item
 
 ## 2023, Jan 09th
 - Share account is completed

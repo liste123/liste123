@@ -40,7 +40,6 @@ export const useKeyboardEvent = (combo = "", fn, options = DEFAULT_OPTIONS) => {
         evt.shiftKey ? "SHIFT" : null
       ].filter(($) => Boolean($));
 
-      // console.log(eventTokens);
       // Strict check on "exact" option
       if (exact && comboTokens.length !== eventTokens.length) return;
 

@@ -1,12 +1,12 @@
 import { useKeyboardEvent } from "../../utils/use-keyboard-event";
 
 export const useKeyboard = (apiRef) => {
-  useKeyboardEvent("alt + e", () => apiRef.current.requestEditMode(), {
+  useKeyboardEvent("ctrl + e", () => apiRef.current.requestEditMode(), {
     exact: true
   });
 
   useKeyboardEvent(
-    "alt + Enter",
+    "ctrl + Enter",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.appendAfter(activeNode, {});
@@ -15,7 +15,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "shift + alt + Enter",
+    "shift + ctrl + Enter",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.appendInto(activeNode, {});
@@ -23,16 +23,20 @@ export const useKeyboard = (apiRef) => {
     { exact: true }
   );
 
-  useKeyboardEvent("alt + ArrowDown", () => apiRef.current.requestFocusNext(), {
-    exact: true
-  });
+  useKeyboardEvent(
+    "ctrl + ArrowDown",
+    () => apiRef.current.requestFocusNext(),
+    {
+      exact: true
+    }
+  );
 
-  useKeyboardEvent("alt + ArrowUp", () => apiRef.current.requestFocusPrev(), {
+  useKeyboardEvent("ctrl + ArrowUp", () => apiRef.current.requestFocusPrev(), {
     exact: true
   });
 
   useKeyboardEvent(
-    "alt + ArrowLeft",
+    "ctrl + ArrowLeft",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.requestMoveIn(activeNode);
@@ -43,7 +47,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "alt + ArrowRight",
+    "ctrl + ArrowRight",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.requestMoveOut(activeNode);
@@ -54,7 +58,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "alt + Space",
+    "ctrl + Space",
     () => {
       const activeNode = apiRef.current.getActiveNode();
       if (activeNode.children.length) {
@@ -62,6 +66,18 @@ export const useKeyboard = (apiRef) => {
       } else {
         apiRef.current.requestToggleStatus(activeNode.id);
       }
+    },
+    {
+      exact: true
+    }
+  );
+
+  useKeyboardEvent(
+    "ctrl + Backspace",
+    () => {
+      console.log("DELETE");
+      const activeNode = apiRef.current.getActiveNode();
+      apiRef.current.requestDelete(activeNode.id);
     },
     {
       exact: true
