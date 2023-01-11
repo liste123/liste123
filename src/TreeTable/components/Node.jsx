@@ -7,8 +7,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import RemoveIcon from "@mui/icons-material/Remove";
-import CommitSharpIcon from "@mui/icons-material/CommitSharp";
+import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
+import PlaylistPlaySharpIcon from "@mui/icons-material/PlaylistPlaySharp";
 import RadioButtonUncheckedSharpIcon from "@mui/icons-material/RadioButtonUncheckedSharp";
 import RadioButtonCheckedSharpIcon from "@mui/icons-material/RadioButtonCheckedSharp";
 
@@ -20,7 +20,8 @@ import {
   ListItem,
   ListItemText,
   ListItemButton,
-  ListItemIcon
+  ListItemIcon,
+  Divider
 } from "@mui/material";
 import Checkbox from "./Checkbox";
 import Title from "./Title";
@@ -36,6 +37,15 @@ const Node = ({ node, isLeaf }) => {
     if (confirm("Sure?")) {
       api.requestDelete(node.id);
     }
+  };
+
+  const handleAddAfter = () => {
+    setMenuTarget(null);
+    api.appendAfter(node.id, {});
+  };
+  const handleAddInto = () => {
+    setMenuTarget(null);
+    api.appendInto(node.id, {});
   };
 
   return (
@@ -81,6 +91,23 @@ const Node = ({ node, isLeaf }) => {
         }}
       >
         <List>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleAddAfter}>
+              <ListItemIcon>
+                <PlaylistAddSharpIcon />
+              </ListItemIcon>
+              <ListItemText primary="New task after" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleAddInto}>
+              <ListItemIcon>
+                <PlaylistPlaySharpIcon />
+              </ListItemIcon>
+              <ListItemText primary="New task inside" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
           <ListItem disablePadding>
             <ListItemButton onClick={handleDelete}>
               <ListItemIcon>

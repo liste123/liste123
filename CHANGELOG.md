@@ -1,6 +1,8 @@
 ## 2023, Jan 11th
 - Add menu to ListTree item
 - Improve ListTree Node UI
+- Add UI handlers to add task after
+- Add UI handlers to add task inside
 
 ## 2023, Jan 10th
 - [ctrl + Space] Toggle node status from keyboard on a Leaf

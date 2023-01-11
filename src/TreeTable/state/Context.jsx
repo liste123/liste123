@@ -126,14 +126,18 @@ export const withTreeTable = (Component) =>
       appendAfter: (nodeId, payload) => {
         const [_node, _nodes] = appendAfter(nodes, nodeId, payload);
         setNodes(_nodes);
-        setFocus(_node.id);
-        setIsEditMode(true);
+        setTimeout(() => {
+          setFocus(_node.id);
+          setIsEditMode(true);
+        }, 0);
       },
       appendInto: (nodeId, payload) => {
         const [_node, _nodes] = appendInto(nodes, nodeId, payload);
         setNodes(_nodes);
-        setFocus(_node.id);
-        setIsEditMode(true);
+        setTimeout(() => {
+          setFocus(_node.id);
+          setIsEditMode(true);
+        }, 0);
       },
       requestMoveIn: (nodeId) => setNodes(moveNodeInById(nodes, nodeId)),
       requestMoveOut: (nodeId) => setNodes(moveNodeOutById(nodes, nodeId)),
