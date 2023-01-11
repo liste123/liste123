@@ -11,6 +11,7 @@ import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
 import PlaylistPlaySharpIcon from "@mui/icons-material/PlaylistPlaySharp";
 import RadioButtonUncheckedSharpIcon from "@mui/icons-material/RadioButtonUncheckedSharp";
 import RadioButtonCheckedSharpIcon from "@mui/icons-material/RadioButtonCheckedSharp";
+import ExpandCircleDownSharpIcon from "@mui/icons-material/ExpandCircleDownSharp";
 
 import {
   Stack,
@@ -70,7 +71,17 @@ const Node = ({ node, isLeaf }) => {
         </IconButton>
       ) : (
         <IconButton onClick={toggleCollapse}>
-          {isCollapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+          {isCollapsed ? (
+            isCompleted ? (
+              <ExpandCircleDownSharpIcon />
+            ) : (
+              <ExpandMoreIcon />
+            )
+          ) : isCompleted ? (
+            <ExpandCircleDownSharpIcon sx={{ transform: "rotate(180deg)" }} />
+          ) : (
+            <ExpandLessIcon />
+          )}
         </IconButton>
       )}
       <Title node={node} helpMode={false} />
