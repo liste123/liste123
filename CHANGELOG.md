@@ -1,3 +1,7 @@
+## 2023, Jan 11th
+- Add menu to ListTree item
+- Improve ListTree Node UI
+
 ## 2023, Jan 10th
 - [ctrl + Space] Toggle node status from keyboard on a Leaf
 - [ctrl + Space] Toggle collapsed from keyboard on a Node

@@ -160,6 +160,7 @@ export const withTreeTable = (Component) =>
     return (
       <TreeTableContext.Provider
         value={{
+          ref,
           pubsub,
           nestableRef,
           nodes,

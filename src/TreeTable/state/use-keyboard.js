@@ -1,12 +1,12 @@
 import { useKeyboardEvent } from "../../utils/use-keyboard-event";
 
 export const useKeyboard = (apiRef) => {
-  useKeyboardEvent("ctrl + e", () => apiRef.current.requestEditMode(), {
+  useKeyboardEvent("meta + e", () => apiRef.current.requestEditMode(), {
     exact: true
   });
 
   useKeyboardEvent(
-    "ctrl + Enter",
+    "meta + Enter",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.appendAfter(activeNode, {});
@@ -15,7 +15,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "shift + ctrl + Enter",
+    "shift + meta + Enter",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.appendInto(activeNode, {});
@@ -24,19 +24,19 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "ctrl + ArrowDown",
+    "meta + ArrowDown",
     () => apiRef.current.requestFocusNext(),
     {
       exact: true
     }
   );
 
-  useKeyboardEvent("ctrl + ArrowUp", () => apiRef.current.requestFocusPrev(), {
+  useKeyboardEvent("meta + ArrowUp", () => apiRef.current.requestFocusPrev(), {
     exact: true
   });
 
   useKeyboardEvent(
-    "ctrl + ArrowLeft",
+    "meta + ArrowLeft",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.requestMoveIn(activeNode);
@@ -47,7 +47,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "ctrl + ArrowRight",
+    "meta + ArrowRight",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.requestMoveOut(activeNode);
@@ -58,7 +58,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "ctrl + Space",
+    "meta + Space",
     () => {
       const activeNode = apiRef.current.getActiveNode();
       if (activeNode.children.length) {
@@ -73,7 +73,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "ctrl + Backspace",
+    "meta + d",
     () => {
       console.log("DELETE");
       const activeNode = apiRef.current.getActiveNode();

@@ -6,7 +6,6 @@ import { withTreeTable } from "./state/Context";
 import { useNodes } from "./state/use-nodes";
 import { useNestable } from "./state/use-nestable";
 import Node from "./components/Node";
-import Leaf from "./components/Leaf";
 
 /**
  *
@@ -28,7 +27,11 @@ export const TreeTable = () => {
     const node = getNodeById(id);
     if (!node) return null;
 
-    return node.children.length ? <Node node={node} /> : <Leaf node={node} />;
+    return node.children.length ? (
+      <Node node={node} />
+    ) : (
+      <Node isLeaf node={node} />
+    );
   };
 
   return (
