@@ -1,5 +1,5 @@
 import { memo, useState, useEffect } from "react";
-import { Switch } from "@mui/material";
+import { Checkbox as MUICheckbox } from "@mui/material";
 
 const Checkbox = ({ value, onChange }) => {
   // console.log("@render::Checkbox");
@@ -17,8 +17,9 @@ const Checkbox = ({ value, onChange }) => {
     onChange(evt, value);
   };
 
-  // return <input type="checkbox" checked={status} onChange={onStatusChange} />;
-  return <Switch size={"small"} checked={status} onChange={onStatusChange} />;
+  return (
+    <MUICheckbox size={"small"} checked={status} onChange={onStatusChange} />
+  );
 };
 
 export default memo(Checkbox);
