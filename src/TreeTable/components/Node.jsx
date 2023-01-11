@@ -8,6 +8,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RemoveIcon from "@mui/icons-material/Remove";
+import CommitSharpIcon from "@mui/icons-material/CommitSharp";
+import RadioButtonUncheckedSharpIcon from "@mui/icons-material/RadioButtonUncheckedSharp";
+import RadioButtonCheckedSharpIcon from "@mui/icons-material/RadioButtonCheckedSharp";
 
 import {
   Stack,
@@ -47,7 +50,15 @@ const Node = ({ node, isLeaf }) => {
         ...[hasFocus ? "treetable-item-focus" : null]
       ].join(" ")}
     >
-      {isLeaf ? null : (
+      {isLeaf ? (
+        <IconButton onClick={(e) => toggleStatus(e, !isCompleted)}>
+          {isCompleted ? (
+            <RadioButtonCheckedSharpIcon />
+          ) : (
+            <RadioButtonUncheckedSharpIcon />
+          )}
+        </IconButton>
+      ) : (
         <IconButton onClick={toggleCollapse}>
           {isCollapsed ? <ExpandMoreIcon /> : <ExpandLessIcon />}
         </IconButton>
