@@ -1,4 +1,4 @@
-import { generatePushID } from "./use-pushid";
+import { generatePushID } from "../use-pushid";
 
 /**
  * Shall we look into a deep clone library?
@@ -124,6 +124,7 @@ export const moveNodeOutById = (nodes, nodeId) => {
 
 export const getNextNodeById = (nodes, nodeId, skipChildren = false) => {
   console.log("deeplist.getNextNodeById - coming soon");
+  console.log(nodes);
 
   if (!nodes.length) return null;
   if (!nodeId) return nodes[0].id;

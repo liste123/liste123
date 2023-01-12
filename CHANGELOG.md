@@ -1,3 +1,8 @@
+## 2029, Jan 12th
+- Move all keyboard shortcut to use `Alt`
+- Add unit tests with Jest
+- Add TaskID chip to the task row
+
 ## 2023, Jan 11th
 - Add menu to ListTree item
 - Improve ListTree Node UI

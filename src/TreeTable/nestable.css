@@ -15,7 +15,17 @@
 }
 
 /* Hover on desktop */
-.nestable-item-name:hover,
+.nestable-item-name {
+  border: 1px solid transparent;
+  transition-duration: 300ms;
+  transition-property: border-color, background-color;
+  transition-timing-function: ease-in-out;
+}
+.nestable-item-name:hover {
+  border-color: #333;
+  background-color: #1a1a1a;
+}
+
 .treetable-item-focus {
   background-color: rgb(50, 50, 50);
 }

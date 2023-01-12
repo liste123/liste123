@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useClipboard } from "../../utils/use-clipboard";
 import { useCollapse } from "../state/use-collapse";
 import { useFocus } from "../state/use-focus";
 import { useStatus } from "../state/use-status";
@@ -12,6 +13,8 @@ import PlaylistPlaySharpIcon from "@mui/icons-material/PlaylistPlaySharp";
 import RadioButtonUncheckedSharpIcon from "@mui/icons-material/RadioButtonUncheckedSharp";
 import RadioButtonCheckedSharpIcon from "@mui/icons-material/RadioButtonCheckedSharp";
 import ExpandCircleDownSharpIcon from "@mui/icons-material/ExpandCircleDownSharp";
+import LabelSharpIcon from "@mui/icons-material/LabelSharp";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import {
   Stack,
@@ -22,12 +25,15 @@ import {
   ListItemText,
   ListItemButton,
   ListItemIcon,
-  Divider
+  Divider,
+  Chip
 } from "@mui/material";
 import Checkbox from "./Checkbox";
 import Title from "./Title";
 
 const Node = ({ node, isLeaf }) => {
+  const { clip } = useClipboard();
+  const [chipRef, setChipRef] = useState(null);
   const [menuTarget, setMenuTarget] = useState(null);
   const { hasFocus, requestFocus } = useFocus(node);
   const { isCollapsed, toggleCollapse } = useCollapse(node);
@@ -44,6 +50,7 @@ const Node = ({ node, isLeaf }) => {
     setMenuTarget(null);
     api.appendAfter(node.id, {});
   };
+
   const handleAddInto = () => {
     setMenuTarget(null);
     api.appendInto(node.id, {});
@@ -85,7 +92,42 @@ const Node = ({ node, isLeaf }) => {
         </IconButton>
       )}
       <Title node={node} helpMode={false} />
-      <Checkbox value={isCompleted} onChange={isLeaf ? toggleStatus : null} />
+      {/* <Checkbox value={isCompleted} onChange={isLeaf ? toggleStatus : null} /> */}
+      <Chip
+        label={node.id.slice(-3).toUpperCase()}
+        variant="outlined"
+        size="small"
+        icon={<LabelSharpIcon />}
+        onClick={(evt) => setChipRef(evt.currentTarget)}
+      />
+      <Popover
+        open={Boolean(chipRef)}
+        anchorEl={chipRef}
+        onClose={() => setChipRef(null)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left"
+        }}
+      >
+        <List>
+          <ListItem
+            secondaryAction={
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => clip(node.id)}
+              >
+                <ContentCopyIcon />
+              </IconButton>
+            }
+          >
+            <ListItemText
+              primary="TaskID"
+              secondary={<span onClick={() => clip(node.id)}>{node.id}</span>}
+            />
+          </ListItem>
+        </List>
+      </Popover>
       <IconButton
         size={"small"}
         onClick={(e) => setMenuTarget(e.currentTarget)}

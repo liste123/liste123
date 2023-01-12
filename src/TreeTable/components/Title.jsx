@@ -1,6 +1,5 @@
 import { useNode } from "../state/use-node";
 import { useEditMode } from "../state/use-edit-mode";
-
 import { Box } from "@mui/material";
 import Input from "./TextInput";
 
@@ -9,7 +8,7 @@ export const Title = ({ node, helpMode = false }) => {
 
   const {
     update,
-    data: { title }
+    data: { id, title }
   } = useNode(node);
 
   const handleChange = (title) => {
@@ -35,7 +34,7 @@ export const Title = ({ node, helpMode = false }) => {
     />
   ) : (
     <Box onClick={requestEditMode} sx={{ flex: 1 }}>
-      {title}
+      {title || <i>write something here!</i>}
       {helpMode && <i>{" when..."}</i>}
     </Box>
   );

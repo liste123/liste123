@@ -1,12 +1,12 @@
 import { useKeyboardEvent } from "../../utils/use-keyboard-event";
 
 export const useKeyboard = (apiRef) => {
-  useKeyboardEvent("meta + e", () => apiRef.current.requestEditMode(), {
+  useKeyboardEvent("alt + e", () => apiRef.current.requestEditMode(), {
     exact: true
   });
 
   useKeyboardEvent(
-    "meta + Enter",
+    "alt + Enter",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.appendAfter(activeNode, {});
@@ -15,7 +15,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "shift + meta + Enter",
+    "shift + alt + Enter",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.appendInto(activeNode, {});
@@ -23,20 +23,16 @@ export const useKeyboard = (apiRef) => {
     { exact: true }
   );
 
-  useKeyboardEvent(
-    "meta + ArrowDown",
-    () => apiRef.current.requestFocusNext(),
-    {
-      exact: true
-    }
-  );
+  useKeyboardEvent("alt + ArrowDown", () => apiRef.current.requestFocusNext(), {
+    exact: true
+  });
 
-  useKeyboardEvent("meta + ArrowUp", () => apiRef.current.requestFocusPrev(), {
+  useKeyboardEvent("alt + ArrowUp", () => apiRef.current.requestFocusPrev(), {
     exact: true
   });
 
   useKeyboardEvent(
-    "meta + ArrowLeft",
+    "alt + ArrowLeft",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.requestMoveIn(activeNode);
@@ -47,7 +43,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "meta + ArrowRight",
+    "alt + ArrowRight",
     () => {
       const activeNode = apiRef.current.getActiveNodeId();
       apiRef.current.requestMoveOut(activeNode);
@@ -58,7 +54,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "meta + Space",
+    "alt + Space",
     () => {
       const activeNode = apiRef.current.getActiveNode();
       if (activeNode.children.length) {
@@ -73,7 +69,7 @@ export const useKeyboard = (apiRef) => {
   );
 
   useKeyboardEvent(
-    "meta + d",
+    "alt + d",
     () => {
       console.log("DELETE");
       const activeNode = apiRef.current.getActiveNode();
