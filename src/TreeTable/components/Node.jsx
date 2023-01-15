@@ -15,6 +15,7 @@ import RadioButtonCheckedSharpIcon from "@mui/icons-material/RadioButtonCheckedS
 import ExpandCircleDownSharpIcon from "@mui/icons-material/ExpandCircleDownSharp";
 import LabelSharpIcon from "@mui/icons-material/LabelSharp";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { useScreenSize } from "../../utils/use-screen-size";
 
 import {
   Stack,
@@ -28,12 +29,11 @@ import {
   Divider,
   Chip
 } from "@mui/material";
-import Checkbox from "./Checkbox";
 import Title from "./Title";
 
 const Node = ({ node, isLeaf }) => {
   const { clip } = useClipboard();
-  const [chipRef, setChipRef] = useState(null);
+  const { isBigScreen } = useScreenSize();
   const [menuTarget, setMenuTarget] = useState(null);
   const { hasFocus, requestFocus } = useFocus(node);
   const { isCollapsed, toggleCollapse } = useCollapse(node);
@@ -41,7 +41,14 @@ const Node = ({ node, isLeaf }) => {
   const api = useApi();
 
   const handleDelete = (e) => {
-    if (confirm("Sure?")) {
+    setMenuTarget(null);
+    if (
+      confirm(
+        `Confirm you want to delete task: ${node.id
+          .slice(-3)
+          .toUpperCase()}:\n${node.title}`
+      )
+    ) {
       api.requestDelete(node.id);
     }
   };
@@ -69,7 +76,7 @@ const Node = ({ node, isLeaf }) => {
       ].join(" ")}
     >
       {isLeaf ? (
-        <IconButton onClick={(e) => toggleStatus(e, !isCompleted)}>
+        <IconButton onClick={(e) => toggleStatus(e, !isCompleted)} size="small">
           {isCompleted ? (
             <RadioButtonCheckedSharpIcon />
           ) : (
@@ -77,7 +84,7 @@ const Node = ({ node, isLeaf }) => {
           )}
         </IconButton>
       ) : (
-        <IconButton onClick={toggleCollapse}>
+        <IconButton onClick={toggleCollapse} size="small">
           {isCollapsed ? (
             isCompleted ? (
               <ExpandCircleDownSharpIcon />
@@ -92,42 +99,15 @@ const Node = ({ node, isLeaf }) => {
         </IconButton>
       )}
       <Title node={node} helpMode={false} />
-      {/* <Checkbox value={isCompleted} onChange={isLeaf ? toggleStatus : null} /> */}
-      <Chip
-        label={node.id.slice(-3).toUpperCase()}
-        variant="outlined"
-        size="small"
-        icon={<LabelSharpIcon />}
-        onClick={(evt) => setChipRef(evt.currentTarget)}
-      />
-      <Popover
-        open={Boolean(chipRef)}
-        anchorEl={chipRef}
-        onClose={() => setChipRef(null)}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left"
-        }}
-      >
-        <List>
-          <ListItem
-            secondaryAction={
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => clip(node.id)}
-              >
-                <ContentCopyIcon />
-              </IconButton>
-            }
-          >
-            <ListItemText
-              primary="TaskID"
-              secondary={<span onClick={() => clip(node.id)}>{node.id}</span>}
-            />
-          </ListItem>
-        </List>
-      </Popover>
+      {isBigScreen && (
+        <Chip
+          label={node.id.slice(-3).toUpperCase()}
+          variant="outlined"
+          size="small"
+          icon={<LabelSharpIcon />}
+          onClick={() => clip(node.id)}
+        />
+      )}
       <IconButton
         size={"small"}
         onClick={(e) => setMenuTarget(e.currentTarget)}
@@ -144,6 +124,18 @@ const Node = ({ node, isLeaf }) => {
         }}
       >
         <List>
+          <ListItem
+            secondaryAction={
+              <IconButton edge="end" onClick={() => clip(node.id)}>
+                <ContentCopyIcon />
+              </IconButton>
+            }
+          >
+            <ListItemText
+              primary="TaskID"
+              secondary={<span onClick={() => clip(node.id)}>{node.id}</span>}
+            />
+          </ListItem>
           <ListItem disablePadding>
             <ListItemButton onClick={handleAddAfter}>
               <ListItemIcon>
