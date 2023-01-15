@@ -63,9 +63,8 @@ const BetaAccount = () => {
         </List>
       }
     >
-      <Paper>
-        <List>
-          <ListSubheader>My Projects</ListSubheader>
+      <Paper sx={{ mb: isSmallScreen ? 12 : 0 }}>
+        <List subheader={<ListSubheader>My Projects</ListSubheader>}>
           {ownProjects.map((project) => (
             <ProjectItem
               key={project.uuid}
