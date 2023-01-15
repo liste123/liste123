@@ -1,11 +1,11 @@
 import { gql, useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { usePushID } from "../utils/use-pushid";
-import { useBetaAccount } from "../state/use-beta-account";
 import { useScreenSize } from "../utils/use-screen-size";
 import { Link } from "react-router-dom";
 import { Button, TextField, Stack } from "@mui/material";
 import BetaPage from "../components/BetaPage";
+import { withBetaAccountGuard } from "../state/with-beta-account-guard";
 
 const CREATE_PROJECT = gql`
   mutation CreateProject(
@@ -42,11 +42,10 @@ const ADD_OWN_PROJECT = gql`
   }
 `;
 
-const BetaProjectCreate = () => {
+const BetaProjectCreate = ({ accountID, reloadAccount }) => {
   const { isBigScreen } = useScreenSize();
   const navigate = useNavigate();
   const { generatePushID } = usePushID();
-  const { uname, accountID, reloadAccount } = useBetaAccount();
   const [createProject] = useMutation(CREATE_PROJECT);
   const [addOwnProject] = useMutation(ADD_OWN_PROJECT);
 
@@ -89,14 +88,14 @@ const BetaProjectCreate = () => {
       // Reload account's data:
       await reloadAccount();
 
-      navigate(`/beta/${uname}/${projectID}`);
+      navigate(`/beta/@me/${projectID}`);
     } catch (err) {
       alert(err.message);
     }
   };
 
   return (
-    <BetaPage title="Create New Project" linkBackTo={`/beta/${uname}`}>
+    <BetaPage title="Create New Project" linkBackTo={`/beta/@me`}>
       <Stack component="form" spacing={2} onSubmit={handleSubmit}>
         <TextField name="title" placeholder="Project's title" />
         <Stack direction={"row"} justifyContent={"flex-end"} spacing={2}>
@@ -104,7 +103,7 @@ const BetaProjectCreate = () => {
             Create
           </Button>
           {isBigScreen && (
-            <Button component={Link} to={`/beta/${uname}`}>
+            <Button component={Link} to={`/beta/@me`}>
               Cancel
             </Button>
           )}
@@ -114,4 +113,4 @@ const BetaProjectCreate = () => {
   );
 };
 
-export default BetaProjectCreate;
+export default withBetaAccountGuard(BetaProjectCreate);

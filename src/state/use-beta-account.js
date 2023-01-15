@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { usePushID } from "../utils/use-pushid";
-import { BetaAccountContext } from "./with-beta-account";
+import { BetaAccountContext } from "./with-beta-account-provider";
 
 const CREATE_ACCOUNT = gql`
   mutation CreateAccount($accountID: String!, $data: jsonb = "{}") {
@@ -143,7 +143,6 @@ export const useBetaAccount = () => {
 
   const redeemAccount = (accountID) =>
     loadAccount({ variables: { accountID } }).then((res) => {
-      console.log(res);
       if (!res.data.account[0].payload.success) {
         alert("Account not found");
         return;

@@ -1,10 +1,10 @@
-import { Outlet } from "react-router-dom";
 import { Alert, AlertTitle, Button } from "@mui/material";
-import { useBetaAccount } from "../state/use-beta-account";
 import BetaPage from "../components/BetaPage";
+import { useBetaAccount } from "./use-beta-account";
 
-const BetaAccountLayout = () => {
-  const { loading, error, accountData, resetAccount } = useBetaAccount();
+export const withBetaAccountGuard = (Component) => () => {
+  const account = useBetaAccount();
+  const { loading, error, accountData, resetAccount } = account;
 
   if (loading) return null;
 
@@ -24,9 +24,7 @@ const BetaAccountLayout = () => {
 
   // There is still some delay between end of loading and the
   // AccountData being available... d'oh!
-  if (!accountData) return null;
+  if (!accountData) return "missing account";
 
-  return <Outlet />;
+  return <Component {...account} />;
 };
-
-export default BetaAccountLayout;

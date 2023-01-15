@@ -1,4 +1,4 @@
-import { useBetaAccount } from "../../state/use-beta-account";
+import { Link } from "react-router-dom";
 import {
   List,
   ListItem,
@@ -13,16 +13,18 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 
-import { Link } from "react-router-dom";
-
+import { withBetaAccountGuard } from "../../state/with-beta-account-guard";
 import { useScreenSize } from "../../utils/use-screen-size";
 import BetaPage from "../../components/BetaPage";
 import { ProjectItem } from "./ProjectItem";
 
-const BetaAccount = () => {
+const BetaAccount = ({
+  uname,
+  accountData,
+  removeOwnProject,
+  removeSharedProject
+}) => {
   const { isBigScreen, isSmallScreen } = useScreenSize();
-  const { uname, accountData, removeOwnProject, removeSharedProject } =
-    useBetaAccount();
 
   const { own_projects: ownProjects, shared_projects: sharedProjects } =
     accountData;
@@ -34,7 +36,7 @@ const BetaAccount = () => {
         isBigScreen && (
           <Button
             component={Link}
-            to={`/beta/${uname}/create`}
+            to={`/beta/@me/create`}
             variant="contained"
             startIcon={<AddIcon />}
           >
@@ -45,7 +47,7 @@ const BetaAccount = () => {
       menu={
         <List>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to={`/beta/${uname}/create`}>
+            <ListItemButton component={Link} to={`/beta/@me/create`}>
               <ListItemIcon>
                 <AddIcon />
               </ListItemIcon>
@@ -53,7 +55,7 @@ const BetaAccount = () => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to={`/beta/${uname}/import`}>
+            <ListItemButton component={Link} to={`/beta/@me/import`}>
               <ListItemIcon>
                 <UploadFileIcon />
               </ListItemIcon>
@@ -104,4 +106,4 @@ const BetaAccount = () => {
   );
 };
 
-export default BetaAccount;
+export default withBetaAccountGuard(BetaAccount);

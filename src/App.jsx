@@ -9,8 +9,7 @@ import { loadable } from "./loadable";
 const PublicLayout = loadable(() => import("./layouts/PublicLayout"));
 const DevPage = loadable(() => import("./pages/DevPage"));
 
-const BetaAccountLayout = loadable(() => import("./layouts/BetaAccountLayout"));
-const BetaPublicLayout = loadable(() => import("./layouts/BetaPublicLayout"));
+const PublicLayoutBeta = loadable(() => import("./layouts/PublicLayoutBeta"));
 const BetaAccount = loadable(() => import("./pages/BetaAccount"));
 const BetaSignup = loadable(() => import("./pages/BetaSignup"));
 const BetaProjectCreate = loadable(() => import("./pages/BetaProjectCreate"));
@@ -40,22 +39,16 @@ export const router = createBrowserRouter([
   },
   {
     path: "/beta",
-    element: <BetaPublicLayout />,
+    element: <PublicLayoutBeta />,
     children: [
       // Public Routes
       { index: true, element: <Navigate to="/beta/@me" /> },
       { path: "signup", element: <BetaSignup /> },
       // Protected Routes
-      {
-        path: "/beta/:uname/",
-        element: <BetaAccountLayout />,
-        children: [
-          { index: true, element: <BetaAccount /> },
-          { path: "create", element: <BetaProjectCreate /> },
-          { path: "import", element: <BetaProjectImport /> },
-          { path: ":uuid", element: <BetaProjectDesktop /> }
-        ]
-      }
+      { path: "@me", element: <BetaAccount /> },
+      { path: "@me/:uuid", element: <BetaProjectDesktop /> },
+      { path: "@me/create", element: <BetaProjectCreate /> },
+      { path: "@me/import", element: <BetaProjectImport /> }
     ]
   }
 ]);

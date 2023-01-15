@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { useScreenSize } from "../utils/use-screen-size";
 import BetaPage from "../components/BetaPage";
-import { useBetaAccount } from "../state/use-beta-account";
+import { withBetaAccountGuard } from "../state/with-beta-account-guard";
 
 import { Box, Stack, TextField, Button, Typography } from "@mui/material";
 
@@ -18,11 +18,10 @@ const IMPORT_BY_ID = gql`
   }
 `;
 
-const BetaProjectImport = () => {
+const BetaProjectImport = ({ accountID, reloadAccount }) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isBigScreen, isSmallScreen } = useScreenSize();
-  const { accountID, reloadAccount } = useBetaAccount();
   const [projectID, setProjectID] = useState(
     searchParams.get("projectID") || ""
   );
@@ -65,4 +64,4 @@ const BetaProjectImport = () => {
   );
 };
 
-export default BetaProjectImport;
+export default withBetaAccountGuard(BetaProjectImport);

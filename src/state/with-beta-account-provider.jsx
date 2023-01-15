@@ -4,19 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 import { useEffectDebounced } from "../utils/use-effect-debounced";
 
-// const LOAD_ACCOUNT = gql`
-//   query LoadAccount($uuid: String!) {
-//     account: beta_accounts_by_pk(uuid: $uuid) {
-//       uuid
-//       created_at
-//       updated_at
-//       data
-//       own_projects
-//       shared_projects
-//     }
-//   }
-// `;
-
 const LOAD_ACCOUNT = gql`
   query BetaGetAccount($accountID: String!) {
     account: beta_get_account(args: { accountID: $accountID }) {
@@ -27,7 +14,7 @@ const LOAD_ACCOUNT = gql`
 
 export const BetaAccountContext = createContext();
 
-export const withBetaAccount = (Component) => () => {
+export const withBetaAccountProvider = (Component) => () => {
   const navigate = useNavigate();
   const [accountID, setAccountID] = useState(null);
   const [error, setError] = useState(null);

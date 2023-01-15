@@ -15,11 +15,9 @@ import {
   Paper
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import QrCode2Icon from "@mui/icons-material/QrCode2";
 import { QRCode } from "react-qrcode-logo";
 
-import { useScreenSize } from "../utils/use-screen-size";
-import { useBetaAccount } from "../state/use-beta-account";
+import { withBetaAccountGuard } from "../state/with-beta-account-guard";
 import { useBetaProject } from "../state/use-beta-project";
 import { useClipboard } from "../utils/use-clipboard";
 import BetaPage from "../components/BetaPage";
@@ -27,10 +25,8 @@ import AddTask from "../components/AddTask";
 import TreeTable from "../TreeTable";
 
 const BetaProject = () => {
-  const { isBigScreen } = useScreenSize();
   const { clip } = useClipboard();
   const treeTableRef = useRef();
-  const { uname } = useBetaAccount();
   const {
     loading,
     error,
@@ -66,7 +62,7 @@ const BetaProject = () => {
         <Alert
           severity="error"
           action={
-            <Button component={Link} to={`/beta/${uname}`}>
+            <Button component={Link} to={`/beta/@me`}>
               close
             </Button>
           }
@@ -81,7 +77,7 @@ const BetaProject = () => {
     <BetaPage
       title={title}
       subtitle={`Shall be completed when...`}
-      linkBackTo={`/beta/${uname}`}
+      linkBackTo={`/beta/@me`}
       menu={
         <List>
           <ListItem
@@ -201,4 +197,4 @@ const BetaProject = () => {
   );
 };
 
-export default BetaProject;
+export default withBetaAccountGuard(BetaProject);

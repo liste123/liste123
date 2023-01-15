@@ -108,7 +108,7 @@ export const useBetaProject = () => {
     title: data?.project?.title,
     data: _data,
     update,
-    projectURL: `${window.location.origin}/beta/${uname}/${uuid}?accountID=${accountID}`,
-    shareProjectURL: `${window.location.origin}/beta/${uname}/import?projectID=${uuid}`
+    projectURL: `${window.location.origin}/beta/@me/${uuid}?accountID=${accountID}`,
+    shareProjectURL: `${window.location.origin}/beta/@me/import?projectID=${uuid}`
   };
 };

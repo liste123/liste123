@@ -18,7 +18,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { QRCode } from "react-qrcode-logo";
 
 import { useClipboard } from "../utils/use-clipboard";
-import { withBetaAccount } from "../state/with-beta-account";
+import { withBetaAccountProvider } from "../state/with-beta-account-provider";
 import { useBetaAccount } from "../state/use-beta-account";
 
 const darkTheme = createTheme({
@@ -27,10 +27,10 @@ const darkTheme = createTheme({
   }
 });
 
-const BetaPublicLayout = () => {
+const PublicLayoutBeta = () => {
   const { clip } = useClipboard();
   const [accountMenu, setAccountMenu] = useState(null);
-  const { uname, accountID, accountURL, resetAccount } = useBetaAccount();
+  const { accountID, accountURL, resetAccount } = useBetaAccount();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -52,14 +52,14 @@ const BetaPublicLayout = () => {
             Liste123{" "}
             <small style={{ fontWeight: "normal", fontSize: 10 }}>beta</small>
           </Typography>
-          {uname && (
+          {accountID && (
             <>
               <Stack
                 sx={{ fontSize: 14, alignItems: "flex-end", cursor: "pointer" }}
                 onClick={(e) => setAccountMenu(e.currentTarget)}
               >
                 <b>AccountID</b>
-                <small>{uname}</small>
+                <small>@me</small>
               </Stack>
               <Popover
                 open={Boolean(accountMenu)}
@@ -136,4 +136,4 @@ const BetaPublicLayout = () => {
   );
 };
 
-export default withBetaAccount(BetaPublicLayout);
+export default withBetaAccountProvider(PublicLayoutBeta);
