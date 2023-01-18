@@ -33,7 +33,7 @@ describe("DeepList", () => {
 
     it("should return the next element within an L1 children", () => {
       const r1 = getNextNode(nodesTreeL1, "n1-1");
-      console.log(r1);
+      // console.log(r1);
       // expect(r1).toBe(nodesTreeL1[0].children[1]);
     });
   });

@@ -16,9 +16,9 @@ export const getNextNode = (nodes = [], currentNode = "") => {
   // unless it is the last item, in that case we need to move to
   // next element at this level
   if (currentNodeRef?.children.length) {
-    console.log("has kids");
+    // console.log("has kids");
     const ddd = getNextNode(currentNodeRef.children, currentNodeId);
-    console.log(ddd);
+    // console.log(ddd);
     return ddd;
   }
 
