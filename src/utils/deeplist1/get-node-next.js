@@ -1,4 +1,5 @@
 import { getNode } from "./get-node";
+import { getConfig } from "./defaults";
 
 const flatNext = (item, items) => {
   const idx = items.indexOf(item);
@@ -9,12 +10,20 @@ const flatNext = (item, items) => {
   return null;
 };
 
-export const getNodeNext = (nodes = [], currentNode = "", config) => {
+export const getNodeNext = (nodes = [], currentNode = "", config = {}) => {
   const _node = getNode(nodes, currentNode, config);
   if (!_node) return _node;
 
+  const { canGoDown } = getConfig({
+    canGoDown: true, // or a function that receives the node
+    ...config
+  });
+
   // return first child
-  if (_node.children.length) {
+  if (
+    _node.children.length &&
+    (typeof canGoDown === "function" ? canGoDown(_node) : canGoDown)
+  ) {
     return _node.children[0];
   }
 

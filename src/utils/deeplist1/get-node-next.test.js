@@ -68,5 +68,18 @@ describe("DeepList", () => {
       const r1 = getNodeNext(treeL3, "n2-1-1");
       expect(r1.id).toBe("n2-2");
     });
+
+    it("should return next item same deeply nested level", () => {
+      const r1 = getNodeNext(treeL3, "n1-2-1");
+      expect(r1.id).toBe("n1-2-2");
+    });
+
+    it("should skip collapsed nodes", () => {
+      const r1 = getNodeNext(treeL3, "n1", { canGoDown: () => false });
+      expect(r1.id).toBe("n2");
+
+      const r2 = getNodeNext(treeL3, "n1", { canGoDown: false });
+      expect(r2.id).toBe("n2");
+    });
   });
 });
