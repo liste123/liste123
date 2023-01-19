@@ -15,40 +15,40 @@ export const getNodeNext = (nodes = [], currentNode = "", config = {}) => {
   const _node = getNode(nodes, currentNode, config);
   if (!_node) return _node;
 
-  const { canGoDown } = getConfig({
+  const { canGoDown, parentKey, childrenKey, idKey } = getConfig({
     canGoDown: true, // or a function that receives the node
     ...config
   });
 
   // return first child
-  if (_node.children.length && unwrapFn(canGoDown, _node)) {
-    return _node.children[0];
+  if (_node[childrenKey].length && unwrapFn(canGoDown, _node)) {
+    return _node[childrenKey][0];
   }
 
   // root case
-  if (_node.parent === null) {
+  if (_node[parentKey] === null) {
     return flatNext(_node, nodes);
   }
 
   // nested level
-  const _next = flatNext(_node, _node.parent.children);
+  const _next = flatNext(_node, _node[parentKey][childrenKey]);
   if (_next) return _next;
 
   // End of same level, iterate up to root
-  let parent = _node.parent;
+  let parent = _node[parentKey];
   let _loop = 0;
-  while (parent.parent && _loop < 100) {
-    const _next = flatNext(parent, parent.parent.children);
+  while (parent[parentKey] && _loop < 100) {
+    const _next = flatNext(parent, parent[parentKey][childrenKey]);
     if (_next) return _next;
 
     // Move up one level
-    parent = parent.parent;
+    parent = parent[parentKey];
     _loop++;
   }
 
   if (_loop === 99) {
     console.warning(
-      `Maximum depth level (100) reached while searching for next node of: ${_node.id}`
+      `Maximum depth level (100) reached while searching for next node of: ${_node[idKey]}`
     );
   }
 

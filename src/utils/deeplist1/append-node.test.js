@@ -65,5 +65,26 @@ describe("DeepList", () => {
       });
       expect(r1.map(($) => $.id)).toEqual([123, "n1", "n2", "n3"]);
     });
+
+    it("should not mutate the input tree", () => {
+      const r1 = appendNode(treeFlat, createNode({ id: 123 }));
+      expect(r1).toBe(treeFlat);
+    });
+
+    it("should shallow copy input tree", () => {
+      const r1 = appendNode(treeFlat, createNode({ id: 123 }), {
+        clone: () => true
+      });
+      expect(r1).not.toBe(treeFlat);
+      expect(r1[0]).toBe(treeFlat[0]);
+    });
+
+    it("should deep copy the input tree", () => {
+      const r1 = appendNode(treeFlat, createNode({ id: 123 }), {
+        clone: true
+      });
+      expect(r1).not.toBe(treeFlat);
+      expect(r1[0]).not.toBe(treeFlat[0]);
+    });
   });
 });
