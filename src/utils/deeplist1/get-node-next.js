@@ -1,5 +1,6 @@
 import { getNode } from "./get-node";
 import { getConfig } from "./defaults";
+import { unwrapFn } from "./unwrap-fn";
 
 const flatNext = (item, items) => {
   const idx = items.indexOf(item);
@@ -20,10 +21,7 @@ export const getNodeNext = (nodes = [], currentNode = "", config = {}) => {
   });
 
   // return first child
-  if (
-    _node.children.length &&
-    (typeof canGoDown === "function" ? canGoDown(_node) : canGoDown)
-  ) {
+  if (_node.children.length && unwrapFn(canGoDown, _node)) {
     return _node.children[0];
   }
 
@@ -33,30 +31,27 @@ export const getNodeNext = (nodes = [], currentNode = "", config = {}) => {
   }
 
   // nested level
-  else {
-    const _next = flatNext(_node, _node.parent.children);
+  const _next = flatNext(_node, _node.parent.children);
+  if (_next) return _next;
+
+  // End of same level, iterate up to root
+  let parent = _node.parent;
+  let _loop = 0;
+  while (parent.parent && _loop < 100) {
+    const _next = flatNext(parent, parent.parent.children);
     if (_next) return _next;
 
-    // End of same level
-    // -> here we must try up to the root! <-
-    let parent = _node.parent;
-    let _loop = 0;
-    while (parent.parent && _loop < 100) {
-      const _next = flatNext(parent, parent.parent.children);
-      if (_next) return _next;
-
-      // Move up one level
-      parent = parent.parent;
-      _loop++;
-    }
-
-    if (_loop === 99) {
-      console.warning(
-        `Maximum depth level (100) reached while searching for next node of: ${_node.id}`
-      );
-    }
-
-    // Base for recursion
-    return flatNext(parent, nodes);
+    // Move up one level
+    parent = parent.parent;
+    _loop++;
   }
+
+  if (_loop === 99) {
+    console.warning(
+      `Maximum depth level (100) reached while searching for next node of: ${_node.id}`
+    );
+  }
+
+  // Base for recursion
+  return flatNext(parent, nodes);
 };
