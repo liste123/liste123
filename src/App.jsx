@@ -15,6 +15,7 @@ const BetaSignup = loadable(() => import("./pages/BetaSignup"));
 const BetaProjectCreate = loadable(() => import("./pages/BetaProjectCreate"));
 const BetaProjectImport = loadable(() => import("./pages/BetaProjectImport"));
 const BetaProjectDesktop = loadable(() => import("./pages/BetaProjectDesktop"));
+const BetaProject = loadable(() => import("./pages/BetaProject"));
 
 // TODO: get parameters at build time
 const nhost = new NhostClient({
@@ -47,6 +48,7 @@ export const router = createBrowserRouter([
       // Protected Routes
       { path: "@me", element: <BetaAccount /> },
       { path: "@me/:uuid", element: <BetaProjectDesktop /> },
+      { path: "@mex/:uuid", element: <BetaProject /> },
       { path: "@me/create", element: <BetaProjectCreate /> },
       { path: "@me/import", element: <BetaProjectImport /> }
     ]
