@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, createContext } from "react";
 
 import Nestable from "react-nestable";
 import "react-nestable/dist/styles/index.css";
@@ -6,9 +6,13 @@ import "./nestable.css";
 
 import { useEffectDebounced } from "../../../utils/use-effect-debounced";
 import { usePushID } from "../../../utils/use-pushid";
-import { list2tree, tree2list } from "./deeplist1";
+import { list2tree, tree2list } from "./deeplist";
+
+import { Node } from "./components/Node";
 
 const DEBOUNCE_DELAY = 0;
+
+export const TreeTableContext = createContext({});
 
 /**
  *
@@ -21,10 +25,15 @@ export const TreeTable = ({ etag, value, onChange }) => {
   const etagRef = useRef(etag);
   const nestableRef = useRef(null);
 
-  // Project state
+  // Project State
   const [nodes, setNodes] = useState(list2tree(value.items));
   const [collapse, setCollapse] = useState(value.collapse);
-  const [src, setSrc] = useState(JSON.stringify(value, null, 2));
+  const [focus, setFocus] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  // Source Code support
+  const isSourceCodeUpdateRef = useRef(false);
+  const [sourceCode, setSourceCode] = useState(JSON.stringify(value, null, 2));
 
   // Imports changes from the outside world into the component
   useEffectDebounced(
@@ -46,7 +55,7 @@ export const TreeTable = ({ etag, value, onChange }) => {
       setCollapse(value.collapse);
 
       // Update Source Code Editor
-      setSrc(JSON.stringify(value, null, 2));
+      setSourceCode(JSON.stringify(value, null, 2));
     },
     [etag, value],
     { delay: DEBOUNCE_DELAY, firstDelay: 0, skipFirst: true }
@@ -68,14 +77,16 @@ export const TreeTable = ({ etag, value, onChange }) => {
 
       // Apply document changes
       console.log(`@TreeTable::update(${etagRef.current})`);
-      onChange(
-        {
-          ...value,
-          collapse,
-          items: tree2list(nodes)
-        },
-        etagRef.current
-      );
+      const data = {
+        ...value,
+        collapse,
+        items: tree2list(nodes)
+      };
+      onChange(data, etagRef.current);
+
+      // Propagate the change to the Source Code
+      isSourceCodeUpdateRef.current = true;
+      setSourceCode(JSON.stringify(data, null, 2));
     },
     [nodes, collapse],
     { delay: DEBOUNCE_DELAY, skipFirst: true }
@@ -90,16 +101,24 @@ export const TreeTable = ({ etag, value, onChange }) => {
     { delay: 0 }
   );
 
-  // Update from Source Code
+  // SRC -> Project
   useEffectDebounced(
     () => {
+      // Prevent infinite loop in syncing the project with the Source Code
+      if (isSourceCodeUpdateRef.current) {
+        isSourceCodeUpdateRef.current = false;
+        return;
+      }
+
+      // Parse the Source Code and propagate the change only when
+      // we have a correct JSON document
       try {
-        const _src = JSON.parse(src);
+        const _src = JSON.parse(sourceCode);
         setNodes(list2tree(_src.items));
         setCollapse(_src.collapse);
       } catch (err) {}
     },
-    [src],
+    [sourceCode],
     { delay: 0, skipFirst: true }
   );
 
@@ -118,12 +137,24 @@ export const TreeTable = ({ etag, value, onChange }) => {
     setNodes(items);
   };
 
-  const renderItem = ({ item }) => {
-    return `${item.id} - ${item.meta.title}`;
-  };
+  const renderItem = ({ item }) =>
+    item.children.length ? <Node node={item} /> : <Node isLeaf node={item} />;
 
   return (
-    <>
+    <TreeTableContext.Provider
+      value={{
+        nodes,
+        setNodes,
+        collapse,
+        setCollapse,
+        sourceCode,
+        setSourceCode,
+        focus,
+        setFocus,
+        isEditMode,
+        setIsEditMode
+      }}
+    >
       <Nestable
         ref={nestableRef}
         items={nodes}
@@ -132,11 +163,11 @@ export const TreeTable = ({ etag, value, onChange }) => {
       />
       <hr />
       <textarea
-        value={src}
-        onChange={(e) => setSrc(e.currentTarget.value)}
+        value={sourceCode}
+        onChange={(e) => setSourceCode(e.currentTarget.value)}
         cols={50}
         rows={20}
       />
-    </>
+    </TreeTableContext.Provider>
   );
 };

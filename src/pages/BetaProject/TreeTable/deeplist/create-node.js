@@ -1,4 +1,4 @@
-import { generatePushID } from "../use-pushid";
+import { generatePushID } from "../../../../utils/use-pushid";
 import { getConfig } from "./defaults";
 
 export const createNode = (data = {}, config = {}) => {
