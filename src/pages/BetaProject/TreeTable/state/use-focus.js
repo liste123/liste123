@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import { TreeTableContext } from "../TreeTable";
+import { useTreeTable } from "./use-tree-table";
 
 export const useFocus = (node) => {
-  const { focus, setFocus } = useContext(TreeTableContext);
+  const { focus, setFocus } = useTreeTable();
 
   return {
     hasFocus: focus === node.id,

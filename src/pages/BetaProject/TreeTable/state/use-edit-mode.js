@@ -1,11 +1,9 @@
-import { useContext } from "react";
+import { useTreeTable } from "./use-tree-table";
 import { useFocus } from "./use-focus";
-import { TreeTableContext } from "../TreeTable";
 import { updateNode } from "../deeplist";
 
 export const useEditMode = (node) => {
-  const { isEditMode, setIsEditMode, nodes, setNodes } =
-    useContext(TreeTableContext);
+  const { isEditMode, setIsEditMode, nodes, setNodes } = useTreeTable();
   const { hasFocus, requestFocus } = useFocus(node);
 
   const requestEditMode = (evt) => {
