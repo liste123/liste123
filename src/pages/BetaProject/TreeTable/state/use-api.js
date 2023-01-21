@@ -29,7 +29,7 @@ export const makeApi = ({ nodes, setNodes, setFocus, setIsEditMode }) => {
 
   return {
     appendNode: (d, f) => _insert(d, f),
-    prependNode: (f, f) => _insert(f, f, { prepend: true }),
+    prependNode: (d, f) => _insert(d, f, { prepend: true }),
     insertNodeAfter: (after, d, f) => _insert(d, f, { after }),
     insertNodeInto: (into, d, f) => _insert(d, f, { into, prepend: true }),
 

@@ -35,7 +35,7 @@ import { useApi } from "../state/use-api";
 
 import Title from "./Title";
 
-export const Node = ({ node, isLeaf }) => {
+export const Node = ({ node }) => {
   const { clip } = useClipboard();
   const { isBigScreen } = useScreenSize();
 
@@ -46,7 +46,6 @@ export const Node = ({ node, isLeaf }) => {
   const { isCompleted, toggleStatus } = useStatus(node);
   const [menuTarget, setMenuTarget] = useState(null);
 
-  // const api = useApi();
   const handleDelete = (e) => {
     setMenuTarget(null);
     if (
@@ -82,7 +81,7 @@ export const Node = ({ node, isLeaf }) => {
         ...[hasFocus ? "treetable-item-focus" : null]
       ].join(" ")}
     >
-      {isLeaf ? (
+      {node.children.length === 0 ? (
         <IconButton onClick={(e) => toggleStatus(e, !isCompleted)} size="small">
           {isCompleted ? (
             <RadioButtonCheckedSharpIcon />

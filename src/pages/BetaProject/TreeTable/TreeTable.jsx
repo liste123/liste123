@@ -138,9 +138,6 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
     setNodes(items);
   };
 
-  const renderItem = ({ item }) =>
-    item.children.length ? <Node node={item} /> : <Node isLeaf node={item} />;
-
   const contextValue = {
     nodes,
     setNodes,
@@ -162,16 +159,18 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
       <Nestable
         ref={nestableRef}
         items={nodes}
-        renderItem={renderItem}
+        renderItem={({ item, ...rest }) => (
+          <Node node={item} nestableProps={rest} />
+        )}
         onChange={handleNestableChange}
       />
-      <hr />
+      {/* <hr />
       <textarea
         value={sourceCode}
         onChange={(e) => setSourceCode(e.currentTarget.value)}
         cols={50}
         rows={20}
-      />
+      /> */}
     </TreeTableContext.Provider>
   );
 });
