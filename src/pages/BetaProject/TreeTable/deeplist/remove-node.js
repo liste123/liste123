@@ -3,9 +3,6 @@ import { getConfig } from "./defaults";
 import { cloneTree } from "./clone-tree";
 
 export const removeNode = (nodes = [], desiredNode = "", config) => {
-  const _node = getNode(nodes, desiredNode, config);
-  if (!_node) return nodes;
-
   const { parentKey, childrenKey, clone } = getConfig({
     clone: false,
     ...config
@@ -19,6 +16,11 @@ export const removeNode = (nodes = [], desiredNode = "", config) => {
       ? cloneTree(nodes)
       : nodes;
 
+  // Identify the node
+  const _node = getNode(_nodes, desiredNode, config);
+  if (!_node) return nodes;
+
+  // Apply the removal
   if (_node[parentKey]) {
     const _idx = _node[parentKey][childrenKey].indexOf(_node);
     _node[parentKey][childrenKey].splice(_idx, 1);

@@ -1,4 +1,4 @@
-import { useState, useRef, createContext } from "react";
+import { useState, useRef, createContext, forwardRef } from "react";
 
 import Nestable from "react-nestable";
 import "react-nestable/dist/styles/index.css";
@@ -7,6 +7,7 @@ import "./nestable.css";
 import { useEffectDebounced } from "../../../utils/use-effect-debounced";
 import { usePushID } from "../../../utils/use-pushid";
 import { list2tree, tree2list } from "./deeplist";
+import { makeApi } from "./state/use-api";
 
 import { Node } from "./components/Node";
 
@@ -19,7 +20,7 @@ export const TreeTableContext = createContext({});
  * @param {Array} data { id, parentId, custom, fields, ...}
  * @returns
  */
-export const TreeTable = ({ etag, value, onChange }) => {
+export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   const { generatePushID } = usePushID();
   const isPropsUpdateRef = useRef(false);
   const etagRef = useRef(etag);
@@ -140,21 +141,24 @@ export const TreeTable = ({ etag, value, onChange }) => {
   const renderItem = ({ item }) =>
     item.children.length ? <Node node={item} /> : <Node isLeaf node={item} />;
 
+  const contextValue = {
+    nodes,
+    setNodes,
+    collapse,
+    setCollapse,
+    sourceCode,
+    setSourceCode,
+    focus,
+    setFocus,
+    isEditMode,
+    setIsEditMode
+  };
+
+  // Build the external API object
+  apiRef.current = makeApi(contextValue);
+
   return (
-    <TreeTableContext.Provider
-      value={{
-        nodes,
-        setNodes,
-        collapse,
-        setCollapse,
-        sourceCode,
-        setSourceCode,
-        focus,
-        setFocus,
-        isEditMode,
-        setIsEditMode
-      }}
-    >
+    <TreeTableContext.Provider value={contextValue}>
       <Nestable
         ref={nestableRef}
         items={nodes}
@@ -170,4 +174,4 @@ export const TreeTable = ({ etag, value, onChange }) => {
       />
     </TreeTableContext.Provider>
   );
-};
+});

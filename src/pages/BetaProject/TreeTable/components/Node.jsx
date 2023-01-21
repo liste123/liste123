@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { useApi } from "../state/use-api";
 
 import {
   Stack,
@@ -29,7 +28,6 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useClipboard } from "../../../../utils/use-clipboard";
 import { useScreenSize } from "../../../../utils/use-screen-size";
 
-import { useTreeTable } from "../state/use-tree-table";
 import { useFocus } from "../state/use-focus";
 import { useStatus } from "../state/use-status";
 import { useCollapse } from "../state/use-collapse";
@@ -41,7 +39,7 @@ export const Node = ({ node, isLeaf }) => {
   const { clip } = useClipboard();
   const { isBigScreen } = useScreenSize();
 
-  const { insertNodeAfter, insertNodeInto } = useApi();
+  const { insertNodeAfter, insertNodeInto, removeNode } = useApi();
 
   const { hasFocus, requestFocus } = useFocus(node);
   const { isCollapsed, toggleCollapse } = useCollapse(node);
@@ -58,18 +56,18 @@ export const Node = ({ node, isLeaf }) => {
           .toUpperCase()}:\n${node.title}`
       )
     ) {
-      // api.requestDelete(node.id);
+      removeNode(node);
     }
   };
 
   const handleAddAfter = () => {
     setMenuTarget(null);
-    insertNodeAfter(node, {});
+    insertNodeAfter(node, {}, true);
   };
 
   const handleAddInto = () => {
     setMenuTarget(null);
-    insertNodeInto(node, {});
+    insertNodeInto(node, {}, true);
   };
 
   return (

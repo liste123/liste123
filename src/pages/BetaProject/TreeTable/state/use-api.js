@@ -1,48 +1,43 @@
 import { useTreeTable } from "./use-tree-table";
-import deeplist, { createNode } from "../deeplist";
+import { createNode, appendNode, removeNode } from "../deeplist";
 
-export const useApi = () => {
-  const { nodes, setNodes } = useTreeTable();
-
-  const appendNode = () => {};
-
-  const prependNode = () => {};
-
-  const insertNodeAfter = (targetNode, data = {}) => {
+export const makeApi = ({ nodes, setNodes, setFocus, setIsEditMode }) => {
+  const _insert = (data = {}, focus = false, config = {}) => {
     const newNode = createNode({
       title: "",
       status: false,
       ...data
     });
 
-    const _nodes = deeplist.appendNode(nodes, newNode, {
-      clone: true,
-      after: targetNode
-    });
+    // Persist change in memory
+    setNodes(
+      appendNode(nodes, newNode, {
+        ...config,
+        clone: true
+      })
+    );
 
-    setNodes(_nodes);
-  };
+    // Conditional focus
+    Boolean(focus) &&
+      setTimeout(() => {
+        setFocus(newNode.id);
+        setIsEditMode(true);
+      });
 
-  const insertNodeInto = (targetNode, data = {}) => {
-    const newNode = createNode({
-      title: "",
-      status: false,
-      ...data
-    });
-
-    const _nodes = deeplist.appendNode(nodes, newNode, {
-      clone: true,
-      into: targetNode,
-      prepend: true
-    });
-
-    setNodes(_nodes);
+    return newNode;
   };
 
   return {
-    appendNode,
-    prependNode,
-    insertNodeAfter,
-    insertNodeInto
+    appendNode: (d, f) => _insert(d, f),
+    prependNode: (f, f) => _insert(f, f, { prepend: true }),
+    insertNodeAfter: (after, d, f) => _insert(d, f, { after }),
+    insertNodeInto: (into, d, f) => _insert(d, f, { into, prepend: true }),
+
+    removeNode: (targetNode) => {
+      const _nodes = removeNode(nodes, targetNode, { clone: true });
+      setNodes(_nodes);
+    }
   };
 };
+
+export const useApi = () => makeApi(useTreeTable());
