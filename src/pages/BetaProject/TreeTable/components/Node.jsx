@@ -29,15 +29,19 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useClipboard } from "../../../../utils/use-clipboard";
 import { useScreenSize } from "../../../../utils/use-screen-size";
 
+import { useTreeTable } from "../state/use-tree-table";
 import { useFocus } from "../state/use-focus";
 import { useStatus } from "../state/use-status";
 import { useCollapse } from "../state/use-collapse";
+import { useApi } from "../state/use-api";
 
 import Title from "./Title";
 
 export const Node = ({ node, isLeaf }) => {
   const { clip } = useClipboard();
   const { isBigScreen } = useScreenSize();
+
+  const { insertNodeAfter, insertNodeInto } = useApi();
 
   const { hasFocus, requestFocus } = useFocus(node);
   const { isCollapsed, toggleCollapse } = useCollapse(node);
@@ -60,12 +64,12 @@ export const Node = ({ node, isLeaf }) => {
 
   const handleAddAfter = () => {
     setMenuTarget(null);
-    // api.appendAfter(node.id, {});
+    insertNodeAfter(node, {});
   };
 
   const handleAddInto = () => {
     setMenuTarget(null);
-    // api.appendInto(node.id, {});
+    insertNodeInto(node, {});
   };
 
   return (

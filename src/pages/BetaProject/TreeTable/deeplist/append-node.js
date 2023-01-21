@@ -26,6 +26,7 @@ export const appendNode = (nodes = [], node = null, config = {}) => {
       ? cloneTree(nodes)
       : nodes;
 
+  // Add into root
   if (into === null && before === null && after === null) {
     if (prepend) {
       insertItem(_nodes, "-na-", node);
@@ -36,6 +37,7 @@ export const appendNode = (nodes = [], node = null, config = {}) => {
 
   if (into !== null) {
     const targetNode = getNode(_nodes, into, config);
+    node[parentKey] = targetNode;
     if (prepend) {
       insertItem(targetNode[childrenKey], "-na-", node);
     } else {
@@ -46,6 +48,7 @@ export const appendNode = (nodes = [], node = null, config = {}) => {
   if (after !== null) {
     const targetNode = getNode(_nodes, after, config);
     if (targetNode[parentKey]) {
+      node[parentKey] = targetNode[parentKey];
       insertItem(targetNode[parentKey][childrenKey], targetNode, node);
     } else {
       insertItem(_nodes, targetNode, node);

@@ -38,6 +38,7 @@ describe("DeepList", () => {
     it("should append INTO an existing node", () => {
       const r1 = appendNode(treeFlat, createNode({ id: 123 }), { into: "n1" });
       expect(r1[0].children[0]).toHaveProperty("id", 123);
+      expect(r1[0].children[0].parent).toBe(r1[0]);
     });
 
     it("should append INTO an existing node - prepend", () => {
@@ -47,11 +48,13 @@ describe("DeepList", () => {
         prepend: true
       });
       expect(r2[0].children.map(($) => $.id)).toEqual([456, 123]);
+      expect(r2[0].children.every(($) => $.parent === r2[0])).toBe(true);
     });
 
     it("should append AFTER an existing node", () => {
       const r1 = appendNode(treeFlat, createNode({ id: 123 }), { after: "n1" });
       expect(r1.map(($) => $.id)).toEqual(["n1", 123, "n2", "n3"]);
+      expect(r1[0].parent).toEqual(r1[1].parent);
     });
 
     it("should append AFTER an existing node - last node", () => {
@@ -64,6 +67,13 @@ describe("DeepList", () => {
         before: "n1"
       });
       expect(r1.map(($) => $.id)).toEqual([123, "n1", "n2", "n3"]);
+    });
+
+    it("should adopt sibling parent node", () => {
+      const r1 = appendNode(treeL1, createNode({ id: 123 }), {
+        after: "n1-1"
+      });
+      expect(r1[0].children.every(($) => $.parent === r1[0])).toBe(true);
     });
 
     it("should not mutate the input tree", () => {
