@@ -1,13 +1,5 @@
-// import { useState } from "react";
-// import { useClipboard } from "../../utils/use-clipboard";
+import { useState } from "react";
 // import { useApi } from "../state/use-api";
-// import MoreVertIcon from "@mui/icons-material/MoreVert";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
-// import PlaylistPlaySharpIcon from "@mui/icons-material/PlaylistPlaySharp";
-// import LabelSharpIcon from "@mui/icons-material/LabelSharp";
-// import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-// import { useScreenSize } from "../../utils/use-screen-size";
 
 import {
   Stack,
@@ -27,6 +19,15 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RadioButtonUncheckedSharpIcon from "@mui/icons-material/RadioButtonUncheckedSharp";
 import RadioButtonCheckedSharpIcon from "@mui/icons-material/RadioButtonCheckedSharp";
 import ExpandCircleDownSharpIcon from "@mui/icons-material/ExpandCircleDownSharp";
+import LabelSharpIcon from "@mui/icons-material/LabelSharp";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
+import PlaylistPlaySharpIcon from "@mui/icons-material/PlaylistPlaySharp";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+
+import { useClipboard } from "../../../../utils/use-clipboard";
+import { useScreenSize } from "../../../../utils/use-screen-size";
 
 import { useFocus } from "../state/use-focus";
 import { useStatus } from "../state/use-status";
@@ -35,38 +36,37 @@ import { useCollapse } from "../state/use-collapse";
 import Title from "./Title";
 
 export const Node = ({ node, isLeaf }) => {
-  // const { clip } = useClipboard();
-  // const { isBigScreen } = useScreenSize();
-  // const [menuTarget, setMenuTarget] = useState(null);
+  const { clip } = useClipboard();
+  const { isBigScreen } = useScreenSize();
+
   const { hasFocus, requestFocus } = useFocus(node);
   const { isCollapsed, toggleCollapse } = useCollapse(node);
   const { isCompleted, toggleStatus } = useStatus(node);
+  const [menuTarget, setMenuTarget] = useState(null);
+
   // const api = useApi();
+  const handleDelete = (e) => {
+    setMenuTarget(null);
+    if (
+      confirm(
+        `Confirm you want to delete task: ${node.id
+          .slice(-3)
+          .toUpperCase()}:\n${node.title}`
+      )
+    ) {
+      // api.requestDelete(node.id);
+    }
+  };
 
-  // const handleDelete = (e) => {
-  //   setMenuTarget(null);
-  //   if (
-  //     confirm(
-  //       `Confirm you want to delete task: ${node.id
-  //         .slice(-3)
-  //         .toUpperCase()}:\n${node.title}`
-  //     )
-  //   ) {
-  //     api.requestDelete(node.id);
-  //   }
-  // };
+  const handleAddAfter = () => {
+    setMenuTarget(null);
+    // api.appendAfter(node.id, {});
+  };
 
-  // const handleAddAfter = () => {
-  //   setMenuTarget(null);
-  //   api.appendAfter(node.id, {});
-  // };
-
-  // const handleAddInto = () => {
-  //   setMenuTarget(null);
-  //   api.appendInto(node.id, {});
-  // };
-  // const toggleCollapse = () => {};
-  // const isCollapsed = false;
+  const handleAddInto = () => {
+    setMenuTarget(null);
+    // api.appendInto(node.id, {});
+  };
 
   return (
     <Stack
@@ -104,7 +104,7 @@ export const Node = ({ node, isLeaf }) => {
         </IconButton>
       )}
       <Title node={node} helpMode={false} />
-      {/* {isBigScreen && (
+      {isBigScreen && (
         <Chip
           label={node.id.slice(-3).toUpperCase()}
           variant="outlined"
@@ -112,14 +112,14 @@ export const Node = ({ node, isLeaf }) => {
           icon={<LabelSharpIcon />}
           onClick={() => clip(node.id)}
         />
-      )} */}
-      {/* <IconButton
+      )}
+      <IconButton
         size={"small"}
         onClick={(e) => setMenuTarget(e.currentTarget)}
       >
         <MoreVertIcon />
-      </IconButton> */}
-      {/* <Popover
+      </IconButton>
+      <Popover
         open={Boolean(menuTarget)}
         anchorEl={menuTarget}
         onClose={() => setMenuTarget(null)}
@@ -167,7 +167,7 @@ export const Node = ({ node, isLeaf }) => {
             </ListItemButton>
           </ListItem>
         </List>
-      </Popover> */}
+      </Popover>
     </Stack>
   );
 };
