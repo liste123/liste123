@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, createContext } from "react";
 import { Box, Popover, IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+
+export const MenuContext = createContext({});
 
 export const Menu = ({ children }) => {
   const [target, setTarget] = useState(null);
@@ -19,7 +21,9 @@ export const Menu = ({ children }) => {
           horizontal: "left"
         }}
       >
-        {children}
+        {typeof children === "function"
+          ? children({ closeMenu: () => setTarget(null) })
+          : children}
       </Popover>
     </Box>
   );

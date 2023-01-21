@@ -47,8 +47,8 @@ export const router = createBrowserRouter([
       { path: "signup", element: <BetaSignup /> },
       // Protected Routes
       { path: "@me", element: <BetaAccount /> },
-      { path: "@me/:uuid", element: <BetaProjectDesktop /> },
-      { path: "@mex/:uuid", element: <BetaProject /> },
+      { path: "@me_old/:uuid", element: <BetaProjectDesktop /> },
+      { path: "@me/:uuid", element: <BetaProject /> },
       { path: "@me/create", element: <BetaProjectCreate /> },
       { path: "@me/import", element: <BetaProjectImport /> }
     ]

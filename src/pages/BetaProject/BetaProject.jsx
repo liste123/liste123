@@ -1,3 +1,4 @@
+import { useBetaAccount } from "../../state/use-beta-account";
 import { useBetaProject } from "./state/use-beta-project";
 import { useBetaProjectUpdates } from "./state/use-beta-project-updates";
 import { BetaProjectUI } from "./components/BetaProjectUI";
@@ -20,6 +21,7 @@ const BetaProjectUpdates = ({ projectData, ...props }) => {
  * @returns
  */
 const BetaProject = () => {
+  const accountData = useBetaAccount();
   const { loading, error, data, ...api } = useBetaProject();
 
   if (loading) return "loading project...";
@@ -28,6 +30,7 @@ const BetaProject = () => {
 
   return (
     <BetaProjectUpdates
+      accountData={accountData}
       projectData={data}
       onTreeTableChange={(...args) => api.updateData(...args)}
     />

@@ -9,6 +9,7 @@ import { usePushID } from "../../../utils/use-pushid";
 import { list2tree, tree2list } from "./deeplist";
 import { makeApi } from "./state/use-api";
 
+import { SourceCode } from "./components/SourceCode";
 import { Node } from "./components/Node";
 
 const DEBOUNCE_DELAY = 0;
@@ -34,6 +35,7 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
 
   // Source Code support
   const isSourceCodeUpdateRef = useRef(false);
+  const [showEditor, setShowEditor] = useState(false);
   const [sourceCode, setSourceCode] = useState(JSON.stringify(value, null, 2));
 
   // Imports changes from the outside world into the component
@@ -152,7 +154,10 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   };
 
   // Build the external API object
-  apiRef.current = makeApi(contextValue);
+  apiRef.current = {
+    ...makeApi(contextValue),
+    showEditor: () => setShowEditor(true)
+  };
 
   return (
     <TreeTableContext.Provider value={contextValue}>
@@ -164,13 +169,12 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
         )}
         onChange={handleNestableChange}
       />
-      {/* <hr />
-      <textarea
+      <SourceCode
+        open={showEditor}
         value={sourceCode}
-        onChange={(e) => setSourceCode(e.currentTarget.value)}
-        cols={50}
-        rows={20}
-      /> */}
+        onChange={setSourceCode}
+        onClose={() => setShowEditor(false)}
+      />
     </TreeTableContext.Provider>
   );
 });
