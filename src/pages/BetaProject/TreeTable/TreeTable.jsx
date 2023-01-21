@@ -130,7 +130,7 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
     let collection = items;
     for (const idx of targetPath) {
       dragItem.parent = collection[idx];
-      collection = parent.children;
+      collection = dragItem.parent.children;
     }
 
     // Apply new items to the internal state
