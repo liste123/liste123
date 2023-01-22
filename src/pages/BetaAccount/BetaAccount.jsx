@@ -88,7 +88,7 @@ const BetaAccount = ({
       {isSmallScreen && (
         <Fab
           component={Link}
-          to={`/beta/${uname}/create`}
+          to={`/beta/@me/create`}
           color={"primary"}
           sx={{
             margin: 0,
