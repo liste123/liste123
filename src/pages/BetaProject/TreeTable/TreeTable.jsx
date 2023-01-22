@@ -1,5 +1,4 @@
-import { useState, useRef, createContext, forwardRef } from "react";
-// import objectHash from "object-hash";
+import { useState, useRef, createContext, forwardRef, useEffect } from "react";
 
 import Nestable from "react-nestable";
 import "react-nestable/dist/styles/index.css";
@@ -13,7 +12,7 @@ import { makeApi } from "./state/use-api";
 import { SourceCode } from "./components/SourceCode";
 import { Node } from "./components/Node";
 
-const DEBOUNCE_DELAY = 10;
+const DEBOUNCE_DELAY = 0;
 
 export const TreeTableContext = createContext({});
 
@@ -27,7 +26,6 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   const isPropsUpdateRef = useRef(false);
   const etagRef = useRef(etag);
   const nestableRef = useRef(null);
-  // const hashRef = useRef(objectHash(value));
 
   // Project State
   const [nodes, setNodes] = useState(list2tree(value.items));
@@ -46,17 +44,8 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   // Imports changes from the outside world into the component
   useEffectDebounced(
     () => {
-      // const updateHash = objectHash(value);
-      // if (updateHash === hashRef.current) {
-      //   console.log("skip RESET by hash");
-      //   return;
-      // } else {
-      //   hashRef.current = updateHash;
-      // }
-
       // Skip loopback updates from outside state management
       if (etag === etagRef.current) {
-        console.log("skip RESET by same tag");
         etagRef.current = etag;
         return;
       }
@@ -72,6 +61,7 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
       setCollapse(value.collapse);
 
       // Update Source Code Editor
+      isSourceCodeUpdateRef.current = true;
       setSourceCode(JSON.stringify(value, null, 2));
     },
     [etag, value],
@@ -81,18 +71,9 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   // Exports the internal state to the outside world
   useEffectDebounced(
     () => {
-      // const updateHash = objectHash({ items: nodes, collapse });
-      // if (updateHash === hashRef.current) {
-      //   console.log("skip RESET by hash");
-      //   return;
-      // } else {
-      //   hashRef.current = updateHash;
-      // }
-
       // Skip reacting to props updates
       // (this is to avoid circular loops with the outside world)
       if (isPropsUpdateRef.current) {
-        console.log("skip UPATE by internal update");
         isPropsUpdateRef.current = false;
         return;
       }
@@ -101,8 +82,9 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
       // Generate the PushID here so we can skip the same-data update
       etagRef.current = generatePushID();
 
-      // Apply document changes
       console.log(`@TreeTable::update(${etagRef.current})`);
+
+      // Apply document changes
       const data = {
         ...value,
         collapse,
