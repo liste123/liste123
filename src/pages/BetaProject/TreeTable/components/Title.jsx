@@ -14,8 +14,16 @@ export const Title = ({ node, helpMode = false }) => {
       onChange={(title) => update({ title })}
       onEnter={(title, appendInside) => update({ title }, true, appendInside)}
       onCancel={(title) => {
-        title.length ? update({ title }) : removeNode(node);
         requestViewMode();
+        title.length ? update({ title }) : removeNode(node);
+      }}
+      onBlur={(title, hasChanged) => {
+        requestViewMode();
+        if (hasChanged) {
+          update({ title });
+        } else if (!title) {
+          removeNode(node);
+        }
       }}
       style={{
         flex: 1,

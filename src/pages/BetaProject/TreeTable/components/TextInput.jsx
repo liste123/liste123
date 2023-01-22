@@ -1,7 +1,7 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useLayoutEffect, useState } from "react";
 import { useKeyboardEvent } from "../../../../utils/use-keyboard-event";
 import { useEffectDebounced } from "../../../../utils/use-effect-debounced";
-import { useClickOutside } from "../../../../utils/use-click-outside";
+// import { useClickOutside } from "../../../../utils/use-click-outside";
 
 export const TextInput = ({
   value,
@@ -15,8 +15,24 @@ export const TextInput = ({
   const initialValue = useRef(value);
   const [_value, setValue] = useState(value);
 
-  useEffect(() => {
+  // Focus on the field:
+  useLayoutEffect(() => {
     inputRef.current.focus();
+  }, []);
+
+  // Handle blur event also on mobile:
+  // https://stackoverflow.com/questions/4971061/capture-done-button-click-in-iphones-virtual-keyboard-with-javascript
+  useLayoutEffect(() => {
+    const onLoseFocus = () =>
+      onBlur &&
+      onBlur(
+        inputRef.current.value,
+        inputRef.current.value !== initialValue.current
+      );
+    inputRef.current.addEventListener("focusout", onLoseFocus);
+    return () => {
+      inputRef.current.removeEventListener("focusout", onLoseFocus);
+    };
   }, []);
 
   // Debounced "onChage"
@@ -29,7 +45,7 @@ export const TextInput = ({
     }
   );
 
-  // Multiple ways to trigger the "onBlur" event
+  // Cancel Event
   useKeyboardEvent(
     "Escape",
     () => {
@@ -41,6 +57,7 @@ export const TextInput = ({
     { target: inputRef }
   );
 
+  // Add More Event
   useKeyboardEvent(
     "Enter",
     (evt) => {
@@ -49,7 +66,6 @@ export const TextInput = ({
     },
     { target: inputRef }
   );
-  useClickOutside(inputRef, onBlur);
 
   return (
     <input
