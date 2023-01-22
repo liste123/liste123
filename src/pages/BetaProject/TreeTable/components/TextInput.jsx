@@ -3,7 +3,14 @@ import { useKeyboardEvent } from "../../../../utils/use-keyboard-event";
 import { useEffectDebounced } from "../../../../utils/use-effect-debounced";
 import { useClickOutside } from "../../../../utils/use-click-outside";
 
-const TextInput = ({ value, onChange, onBlur, ...props }) => {
+export const TextInput = ({
+  value,
+  onChange,
+  onBlur,
+  onEnter,
+  onCancel,
+  ...props
+}) => {
   const inputRef = useRef();
   const initialValue = useRef(value);
   const [_value, setValue] = useState(value);
@@ -14,7 +21,7 @@ const TextInput = ({ value, onChange, onBlur, ...props }) => {
 
   // Debounced "onChage"
   const { cancel: cancelOnChange } = useEffectDebounced(
-    () => onChange(_value),
+    () => onChange && onChange(_value),
     [_value],
     {
       delay: 500,
@@ -27,19 +34,20 @@ const TextInput = ({ value, onChange, onBlur, ...props }) => {
     "Escape",
     () => {
       cancelOnChange();
-      onChange(initialValue.current);
-      onBlur();
+      // onChange && onChange(initialValue.current);
+      // onBlur && onBlur();
+      onCancel && onCancel(initialValue.current);
     },
     { target: inputRef }
   );
+
   useKeyboardEvent(
     "Enter",
     (evt) => {
       cancelOnChange();
-      onChange(evt.target.value);
-      onBlur();
+      onEnter && onEnter(evt.target.value, evt.ctrlKey || evt.metaKey);
     },
-    { target: inputRef, stopPropagation: false }
+    { target: inputRef }
   );
   useClickOutside(inputRef, onBlur);
 
@@ -53,5 +61,3 @@ const TextInput = ({ value, onChange, onBlur, ...props }) => {
     />
   );
 };
-
-export default TextInput;

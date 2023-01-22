@@ -1,16 +1,25 @@
 import { useEditMode } from "../state/use-edit-mode";
+import { useApi } from "../state/use-api";
 import { Box } from "@mui/material";
-import Input from "./TextInput";
+import { TextInput } from "./TextInput";
 
 export const Title = ({ node, helpMode = false }) => {
+  const { removeNode } = useApi();
   const { isEditMode, requestEditMode, requestViewMode, update } =
     useEditMode(node);
 
   return isEditMode ? (
-    <Input
+    <TextInput
       value={node.meta.title}
       onChange={(title) => update({ title })}
-      onBlur={requestViewMode}
+      onEnter={(title, appendInside) => {
+        console.log("onEnter", appendInside);
+        update({ title }, true, appendInside);
+      }}
+      onCancel={(title) => {
+        title.length ? update({ title }) : removeNode(node);
+        requestViewMode();
+      }}
       style={{
         flex: 1,
         background: "transparent",

@@ -38,6 +38,9 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   const [showEditor, setShowEditor] = useState(false);
   const [sourceCode, setSourceCode] = useState(JSON.stringify(value, null, 2));
 
+  // Keyboard support
+  // const [hasUserFocus, setHasUserFocus]
+
   // Imports changes from the outside world into the component
   useEffectDebounced(
     () => {
