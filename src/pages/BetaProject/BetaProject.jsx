@@ -11,7 +11,8 @@ import { BetaProjectUI } from "./components/BetaProjectUI";
 const BetaProjectUpdates = ({ projectData, ...props }) => {
   const { data, error } = useBetaProjectUpdates(projectData);
 
-  if (error) return `ERROR WITH UPDATES: ${error.message}`;
+  if (error)
+    return `ERROR WITH UPDATES: ${error.message || JSON.stringify(error)}`;
 
   return <BetaProjectUI {...props} projectData={data} />;
 };

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 const DEFAULT_OPTIONS = {
   exact: false, // check that combo and event have same length
@@ -30,7 +30,7 @@ export const useKeyboardEvent = (combo = "", fn, options = DEFAULT_OPTIONS) => {
   };
   const comboTokens = combo.split("+").map(($) => $.trim().toUpperCase());
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const onKeyPress = (evt) => {
       const eventTokens = [
         getKeyName(evt.code, evt.keyCode),

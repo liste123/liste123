@@ -13,6 +13,7 @@ export const TextInput = ({
 }) => {
   const inputRef = useRef();
   const initialValue = useRef(value);
+  const lastCommit = useRef(value);
   const [_value, setValue] = useState(value);
 
   // Focus on the field:
@@ -27,7 +28,8 @@ export const TextInput = ({
       onBlur &&
       onBlur(
         inputRef.current.value,
-        inputRef.current.value !== initialValue.current
+        inputRef.current.value !== initialValue.current &&
+          inputRef.current.value !== lastCommit.current
       );
     inputRef.current.addEventListener("focusout", onLoseFocus);
     return () => {
@@ -37,7 +39,11 @@ export const TextInput = ({
 
   // Debounced "onChage"
   const { cancel: cancelOnChange } = useEffectDebounced(
-    () => onChange && onChange(_value),
+    () => {
+      if (!onChange) return;
+      onChange(_value);
+      lastCommit.current = _value;
+    },
     [_value],
     {
       delay: 500,

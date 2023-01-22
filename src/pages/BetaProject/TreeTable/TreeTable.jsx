@@ -1,5 +1,5 @@
 import { useState, useRef, createContext, forwardRef } from "react";
-import objectHash from "object-hash";
+// import objectHash from "object-hash";
 
 import Nestable from "react-nestable";
 import "react-nestable/dist/styles/index.css";
@@ -27,7 +27,7 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   const isPropsUpdateRef = useRef(false);
   const etagRef = useRef(etag);
   const nestableRef = useRef(null);
-  const hashRef = useRef(objectHash(value));
+  // const hashRef = useRef(objectHash(value));
 
   // Project State
   const [nodes, setNodes] = useState(list2tree(value.items));
@@ -46,22 +46,22 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   // Imports changes from the outside world into the component
   useEffectDebounced(
     () => {
-      const updateHash = objectHash(value);
-      if (updateHash === hashRef.current) {
-        console.log("skip RESET by hash");
-        return;
-      } else {
-        hashRef.current = updateHash;
-      }
+      // const updateHash = objectHash(value);
+      // if (updateHash === hashRef.current) {
+      //   console.log("skip RESET by hash");
+      //   return;
+      // } else {
+      //   hashRef.current = updateHash;
+      // }
 
       // Skip loopback updates from outside state management
       if (etag === etagRef.current) {
+        console.log("skip RESET by same tag");
         etagRef.current = etag;
         return;
       }
 
       console.log(`@TreeTable::reset(${etag})`);
-      etagRef.current = etag;
 
       // Mark the data change as driven by a props update activity
       // (this is to avoid circular loops with the outside world)
@@ -81,18 +81,18 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   // Exports the internal state to the outside world
   useEffectDebounced(
     () => {
-      const updateHash = objectHash({ items: nodes, collapse });
-      if (updateHash === hashRef.current) {
-        console.log("skip RESET by hash");
-        return;
-      } else {
-        hashRef.current = updateHash;
-      }
+      // const updateHash = objectHash({ items: nodes, collapse });
+      // if (updateHash === hashRef.current) {
+      //   console.log("skip RESET by hash");
+      //   return;
+      // } else {
+      //   hashRef.current = updateHash;
+      // }
 
       // Skip reacting to props updates
       // (this is to avoid circular loops with the outside world)
       if (isPropsUpdateRef.current) {
-        // console.log("skip update");
+        console.log("skip UPATE by internal update");
         isPropsUpdateRef.current = false;
         return;
       }
