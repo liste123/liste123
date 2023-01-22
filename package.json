@@ -21,6 +21,7 @@
     "@nhost/react-apollo": "^4.13.0",
     "date-fns": "^2.29.3",
     "graphql": "^16.6.0",
+    "object-hash": "^3.0.0",
     "performant-array-to-tree": "^1.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

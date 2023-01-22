@@ -1,4 +1,5 @@
 import { useState, useRef, createContext, forwardRef } from "react";
+import objectHash from "object-hash";
 
 import Nestable from "react-nestable";
 import "react-nestable/dist/styles/index.css";
@@ -12,7 +13,7 @@ import { makeApi } from "./state/use-api";
 import { SourceCode } from "./components/SourceCode";
 import { Node } from "./components/Node";
 
-const DEBOUNCE_DELAY = 0;
+const DEBOUNCE_DELAY = 10;
 
 export const TreeTableContext = createContext({});
 
@@ -26,6 +27,7 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   const isPropsUpdateRef = useRef(false);
   const etagRef = useRef(etag);
   const nestableRef = useRef(null);
+  const hashRef = useRef(objectHash(value));
 
   // Project State
   const [nodes, setNodes] = useState(list2tree(value.items));
@@ -44,6 +46,14 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   // Imports changes from the outside world into the component
   useEffectDebounced(
     () => {
+      const updateHash = objectHash(value);
+      if (updateHash === hashRef.current) {
+        console.log("skip RESET by hash");
+        return;
+      } else {
+        hashRef.current = updateHash;
+      }
+
       // Skip loopback updates from outside state management
       if (etag === etagRef.current) {
         etagRef.current = etag;
@@ -51,6 +61,7 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
       }
 
       console.log(`@TreeTable::reset(${etag})`);
+      etagRef.current = etag;
 
       // Mark the data change as driven by a props update activity
       // (this is to avoid circular loops with the outside world)
@@ -70,9 +81,18 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   // Exports the internal state to the outside world
   useEffectDebounced(
     () => {
+      const updateHash = objectHash({ items: nodes, collapse });
+      if (updateHash === hashRef.current) {
+        console.log("skip RESET by hash");
+        return;
+      } else {
+        hashRef.current = updateHash;
+      }
+
       // Skip reacting to props updates
       // (this is to avoid circular loops with the outside world)
       if (isPropsUpdateRef.current) {
+        // console.log("skip update");
         isPropsUpdateRef.current = false;
         return;
       }
@@ -129,6 +149,8 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   );
 
   const handleNestableChange = ({ items, dragItem, targetPath }) => {
+    console.log("@handleNestableChange");
+
     // Reassign parent using the change path provided by Nestable
     targetPath.pop();
     dragItem.parent = null;
