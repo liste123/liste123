@@ -12,10 +12,7 @@ export const Title = ({ node, helpMode = false }) => {
     <TextInput
       value={node.meta.title}
       onChange={(title) => update({ title })}
-      onEnter={(title, appendInside) => {
-        console.log("onEnter", appendInside);
-        update({ title }, true, appendInside);
-      }}
+      onEnter={(title, appendInside) => update({ title }, true, appendInside)}
       onCancel={(title) => {
         title.length ? update({ title }) : removeNode(node);
         requestViewMode();
