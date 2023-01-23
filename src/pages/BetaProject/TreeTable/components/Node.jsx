@@ -16,7 +16,7 @@ import {
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import RadioButtonUncheckedSharpIcon from "@mui/icons-material/RadioButtonUncheckedSharp";
-import RadioButtonCheckedSharpIcon from "@mui/icons-material/RadioButtonCheckedSharp";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import ExpandCircleDownSharpIcon from "@mui/icons-material/ExpandCircleDownSharp";
 import LabelSharpIcon from "@mui/icons-material/LabelSharp";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -83,11 +83,7 @@ export const Node = ({ node }) => {
     >
       {node.children.length === 0 ? (
         <IconButton onClick={(e) => toggleStatus(e, !isCompleted)} size="small">
-          {isCompleted ? (
-            <RadioButtonCheckedSharpIcon />
-          ) : (
-            <RadioButtonUncheckedSharpIcon />
-          )}
+          {isCompleted ? <TaskAltIcon /> : <RadioButtonUncheckedSharpIcon />}
         </IconButton>
       ) : (
         <IconButton onClick={toggleCollapse} size="small">
