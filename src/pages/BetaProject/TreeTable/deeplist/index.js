@@ -6,6 +6,7 @@ import { nodeMatch } from "./node-match";
 import { createNode } from "./create-node";
 import { appendNode } from "./append-node";
 import { removeNode } from "./remove-node";
+import { getNode } from "./get-node";
 import { getNodeId } from "./get-node-id";
 import { getNodeNext } from "./get-node-next";
 import { getNodePrev } from "./get-node-prev";
@@ -18,6 +19,7 @@ export { nodeMatch } from "./node-match";
 export { createNode } from "./create-node";
 export { appendNode } from "./append-node";
 export { removeNode } from "./remove-node";
+export { getNode } from "./get-node";
 export { getNodeId } from "./get-node-id";
 export { getNodeNext } from "./get-node-next";
 export { getNodePrev } from "./get-node-prev";
@@ -31,6 +33,7 @@ export default {
   createNode,
   appendNode,
   removeNode,
+  getNode,
   getNodeId,
   getNodeNext,
   getNodePrev

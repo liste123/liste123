@@ -5,8 +5,13 @@ import { TextInput } from "./TextInput";
 
 export const Title = ({ node, helpMode = false }) => {
   const { removeNode } = useApi();
-  const { isEditMode, requestEditMode, requestViewMode, update } =
-    useEditMode(node);
+  const {
+    isEditMode,
+    requestEditMode,
+    requestViewMode,
+    update,
+    requestFocusNext
+  } = useEditMode(node);
 
   return isEditMode ? (
     <TextInput
@@ -14,6 +19,7 @@ export const Title = ({ node, helpMode = false }) => {
       onChange={(title) => update({ title })}
       onEnter={(title, appendInside) => update({ title }, true, appendInside)}
       onCancel={(title) => {
+        if (!title.length) requestFocusNext();
         requestViewMode();
         title.length ? update({ title }) : removeNode(node);
       }}

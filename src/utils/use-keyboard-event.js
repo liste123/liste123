@@ -2,8 +2,8 @@ import { useLayoutEffect, useRef } from "react";
 
 const DEFAULT_OPTIONS = {
   exact: false, // check that combo and event have same length
-  preventDefault: true,
-  stopPropagation: true,
+  preventDefault: false,
+  stopPropagation: false,
   debounceDelay: 0,
   target: document // Could be a DOM object or a React.useRef
 };

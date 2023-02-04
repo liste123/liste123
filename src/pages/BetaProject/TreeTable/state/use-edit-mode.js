@@ -1,10 +1,11 @@
 import { useTreeTable } from "./use-tree-table";
 import { useFocus } from "./use-focus";
 import { useApi } from "./use-api";
-import { appendNode, updateNode } from "../deeplist";
+import { appendNode, updateNode, getNodeNext, getNodePrev } from "../deeplist";
 
 export const useEditMode = (node) => {
-  const { nodes, isEditMode, setIsEditMode, setNodes } = useTreeTable();
+  const { nodes, isEditMode, setIsEditMode, setNodes, setFocus } =
+    useTreeTable();
   const { hasFocus, requestFocus } = useFocus(node);
   const { createNode } = useApi();
 
@@ -18,6 +19,12 @@ export const useEditMode = (node) => {
 
   const requestViewMode = () => {
     setIsEditMode(false);
+  };
+
+  const requestFocusNext = () => {
+    const _next = getNodePrev(nodes, node) || getNodeNext(nodes, node);
+    if (!_next) return;
+    setFocus(_next.id);
   };
 
   const update = (data, create = false, append = false) => {
@@ -44,6 +51,7 @@ export const useEditMode = (node) => {
     isEditMode: isEditMode && hasFocus,
     requestEditMode,
     requestViewMode,
+    requestFocusNext,
     update
   };
 };

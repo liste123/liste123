@@ -30,8 +30,28 @@ export const BetaProjectUI = ({ projectData, onTreeTableChange }) => {
 
   const shareProjectURL = `${window.location.origin}/beta/@me/import?projectID=${projectID}`;
 
-  useKeyboardEvent("ArrowDown", () => treeTableRef.current.moveFocusNext());
-  useKeyboardEvent("ArrowUp", () => treeTableRef.current.moveFocusPrev());
+  const useCombos = (combos = [], fn) =>
+    combos.forEach((combo) =>
+      useKeyboardEvent(combo, (e) => {
+        if (treeTableRef.current.isEditMode()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        fn(e);
+      })
+    );
+
+  useCombos(["Enter", "e"], () => treeTableRef.current.startEdit());
+  useCombos(["ArrowDown"], () => treeTableRef.current.moveFocusNext());
+  useCombos(["ArrowUp"], () => treeTableRef.current.moveFocusPrev());
+  useCombos(["Space"], () => treeTableRef.current.toggleNode());
+  useCombos(["Backspace"], () => {
+    const currNode = treeTableRef.current.getCurrentNode();
+    treeTableRef.current.removeNode(currNode, {
+      confirm: (node) =>
+        confirm(`Sure you want to remove this node?\n${node.id}`),
+      setFocus: true
+    });
+  });
 
   return (
     <BetaPage

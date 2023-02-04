@@ -46,7 +46,7 @@ export const TextInput = ({
     },
     [_value],
     {
-      delay: 500,
+      delay: 250,
       skipFirst: true
     }
   );
