@@ -17,17 +17,30 @@ export const Title = ({ node, helpMode = false }) => {
     <TextInput
       value={node.meta.title}
       onChange={(title) => update({ title })}
-      onEnter={(title, appendInside) => update({ title }, true, appendInside)}
+      onEnter={(title, appendInside) => {
+        if (!title.length) {
+          requestViewMode();
+          requestFocusNext();
+          removeNode(node);
+          return;
+        }
+        update({ title }, true, appendInside);
+      }}
       onCancel={(title) => {
-        if (!title.length) requestFocusNext();
         requestViewMode();
-        title.length ? update({ title }) : removeNode(node);
+        if (!title.length) {
+          requestFocusNext();
+          removeNode(node);
+          return;
+        }
+        update({ title });
       }}
       onBlur={(title, hasChanged) => {
         requestViewMode();
         if (hasChanged) {
           update({ title });
         } else if (!title) {
+          requestFocusNext();
           removeNode(node);
         }
       }}

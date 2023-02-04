@@ -1,6 +1,9 @@
 ## 2023, Feb 4th
 - Fix tests that failed when importing json (could not find a damn reason for that)
 - Fix `getNodeNext()` to skip collapsed items
+- Add shortcut `Enter` and `e` to enable _edit mode_
+- Add shortcut `Space` to toggle a node status (collapse or completed)
+- Add shortcut `Backspace` to delete a node
 
 ## 2023, Jan 25th
 - Scout the json patch library that we are going to use for improving the syncing mechanics: https://www.npmjs.com/package/fast-json-patch

@@ -1,7 +1,6 @@
 import { useRef, useLayoutEffect, useState } from "react";
 import { useKeyboardEvent } from "../../../../utils/use-keyboard-event";
 import { useEffectDebounced } from "../../../../utils/use-effect-debounced";
-// import { useClickOutside } from "../../../../utils/use-click-outside";
 
 export const TextInput = ({
   value,
@@ -56,8 +55,6 @@ export const TextInput = ({
     "Escape",
     () => {
       cancelOnChange();
-      // onChange && onChange(initialValue.current);
-      // onBlur && onBlur();
       onCancel && onCancel(initialValue.current);
     },
     { target: inputRef }
@@ -79,6 +76,10 @@ export const TextInput = ({
       ref={inputRef}
       type="text"
       value={_value}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
       onChange={(e) => setValue(e.target.value)}
     />
   );
