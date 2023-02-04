@@ -1,7 +1,7 @@
 import { getNode } from "./get-node";
 import { list2tree } from "./list2tree";
-import nodesFlat from "./fixtures/nodes.flat.json";
-import nodesTreeL1 from "./fixtures/nodes.tree-l1.json";
+import nodesFlat from "./fixtures/nodes.flat";
+import nodesTreeL1 from "./fixtures/nodes.tree-l1";
 
 describe("DeepList", () => {
   let treeFlat = null;

@@ -27,7 +27,14 @@ export const getNodeNext = (nodes = [], currentNode = "", config = {}) => {
 
   // root case
   if (_node[parentKey] === null) {
-    return flatNext(_node, nodes);
+    const _next = flatNext(_node, nodes);
+    if (!_next) return null;
+
+    if (unwrapFn(canGoDown, _node) && _node[childrenKey].length) {
+      return null;
+    }
+
+    return _next;
   }
 
   // nested level

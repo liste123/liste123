@@ -1,7 +1,7 @@
 import { getNodeParent } from "./get-node-parent";
-import nodesFlat from "./fixtures/nodes.flat.json";
-import nodesTreeL1 from "./fixtures/nodes.tree-l1.json";
-import nodesTreeL2 from "./fixtures/nodes.tree-l2.json";
+import nodesFlat from "./fixtures/nodes.flat";
+import nodesTreeL1 from "./fixtures/nodes.tree-l1";
+import nodesTreeL2 from "./fixtures/nodes.tree-l2";
 
 describe("DeepList", () => {
   describe("getNodeParent", () => {

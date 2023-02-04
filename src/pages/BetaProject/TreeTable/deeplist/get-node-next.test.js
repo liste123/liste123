@@ -1,9 +1,9 @@
 import { getNodeNext } from "./get-node-next";
 import { list2tree } from "./list2tree";
-import nodesFlat from "./fixtures/nodes.flat.json";
-import nodesTreeL1 from "./fixtures/nodes.tree-l1.json";
-import nodesTreeL2 from "./fixtures/nodes.tree-l2.json";
-import nodesTreeL3 from "./fixtures/nodes.tree-l3.json";
+import nodesFlat from "./fixtures/nodes.flat";
+import nodesTreeL1 from "./fixtures/nodes.tree-l1";
+import nodesTreeL2 from "./fixtures/nodes.tree-l2";
+import nodesTreeL3 from "./fixtures/nodes.tree-l3";
 
 describe("DeepList", () => {
   describe("getNodeNext", () => {

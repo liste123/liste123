@@ -1,7 +1,20 @@
 import { useTreeTable } from "./use-tree-table";
-import { createNode, appendNode, removeNode } from "../deeplist";
+import {
+  createNode,
+  appendNode,
+  removeNode,
+  getNodeNext,
+  getNodePrev
+} from "../deeplist";
 
-export const makeApi = ({ nodes, setNodes, setFocus, setIsEditMode }) => {
+export const makeApi = ({
+  nodes,
+  focus,
+  collapse,
+  setNodes,
+  setFocus,
+  setIsEditMode
+}) => {
   const _create = (data = {}) =>
     createNode({
       title: "",
@@ -39,6 +52,30 @@ export const makeApi = ({ nodes, setNodes, setFocus, setIsEditMode }) => {
     removeNode: (targetNode) => {
       const _nodes = removeNode(nodes, targetNode, { clone: true });
       setNodes(_nodes);
+    },
+    moveFocusNext: () => {
+      const nextNode = getNodeNext(nodes, focus, {
+        canGoDown: (node) => !collapse.includes(node.id)
+      });
+
+      if (!nextNode) {
+        setFocus(nodes[0].id);
+        return;
+      }
+      setFocus(nextNode.id);
+    },
+    moveFocusPrev: () => {
+      const prevNode = getNodePrev(nodes, focus, {
+        canGoDown: (node) => {
+          console.log("?", node.id, collapse);
+          return !collapse.includes[node.id];
+        }
+      });
+      if (!prevNode) {
+        // setFocus(nodes[0].id);
+        return;
+      }
+      setFocus(prevNode.id);
     }
   };
 };

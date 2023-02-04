@@ -1,6 +1,6 @@
 import { getNode } from "./get-node";
-import nodesFlat from "./fixtures/nodes.flat.json";
-import nodesTreeL1 from "./fixtures/nodes.tree-l1.json";
+import nodesFlat from "./fixtures/nodes.flat";
+import nodesTreeL1 from "./fixtures/nodes.tree-l1";
 
 describe("DeepList", () => {
   describe("getNode", () => {

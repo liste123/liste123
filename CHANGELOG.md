@@ -1,4 +1,15 @@
-## 2029, Jan 12th
+## 2023, Feb 4th
+- Fix tests that failed when importing json (could not find a damn reason for that)
+- Fix `getNodeNext()` to skip collapsed items
+
+## 2023, Jan 25th
+- Scout the json patch library that we are going to use for improving the syncing mechanics: https://www.npmjs.com/package/fast-json-patch
+
+## 2023, Jan 12-24th
+- Complete rewrite of the BetaProject page (still not quite satisfied)
+- Complete rewrite of the deeplist tree management library
+
+## 2023, Jan 12th
 - Move all keyboard shortcut to use `Alt`
 - Add unit tests with Jest
 - Add TaskID chip to the task row

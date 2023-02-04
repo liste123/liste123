@@ -7,6 +7,8 @@ import { createNode } from "./create-node";
 import { appendNode } from "./append-node";
 import { removeNode } from "./remove-node";
 import { getNodeId } from "./get-node-id";
+import { getNodeNext } from "./get-node-next";
+import { getNodePrev } from "./get-node-prev";
 
 export { list2tree } from "./list2tree";
 export { tree2list } from "./tree2list";
@@ -17,6 +19,8 @@ export { createNode } from "./create-node";
 export { appendNode } from "./append-node";
 export { removeNode } from "./remove-node";
 export { getNodeId } from "./get-node-id";
+export { getNodeNext } from "./get-node-next";
+export { getNodePrev } from "./get-node-prev";
 
 export default {
   list2tree,
@@ -27,5 +31,7 @@ export default {
   createNode,
   appendNode,
   removeNode,
-  getNodeId
+  getNodeId,
+  getNodeNext,
+  getNodePrev
 };

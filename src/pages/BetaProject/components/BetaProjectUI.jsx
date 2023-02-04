@@ -13,6 +13,7 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import { useClipboard } from "../../../utils/use-clipboard";
+import { useKeyboardEvent } from "../../../utils/use-keyboard-event";
 import BetaPage from "../../../components/BetaPage";
 import AddTask from "../../../components/AddTask";
 import TreeTable from "../TreeTable";
@@ -28,6 +29,9 @@ export const BetaProjectUI = ({ projectData, onTreeTableChange }) => {
   const { uuid: projectID, title } = projectData;
 
   const shareProjectURL = `${window.location.origin}/beta/@me/import?projectID=${projectID}`;
+
+  useKeyboardEvent("ArrowDown", () => treeTableRef.current.moveFocusNext());
+  useKeyboardEvent("ArrowUp", () => treeTableRef.current.moveFocusPrev());
 
   return (
     <BetaPage
