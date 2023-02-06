@@ -160,7 +160,12 @@ export const TreeTable = forwardRef(({ etag, value, onChange }, apiRef) => {
   // Build the external API object
   apiRef.current = {
     ...makeApi(contextValue),
-    showEditor: () => setShowEditor(true)
+    showEditor: () => setShowEditor(true),
+    getData: () => ({
+      ...value,
+      collapse,
+      items: tree2list(nodes)
+    })
   };
 
   return (

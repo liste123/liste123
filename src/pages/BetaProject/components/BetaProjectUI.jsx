@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 import { useClipboard } from "../../../utils/use-clipboard";
 import { useKeyboardEvent } from "../../../utils/use-keyboard-event";
@@ -29,6 +30,19 @@ export const BetaProjectUI = ({ projectData, onTreeTableChange }) => {
   const { uuid: projectID, title } = projectData;
 
   const shareProjectURL = `${window.location.origin}/beta/@me/import?projectID=${projectID}`;
+
+  const exportToJSON = () => {
+    const el = document.createElement("a");
+
+    el.setAttribute(
+      "href",
+      `data:text/json;charset=utf-8,${encodeURIComponent(
+        JSON.stringify(treeTableRef.current.getData(), null, 2)
+      )}`
+    );
+    el.setAttribute("download", `${encodeURIComponent(title)}.json`);
+    el.click();
+  };
 
   const useCombos = (combos = [], fn) =>
     combos.forEach((combo) =>
@@ -52,6 +66,7 @@ export const BetaProjectUI = ({ projectData, onTreeTableChange }) => {
       setFocus: true
     });
   });
+  useCombos(["s"], exportToJSON);
 
   return (
     <BetaPage
@@ -121,6 +136,11 @@ export const BetaProjectUI = ({ projectData, onTreeTableChange }) => {
           </ListItem>
         </List>
       )}
+      actions={
+        <IconButton onClick={exportToJSON} title="Export to JSON (Shortcut: s)">
+          <FileDownloadIcon />
+        </IconButton>
+      }
     >
       <Stack spacing={2} flex={1}>
         <AddTask
