@@ -54,6 +54,7 @@ export const BetaProjectUI = ({ projectData, onTreeTableChange }) => {
       })
     );
 
+  useCombos(["s"], exportToJSON);
   useCombos(["Enter", "e"], () => treeTableRef.current.startEdit());
   useCombos(["ArrowDown"], () => treeTableRef.current.moveFocusNext());
   useCombos(["ArrowUp"], () => treeTableRef.current.moveFocusPrev());
@@ -66,7 +67,6 @@ export const BetaProjectUI = ({ projectData, onTreeTableChange }) => {
       setFocus: true
     });
   });
-  useCombos(["s"], exportToJSON);
 
   return (
     <BetaPage
